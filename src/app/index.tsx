@@ -11,10 +11,11 @@ import { Helmet } from 'react-helmet-async';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import { GlobalStyle } from 'styles/global-styles';
-
-import { HomePage } from './pages/HomePage/Loadable';
-import { NotFoundPage } from './components/NotFoundPage/Loadable';
 import { useTranslation } from 'react-i18next';
+
+// Importing pages
+import { Index } from './pages/Index';
+import { DashboardLayout } from './pages/DashboardLayout';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -29,8 +30,8 @@ export function App() {
       </Helmet>
 
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route component={NotFoundPage} />
+        <Route exact path="/" component={Index} />
+        <Route path="/dashboard" component={DashboardLayout} />
       </Switch>
       <GlobalStyle />
     </BrowserRouter>
