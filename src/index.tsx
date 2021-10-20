@@ -15,7 +15,8 @@ import { Provider } from 'react-redux';
 // Use consistent styling
 // import 'sanitize.css/sanitize.css';
 
-import './scss/bootstrap-grid.css';
+import './css/bootstrap-grid.css';
+import './css/custom.css';
 
 // Import root app
 import { App } from 'app';
