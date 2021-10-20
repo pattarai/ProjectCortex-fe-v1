@@ -66,12 +66,14 @@ export function LoginPage() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: { Logo },
+            backgroundImage: `url(${Logo})`,
             backgroundRepeat: 'no-repeat',
-            backgroundColor: t =>
-              t.palette.mode === 'light'
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
+            // backgroundColor: 'purple',
+            background: 'linear-gradient(to right bottom, #4776E6, #8E54E9)',
+            // t =>
+            //   t.palette.mode === 'light'
+            //     ? t.palette.grey[50]
+            //     : t.palette.grey[900]
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -92,12 +94,12 @@ export function LoginPage() {
 
             <Box
               component="h1"
-              sx={{ letterSpacing: 15, m: 1, color: 'secondary.main' }}
+              sx={{ letterSpacing: 15, m: 1, color: '#8E54E9' }}
             >
               PATTARAI
             </Box>
             <Typography component="h2" variant="h5">
-              Welcome to <span style={{ color: 'purple' }}> Cortex! </span>
+              Welcome to <span style={{ color: '#4776E6' }}> Cortex! </span>
             </Typography>
             <Box
               component="form"
