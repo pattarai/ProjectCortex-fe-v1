@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RankingCrew  /> should match snapshot 1`] = `
+<section
+  class="vh-100"
+>
+  <div
+    class="d-flex justify-content-end p-4"
+  >
+    <button
+      class="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root css-1e6y48t-MuiButtonBase-root-MuiButton-root"
+      tabindex="0"
+      type="button"
+    >
+      Phase I
+      <span
+        class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+  <div
+    class="container mt-4"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-sm-4 mb-4"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation2 MuiCard-root css-ja5zvg-MuiPaper-root-MuiCard-root"
+        >
+          <button
+            class="MuiButtonBase-root MuiCardActionArea-root css-b6lsxj-MuiButtonBase-root-MuiCardActionArea-root"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="MuiCardContent-root css-97bign-MuiCardContent-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-178xjzq-MuiAvatar-root"
+              >
+                <img
+                  alt="Raksha"
+                  class="MuiAvatar-img css-1pqm26d-MuiAvatar-img"
+                  src="raksha.png"
+                />
+              </div>
+              <h2
+                class="MuiTypography-root MuiTypography-h5 css-ag7rrr-MuiTypography-root"
+              >
+                Raksha V G
+              </h2>
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle1 css-ecpxie-MuiTypography-root"
+              >
+                Diamond League | 23
+              </h6>
+            </div>
+            <span
+              class="MuiCardActionArea-focusHighlight css-1v2exvi-MuiCardActionArea-focusHighlight"
+            />
+            <span
+              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+      </div>
+      <div
+        class="col-sm-4 mb-4"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation2 MuiCard-root css-ja5zvg-MuiPaper-root-MuiCard-root"
+        >
+          <button
+            class="MuiButtonBase-root MuiCardActionArea-root css-b6lsxj-MuiButtonBase-root-MuiCardActionArea-root"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="MuiCardContent-root css-97bign-MuiCardContent-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-178xjzq-MuiAvatar-root"
+              >
+                <img
+                  alt="Raksha"
+                  class="MuiAvatar-img css-1pqm26d-MuiAvatar-img"
+                  src="raksha.png"
+                />
+              </div>
+              <h2
+                class="MuiTypography-root MuiTypography-h5 css-ag7rrr-MuiTypography-root"
+              >
+                Raksha V G
+              </h2>
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle1 css-ecpxie-MuiTypography-root"
+              >
+                Diamond League | 23
+              </h6>
+            </div>
+            <span
+              class="MuiCardActionArea-focusHighlight css-1v2exvi-MuiCardActionArea-focusHighlight"
+            />
+            <span
+              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+      </div>
+      <div
+        class="col-sm-4 mb-4"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation2 MuiCard-root css-ja5zvg-MuiPaper-root-MuiCard-root"
+        >
+          <button
+            class="MuiButtonBase-root MuiCardActionArea-root css-b6lsxj-MuiButtonBase-root-MuiCardActionArea-root"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="MuiCardContent-root css-97bign-MuiCardContent-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-178xjzq-MuiAvatar-root"
+              >
+                <img
+                  alt="Raksha"
+                  class="MuiAvatar-img css-1pqm26d-MuiAvatar-img"
+                  src="raksha.png"
+                />
+              </div>
+              <h2
+                class="MuiTypography-root MuiTypography-h5 css-ag7rrr-MuiTypography-root"
+              >
+                Raksha V G
+              </h2>
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle1 css-ecpxie-MuiTypography-root"
+              >
+                Diamond League | 23
+              </h6>
+            </div>
+            <span
+              class="MuiCardActionArea-focusHighlight css-1v2exvi-MuiCardActionArea-focusHighlight"
+            />
+            <span
+              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+`;
