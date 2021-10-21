@@ -15,7 +15,10 @@ import { Provider } from 'react-redux';
 // Use consistent styling
 // import 'sanitize.css/sanitize.css';
 
-import './scss/bootstrap-grid.css';
+import './css/bootstrap-grid.css';
+import './css/custom.css';
+import { theme } from './css/MUIThemes';
+import { ThemeProvider } from '@mui/material/styles';
 
 // Import root app
 import { App } from 'app';
@@ -36,7 +39,9 @@ ReactDOM.render(
   <Provider store={store}>
     <HelmetProvider>
       <React.StrictMode>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </React.StrictMode>
     </HelmetProvider>
   </Provider>,
