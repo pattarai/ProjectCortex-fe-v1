@@ -77,7 +77,9 @@ export function LoginPage() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
-        />
+        >
+          <img src={Logo} alt=" " />
+        </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
