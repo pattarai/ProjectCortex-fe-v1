@@ -8,8 +8,9 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Avatar, Button, CardActionArea } from '@mui/material';
+import { Avatar, Button, CardActionArea, TextField } from '@mui/material';
 import AvatarIcon from './images/raksha.png';
+import Diamond from './images/diamond.png';
 
 import Modal from '@mui/material/Modal';
 
@@ -19,6 +20,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import EventIcon from '@mui/icons-material/Event';
+import SearchIcon from '@mui/icons-material/Search';
+import { Box } from '@mui/system';
 
 interface Props {}
 
@@ -83,9 +86,8 @@ export function RankingCrew(props: Props) {
               <List id="modal-modal-description">
                 <ListSubheader>
                   <div className="d-flex justify-content-between">
-                    {' '}
                     <span className="text-start">EVENT</span>
-                    <span className="">SCORE</span>
+                    <span>SCORE</span>
                   </div>
                 </ListSubheader>
                 <ListItem>
@@ -110,7 +112,7 @@ export function RankingCrew(props: Props) {
             </CardContent>
           </Card>
         </Modal>
-        <div className="container mt-4">
+        <div className="container my-4">
           <div className="row">
             <div className="col-12 col-md-4 mb-4">
               <Card elevation={2} sx={{ textAlign: 'center' }}>
@@ -188,6 +190,242 @@ export function RankingCrew(props: Props) {
                     </Typography>
                   </CardContent>
                 </CardActionArea>
+              </Card>
+            </div>
+          </div>
+        </div>
+        <div className="container my-3">
+          <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+            <SearchIcon
+              sx={{ color: 'action.active', mr: 1, my: 0.5, mt: 1 }}
+            />
+            <TextField
+              id="input-with-sx"
+              label="Search Name"
+              variant="standard"
+            />
+          </Box>
+        </div>
+        <div className="container align-items-center d-flex justify-content-center">
+          <div className="col m-2">
+            <div className="row mb-2">
+              <Card elevation={2}>
+                <CardContent>
+                  <div className="align-items-center d-flex justify-content-center">
+                    <span className="me-3">
+                      <Typography
+                        component="h1"
+                        variant="h6"
+                        color="text.secondary"
+                      >
+                        #4
+                      </Typography>
+                    </span>
+                    <Avatar
+                      alt="Raksha"
+                      src={AvatarIcon}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: 'auto',
+                      }}
+                    />
+                    <div style={{ width: '50%' }}>
+                      <span className="d-none d-md-block ms-2">
+                        <Typography component="h2" variant="h6">
+                          Raksha V G
+                        </Typography>
+                      </span>
+                    </div>
+                    <Avatar
+                      alt="diamond"
+                      src={Diamond}
+                      variant="square"
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: 'auto',
+                      }}
+                    />
+                    <div
+                      className="d-flex flex-column justify-content-end align-items-end"
+                      style={{ width: '60%' }}
+                    >
+                      <Typography component="h2" variant="h6">
+                        67
+                      </Typography>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="row mb-2">
+              <Card elevation={2}>
+                <CardContent>
+                  <div className="align-items-center d-flex justify-content-center">
+                    <span className="me-3">
+                      <Typography
+                        component="h1"
+                        variant="h6"
+                        color="text.secondary"
+                      >
+                        #5
+                      </Typography>
+                    </span>
+                    <Avatar
+                      alt="Raksha"
+                      src={AvatarIcon}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: 'auto',
+                      }}
+                    />
+                    <div style={{ width: '50%' }}>
+                      <span className="d-none d-md-block ms-2">
+                        <Typography component="h2" variant="h6">
+                          Raksha V G
+                        </Typography>
+                      </span>
+                    </div>
+                    <Avatar
+                      alt="diamond"
+                      src={Diamond}
+                      variant="square"
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: 'auto',
+                      }}
+                    />
+                    <div
+                      className="d-flex flex-column justify-content-end align-items-end"
+                      style={{ width: '60%' }}
+                    >
+                      <Typography component="h2" variant="h6">
+                        67
+                      </Typography>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="row mb-2">
+              <Card elevation={2}>
+                <CardContent>
+                  <div className="align-items-center d-flex justify-content-center">
+                    <span className="me-3">
+                      <Typography
+                        component="h1"
+                        variant="h6"
+                        color="text.secondary"
+                      >
+                        #6
+                      </Typography>
+                    </span>
+                    <Avatar
+                      alt="Raksha"
+                      src={AvatarIcon}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: 'auto',
+                      }}
+                    />
+                    <div style={{ width: '50%' }}>
+                      <span className="d-none d-md-block ms-2">
+                        <Typography component="h2" variant="h6">
+                          Raksha V G
+                        </Typography>
+                      </span>
+                    </div>
+                    <Avatar
+                      alt="diamond"
+                      src={Diamond}
+                      variant="square"
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: 'auto',
+                      }}
+                    />
+                    <div
+                      className="d-flex flex-column justify-content-end align-items-end"
+                      style={{ width: '60%' }}
+                    >
+                      <Typography component="h2" variant="h6">
+                        67
+                      </Typography>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="row mb-2">
+              <Card elevation={2}>
+                <CardContent>
+                  <div className="align-items-center d-flex justify-content-center">
+                    <span className="me-3">
+                      <Typography
+                        component="h1"
+                        variant="h6"
+                        color="text.secondary"
+                      >
+                        #7
+                      </Typography>
+                    </span>
+                    <Avatar
+                      alt="Raksha"
+                      src={AvatarIcon}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: 'auto',
+                      }}
+                    />
+                    <div style={{ width: '50%' }}>
+                      <span className="d-none d-md-block ms-2">
+                        <Typography component="h2" variant="h6">
+                          Raksha V G
+                        </Typography>
+                      </span>
+                    </div>
+                    <Avatar
+                      alt="diamond"
+                      src={Diamond}
+                      variant="square"
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: 'auto',
+                      }}
+                    />
+                    <div
+                      className="d-flex flex-column justify-content-end align-items-end"
+                      style={{ width: '60%' }}
+                    >
+                      <Typography component="h2" variant="h6">
+                        67
+                      </Typography>
+                    </div>
+                  </div>
+                </CardContent>
               </Card>
             </div>
           </div>
