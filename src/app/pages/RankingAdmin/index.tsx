@@ -5,6 +5,18 @@
  */
 import * as React from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import SearchIcon from '@mui/icons-material/Search';
+import { Box } from '@mui/system';
+import {
+  Avatar,
+  Button,
+  CardActionArea,
+  IconButton,
+  TextField,
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Autocomplete from '@mui/material/Autocomplete';
+import AddIcon from '@mui/icons-material/Add';
 
 interface Props {}
 
@@ -37,12 +49,40 @@ const rows = [
   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
 ];
-
+const eventList = [
+  { label: 'FestX', id: 1 },
+  { label: 'Ideathon', id: 2 },
+  { label: 'Crew Meet 30 Oct', id: 3 },
+];
 export function RankingAdmin(props: Props) {
   return (
     <>
       <section className="vh-100">
-        <div className="container my-4">
+        <div className="container mt-2">
+          <div className="d-md-flex py-4 justify-content-md-end">
+            <div className="mb-3 mb-md-0">
+              {' '}
+              <Autocomplete
+                disablePortal
+                id="clear-on-escape"
+                sx={{ width: 250, marginRight: 4 }}
+                clearOnEscape
+                options={eventList}
+                renderInput={params => (
+                  <TextField {...params} label="Select Phase" />
+                )}
+              />
+            </div>
+            <TextField
+              sx={{ width: 250 }}
+              id="input-with-sx"
+              label="Other Factors"
+              variant="outlined"
+            />{' '}
+            <IconButton aria-label="add" size="large">
+              <AddIcon fontSize="inherit" />
+            </IconButton>
+          </div>
           <div style={{ height: 400, width: '100%' }}>
             <DataGrid
               rows={rows}
