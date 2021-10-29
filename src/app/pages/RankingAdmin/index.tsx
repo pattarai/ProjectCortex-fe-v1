@@ -5,18 +5,16 @@
  */
 import * as React from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import SearchIcon from '@mui/icons-material/Search';
-import { Box } from '@mui/system';
-import {
-  Avatar,
-  Button,
-  CardActionArea,
-  IconButton,
-  TextField,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Autocomplete from '@mui/material/Autocomplete';
+import { IconButton, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import SaveIcon from '@mui/icons-material/Save';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 interface Props {}
 
@@ -54,34 +52,58 @@ const eventList = [
   { label: 'Ideathon', id: 2 },
   { label: 'Crew Meet 30 Oct', id: 3 },
 ];
+
 export function RankingAdmin(props: Props) {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <section className="vh-100">
         <div className="container mt-2">
-          <div className="d-md-flex py-4 justify-content-md-end">
-            <div className="mb-3 mb-md-0">
-              {' '}
-              <Autocomplete
-                disablePortal
-                id="clear-on-escape"
-                sx={{ width: 250, marginRight: 4 }}
-                clearOnEscape
-                options={eventList}
-                renderInput={params => (
-                  <TextField {...params} label="Select Phase" />
-                )}
-              />
-            </div>
+          <div className="d-flex py-3 justify-content-center justify-content-md-end">
             <TextField
               sx={{ width: 250 }}
               id="input-with-sx"
               label="Other Factors"
               variant="outlined"
-            />{' '}
+            />
             <IconButton aria-label="add" size="large">
               <AddIcon fontSize="inherit" />
             </IconButton>
+            <IconButton
+              aria-label="remove"
+              onClick={handleClickOpen}
+              size="large"
+            >
+              <RemoveIcon fontSize="inherit" />
+            </IconButton>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{'Delete'}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure you want to delete this rank factor?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>No</Button>
+                <Button onClick={handleClose} autoFocus>
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
           <div style={{ height: 400, width: '100%' }}>
             <DataGrid
@@ -91,6 +113,11 @@ export function RankingAdmin(props: Props) {
               rowsPerPageOptions={[5]}
               //checkboxSelection
             />
+            <div className="d-flex py-3 justify-content-center justify-content-md-end">
+              <Button variant="contained" startIcon={<SaveIcon />}>
+                Save
+              </Button>
+            </div>
           </div>
         </div>
       </section>
