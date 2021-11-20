@@ -42,20 +42,27 @@ export function UserManagement(props: Props) {
   ];
   return (
     <>
-      <div className="vh-100 d-flex align-justify-center">
-        <Container>
-          <div className="d-flex justify-content-between mb-3">
-            <Typography variant="h4" gutterBottom>
-              User
-            </Typography>
-            <div className="">
-              <Button variant="outlined">
-                <RiAddFill />
-                Add User
-              </Button>
+      <div className="vh-100 d-flex flex-column align-justify-center ">
+        <Card
+          className="d-flex align-justify-center"
+          style={{
+            width: '90%',
+            height: '80vh',
+            backgroundColor: '#d6ebff',
+          }}
+        >
+          <Container>
+            <div className="d-flex justify-content-between mb-3">
+              <Typography variant="h4" gutterBottom>
+                User
+              </Typography>
+              <div className="">
+                <Button variant="outlined">
+                  <RiAddFill />
+                  Add User
+                </Button>
+              </div>
             </div>
-          </div>
-          <Card>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
@@ -80,10 +87,14 @@ export function UserManagement(props: Props) {
                       <TableCell align="left">{row.role}</TableCell>
                       <TableCell align="left">{row.project}</TableCell>
                       <TableCell align="center">
-                        <IconButton aria-label="Edit">
+                        <IconButton color="primary" aria-label="Edit">
                           <MdEdit />
                         </IconButton>
-                        <IconButton aria-label="Delete" className="mx-2">
+                        <IconButton
+                          aria-label="Delete"
+                          color="secondary"
+                          className="mx-2"
+                        >
                           <MdDelete />
                         </IconButton>
                       </TableCell>
@@ -92,8 +103,8 @@ export function UserManagement(props: Props) {
                 </TableBody>
               </Table>
             </TableContainer>
-          </Card>
-        </Container>
+          </Container>
+        </Card>
       </div>
     </>
   );
