@@ -4,12 +4,13 @@
  *
  */
 import * as React from 'react';
-// import styled from 'styled-components/macro';
 
 interface Props {}
 
 export function UserManagement(props: Props) {
-  return <></>;
+  return (
+    <>
+      <h1>Hello World</h1>
+    </>
+  );
 }
-
-// const Div = styled.div``;
