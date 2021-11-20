@@ -16,7 +16,10 @@ import {
   Typography,
   TableContainer,
   Paper,
+  IconButton,
 } from '@mui/material';
+import { MdDelete, MdEdit } from 'react-icons/md';
+import { RiAddFill } from 'react-icons/ri';
 
 interface Props {}
 
@@ -46,7 +49,10 @@ export function UserManagement(props: Props) {
               User
             </Typography>
             <div className="">
-              <Button variant="contained">Add User</Button>
+              <Button variant="outlined">
+                <RiAddFill />
+                Add User
+              </Button>
             </div>
           </div>
           <Card>
@@ -58,7 +64,7 @@ export function UserManagement(props: Props) {
                     <TableCell align="left">Email</TableCell>
                     <TableCell align="left">Role</TableCell>
                     <TableCell align="left">Project</TableCell>
-                    <TableCell align="left">Actions</TableCell>
+                    <TableCell align="center">Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -73,9 +79,13 @@ export function UserManagement(props: Props) {
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="left">{row.role}</TableCell>
                       <TableCell align="left">{row.project}</TableCell>
-                      <TableCell align="left">
-                        <Button variant="contained">Edit</Button>
-                        <Button variant="contained">Delete</Button>
+                      <TableCell align="center">
+                        <IconButton aria-label="Edit">
+                          <MdEdit />
+                        </IconButton>
+                        <IconButton aria-label="Delete" className="mx-2">
+                          <MdDelete />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   ))}
