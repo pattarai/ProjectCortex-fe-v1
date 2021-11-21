@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 // Importing pages
 import { Index } from './pages/Index';
 import { DashboardLayout } from './pages/DashboardLayout';
+import { LoginPage } from './pages/LoginPage';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -31,6 +32,7 @@ export function App() {
 
       <Switch>
         <Route exact path="/" component={Index} />
+        <Route exact path="/login" component={LoginPage} />
         <Route path="/dashboard" component={DashboardLayout} />
       </Switch>
       <GlobalStyle />
