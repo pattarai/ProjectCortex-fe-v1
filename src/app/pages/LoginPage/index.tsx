@@ -16,9 +16,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import Logo from '../../images/Logo.svg';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useLoginSlice } from './slice';
-import { selectLogin } from './slice/selectors';
 
 const theme = createTheme();
 
