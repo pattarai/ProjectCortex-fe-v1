@@ -1,4 +1,4 @@
-import { UserManagementState } from 'app//slice/types';
+import { UserManagementState } from 'app/slice/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
