@@ -14,7 +14,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     login(state, action: PayloadAction<any>) {
-      state.email = action.payload.username;
+      state.email = action.payload.email;
       state.password = action.payload.password;
     },
   },
