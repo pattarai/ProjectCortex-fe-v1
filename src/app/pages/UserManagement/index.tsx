@@ -113,7 +113,7 @@ export function UserManagement(props: Props) {
               sx={{ minWidth: 650 }}
               aria-label="User Management table"
             >
-              <TableHead sx={{ bgcolor: '#d3d1ff' }}>
+              <TableHead sx={{ bgcolor: '#dee2fc' }}>
                 <TableRow>
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
@@ -144,7 +144,7 @@ export function UserManagement(props: Props) {
                         <IconButton
                           aria-label="Delete"
                           color="secondary"
-                          className="mx-2"
+                          className="ms-2"
                           onClick={() => dispatch(actions.deleteUser(row.id))}
                         >
                           <MdDelete />
