@@ -13,15 +13,35 @@ import {
   TableBody,
   TableCell,
   Container,
-  Typography,
+  InputAdornment,
   TableContainer,
-  Paper,
+  TextField,
   IconButton,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { MdDelete, MdEdit } from 'react-icons/md';
+import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
 
 interface Props {}
+
+const CustomTable = styled(Table)(({ theme }) => ({
+  table: {
+    marginTop: theme.spacing(3),
+    '& thead th': {
+      fontWeight: '600',
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.light,
+    },
+    '& tbody td': {
+      fontWeight: '300',
+    },
+    '& tbody tr:hover': {
+      backgroundColor: '#fffbf2',
+      cursor: 'pointer',
+    },
+  },
+}));
 
 export function UserManagement(props: Props) {
   function createData(
@@ -36,40 +56,55 @@ export function UserManagement(props: Props) {
   const rows = [
     createData('Joshua', 'joshuafrankle7@gmail.com', 'VPE', 'Cortex'),
     createData('Jesin', 'jesinthan@gmail.com', 'Dir. Activities', 'Cortex'),
-    createData('Joshua', 'joshuafrankle7@gmail.com', 'VPE', 'Cortex'),
-    createData('Joshua', 'joshuafrankle7@gmail.com', 'VPE', 'Cortex'),
-    createData('Joshua', 'joshuafrankle7@gmail.com', 'VPE', 'Cortex'),
   ];
+
   return (
     <>
-      <div className="vh-100 d-flex flex-column align-justify-center ">
+      <div
+        className="vh-100 d-flex flex-column align-justify-center"
+        style={{
+          backgroundColor: '#f4f5fd',
+        }}
+      >
         <Card
-          className="d-flex align-justify-center"
-          style={{
-            width: '90%',
-            height: '80vh',
-            backgroundColor: '#d6ebff',
-          }}
+          className="d-flex align-justify-center p-5"
+          style={{ width: '90%' }}
         >
           <Container>
-            <div className="d-flex justify-content-between mb-3">
-              <Typography variant="h4" gutterBottom>
-                User
-              </Typography>
-              <div className="">
-                <Button variant="outlined">
+            <div className="d-md-flex justify-content-between align-items-center mb-4">
+              <TextField
+                label="Search Members"
+                id="outlined-start-adornment"
+                className="w-md-50 mb-3 mb-md-0"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FaSearch />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <div>
+                <Button
+                  variant="outlined"
+                  className="w-100"
+                  style={{ width: '100%' }}
+                >
                   <RiAddFill />
-                  Add User
+                  <span className="d-none d-md-block">Add User</span>
                 </Button>
               </div>
             </div>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
+            <TableContainer>
+              <CustomTable
+                sx={{ minWidth: 650 }}
+                aria-label="User Management table"
+              >
+                <TableHead sx={{ bgcolor: '#d3d1ff' }}>
                   <TableRow>
                     <TableCell>Name</TableCell>
-                    <TableCell align="left">Email</TableCell>
-                    <TableCell align="left">Role</TableCell>
+                    <TableCell>Email</TableCell>
+                    <TableCell>Role</TableCell>
                     <TableCell align="left">Project</TableCell>
                     <TableCell align="center">Actions</TableCell>
                   </TableRow>
@@ -78,14 +113,16 @@ export function UserManagement(props: Props) {
                   {rows.map(row => (
                     <TableRow
                       key={row.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      sx={{
+                        '&:last-child td, &:last-child th': { border: 0 },
+                      }}
                     >
                       <TableCell component="th" scope="row">
                         {row.name}
                       </TableCell>
-                      <TableCell align="left">{row.email}</TableCell>
-                      <TableCell align="left">{row.role}</TableCell>
-                      <TableCell align="left">{row.project}</TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>{row.role}</TableCell>
+                      <TableCell>{row.project}</TableCell>
                       <TableCell align="center">
                         <IconButton color="primary" aria-label="Edit">
                           <MdEdit />
@@ -101,7 +138,7 @@ export function UserManagement(props: Props) {
                     </TableRow>
                   ))}
                 </TableBody>
-              </Table>
+              </CustomTable>
             </TableContainer>
           </Container>
         </Card>
