@@ -4,6 +4,7 @@
  *
  */
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   Table,
@@ -12,7 +13,6 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  Container,
   InputAdornment,
   TableContainer,
   TextField,
@@ -23,7 +23,9 @@ import { MdDelete, MdEdit } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
 
-interface Props {}
+import { useSelector, useDispatch } from 'react-redux';
+import { useUserManagementSlice } from '../../slice';
+import { selectUserManagement } from '../../slice/selectors';
 
 const CustomTable = styled(Table)(({ theme }) => ({
   table: {
@@ -43,20 +45,30 @@ const CustomTable = styled(Table)(({ theme }) => ({
   },
 }));
 
+interface Props {}
+
 export function UserManagement(props: Props) {
-  function createData(
-    name: string,
-    email: string,
-    role: string,
-    project: string,
-  ) {
-    return { name, email, role, project };
+  const dispatch = useDispatch();
+  const user = useSelector(selectUserManagement);
+  const { actions } = useUserManagementSlice();
+
+  const [userData, setUserData] = useState(user);
+
+  function handleChange(searchedVal: string | null) {
+    if (searchedVal === '' || searchedVal === null) {
+      setUserData(user);
+    } else {
+      const filteredTodos = user.filter(row =>
+        row.name.toLowerCase().includes(searchedVal.toLowerCase()),
+      );
+      setUserData(filteredTodos);
+    }
   }
 
-  const rows = [
-    createData('Joshua', 'joshuafrankle7@gmail.com', 'VPE', 'Cortex'),
-    createData('Jesin', 'jesinthan@gmail.com', 'Dir. Activities', 'Cortex'),
-  ];
+  useEffect(() => {
+    const newData = [...user];
+    setUserData(newData);
+  }, [user]);
 
   return (
     <>
@@ -67,52 +79,54 @@ export function UserManagement(props: Props) {
         }}
       >
         <Card
-          className="d-flex align-justify-center p-5"
+          className="d-flex flex-column align-justify-center p-5"
           style={{ width: '90%' }}
         >
-          <Container>
-            <div className="d-md-flex justify-content-between align-items-center mb-4">
-              <TextField
-                label="Search Members"
-                id="outlined-start-adornment"
-                className="w-md-50 mb-3 mb-md-0"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <FaSearch />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <div>
-                <Button
-                  variant="outlined"
-                  className="w-100"
-                  style={{ width: '100%' }}
-                >
-                  <RiAddFill />
-                  <span className="d-none d-md-block">Add User</span>
-                </Button>
-              </div>
-            </div>
-            <TableContainer>
-              <CustomTable
-                sx={{ minWidth: 650 }}
-                aria-label="User Management table"
+          <div className="d-md-flex justify-content-between align-items-center mb-4 w-md-100">
+            <TextField
+              sx={{ width: '70%' }}
+              label="Search Members"
+              id="outlined-start-adornment"
+              className="mb-3 mb-md-0"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FaSearch />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={e => handleChange(e.target.value)}
+            />
+            <div>
+              <Button
+                variant="outlined"
+                className="w-100"
+                style={{ width: '100%' }}
               >
-                <TableHead sx={{ bgcolor: '#d3d1ff' }}>
-                  <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Email</TableCell>
-                    <TableCell>Role</TableCell>
-                    <TableCell align="left">Project</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map(row => (
+                <RiAddFill />
+                <span className="d-none d-md-block">Add User</span>
+              </Button>
+            </div>
+          </div>
+          <TableContainer>
+            <CustomTable
+              sx={{ minWidth: 650 }}
+              aria-label="User Management table"
+            >
+              <TableHead sx={{ bgcolor: '#d3d1ff' }}>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Role</TableCell>
+                  <TableCell align="left">Project</TableCell>
+                  <TableCell align="center">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {userData.length > 0 ? (
+                  userData.map(row => (
                     <TableRow
-                      key={row.name}
+                      key={row.id}
                       sx={{
                         '&:last-child td, &:last-child th': { border: 0 },
                       }}
@@ -131,16 +145,21 @@ export function UserManagement(props: Props) {
                           aria-label="Delete"
                           color="secondary"
                           className="mx-2"
+                          onClick={() => dispatch(actions.deleteUser(row.id))}
                         >
                           <MdDelete />
                         </IconButton>
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </CustomTable>
-            </TableContainer>
-          </Container>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell>No User</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </CustomTable>
+          </TableContainer>
         </Card>
       </div>
     </>
