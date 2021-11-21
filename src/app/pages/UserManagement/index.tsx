@@ -24,8 +24,8 @@ import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { useUserManagementSlice } from '../../slice';
-import { selectUserManagement } from '../../slice/selectors';
+import { useUserManagementSlice } from './slice';
+import { selectUserManagement } from './slice/selectors';
 
 const CustomTable = styled(Table)(({ theme }) => ({
   table: {
