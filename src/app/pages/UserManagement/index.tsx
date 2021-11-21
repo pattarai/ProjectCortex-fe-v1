@@ -58,10 +58,10 @@ export function UserManagement(props: Props) {
     if (searchedVal === '' || searchedVal === null) {
       setUserData(user);
     } else {
-      const filteredTodos = user.filter(row =>
+      const filteredUser = user.filter(row =>
         row.name.toLowerCase().includes(searchedVal.toLowerCase()),
       );
-      setUserData(filteredTodos);
+      setUserData(filteredUser);
     }
   }
 
