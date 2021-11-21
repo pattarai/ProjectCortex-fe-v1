@@ -16,6 +16,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import Logo from '../../images/Logo.svg';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { useLoginSlice } from './slice';
+import { selectLogin } from './slice/selectors';
+
 const theme = createTheme();
 
 const CenterItem = styled.div`
@@ -26,6 +30,9 @@ const CenterItem = styled.div`
 `;
 
 export function LoginPage() {
+  const dispatch = useDispatch();
+  const { actions } = useLoginSlice();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -33,6 +40,12 @@ export function LoginPage() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    dispatch(
+      actions.login({
+        email: data.get('email'),
+        password: data.get('password'),
+      }),
+    );
   };
 
   return (
