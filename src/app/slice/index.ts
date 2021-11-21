@@ -4,13 +4,32 @@ import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { userManagementSaga } from './saga';
 import { UserManagementState } from './types';
 
-export const initialState: UserManagementState = {};
+export const initialState: UserManagementState = [
+  {
+    id: 100,
+    name: 'Joshua',
+    email: 'joshuafrankle7@gmail.com',
+    role: 'VPE',
+    project: 'Cortex',
+  },
+  {
+    id: 101,
+    name: 'Jesin',
+    email: 'jesinthan@gmail.com',
+    role: 'Director of Activities',
+    project: 'Cortex',
+  },
+];
 
 const slice = createSlice({
   name: 'userManagement',
   initialState,
   reducers: {
-    someAction(state, action: PayloadAction<any>) {},
+    deleteUser(state, action: PayloadAction<any>) {
+      state.forEach(
+        st => st.id === action.payload && state.splice(state.indexOf(st), 1),
+      );
+    },
   },
 });
 
