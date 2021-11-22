@@ -7,8 +7,10 @@
     "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
     "@mui/icons-material": "5.0.3",
+    "@mui/lab": "5.0.0-alpha.51",
     "@mui/material": "5.0.3",
     "@mui/styled-engine-sc": "5.0.3",
+    "@mui/x-data-grid": "5.0.0-beta.5",
     "@reduxjs/toolkit": "1.6.0",
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "12.0.0",
@@ -28,11 +30,12 @@
     "@types/webpack-env": "1.16.2",
     "chalk": "4.1.1",
     "cross-env": "7.0.3",
+    "date-fns": "2.25.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-react-hooks": "4.2.0",
     "fontfaceobserver": "2.1.0",
-    "husky": "7.0.2",
+    "husky": "7.0.4",
     "i18next": "20.3.2",
     "i18next-browser-languagedetector": "6.1.2",
     "i18next-scanner": "3.0.0",
@@ -125,5 +128,8 @@
         "statements": 90
       }
     }
+  },
+  "devDependencies": {
+    "husky": "^7.0.0"
   }
 }
