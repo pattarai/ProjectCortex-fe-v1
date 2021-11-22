@@ -128,8 +128,5 @@
         "statements": 90
       }
     }
-  },
-  "devDependencies": {
-    "husky": "^7.0.0"
   }
 }
