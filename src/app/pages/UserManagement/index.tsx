@@ -19,10 +19,12 @@ import {
   IconButton,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Popup from './Popup';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
+
+import Popup from './Popup';
+import MemberForm from './MemberForm';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useUserManagementSlice } from './slice';
@@ -165,7 +167,10 @@ export function UserManagement(props: Props) {
           </TableContainer>
         </Card>
       </div>
-      <Popup openModal={openPopup} setOpenModal={setOpenPopup} />
+      <Popup openModal={openPopup} setOpenModal={setOpenPopup}>
+        <MemberForm />
+      </Popup>
+      <MemberForm />
     </>
   );
 }
