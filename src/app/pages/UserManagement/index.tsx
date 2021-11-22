@@ -167,10 +167,13 @@ export function UserManagement(props: Props) {
           </TableContainer>
         </Card>
       </div>
-      <Popup openModal={openPopup} setOpenModal={setOpenPopup}>
+      <Popup
+        title="Member Form"
+        openModal={openPopup}
+        setOpenModal={setOpenPopup}
+      >
         <MemberForm />
       </Popup>
-      <MemberForm />
     </>
   );
 }

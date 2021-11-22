@@ -1,7 +1,6 @@
 import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+import { Box, Backdrop, Modal, IconButton } from '@mui/material';
+import { MdOutlineCancel } from 'react-icons/md';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -15,6 +14,7 @@ const style = {
 };
 
 export default function TransitionsModal({
+  title,
   openModal,
   setOpenModal,
   children,
@@ -25,14 +25,26 @@ export default function TransitionsModal({
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={openModal}
-        onClose={() => setOpenModal(false)}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
       >
-        <Box sx={style}>{children}</Box>
+        <Box sx={style} className="w-md-50">
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h1>{title}</h1>
+            <IconButton
+              color="error"
+              aria-label="upload picture"
+              component="span"
+              onClick={() => setOpenModal(false)}
+            >
+              <MdOutlineCancel />
+            </IconButton>
+          </div>
+          {children}
+        </Box>
       </Modal>
     </>
   );
