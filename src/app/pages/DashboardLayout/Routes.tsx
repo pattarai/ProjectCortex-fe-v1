@@ -9,6 +9,7 @@ import { About } from '../About/Loadable';
 import { Contact } from '../Contact/Loadable';
 import { Profileview } from '../Profileview';
 import { ProfileCommonView } from '../Profilecommonview';
+import { EventPage } from '../EventPage';
 
 interface Props {}
 
@@ -19,6 +20,7 @@ export function Routes(props: Props) {
       <Route exact path="/dashboard/contact" component={Contact} />
       <Route exact path="/dashboard/profile" component={Profileview} />
       <Route exact path="/dashboard/profilecv" component={ProfileCommonView} />
+      <Route exact path="/dashboard/events" component={EventPage} />
     </Switch>
   );
 }

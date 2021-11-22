@@ -35,7 +35,6 @@ export function App() {
         <Route exact path="/" component={Index} />
         <Route exact path="/login" component={LoginPage} />
         <Route path="/dashboard" component={DashboardLayout} />
-        <Route path="/event" component={EventPage} />
       </Switch>
       <GlobalStyle />
     </BrowserRouter>
