@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import {
   TextField,
   Radio,
@@ -18,12 +19,38 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 
 export default function MemberForm() {
-  const [age, setAge] = React.useState('');
-  const [value, setValue] = React.useState<Date | null>(null);
+  const projectsList = [
+    'Project Cortex',
+    'Project Cortex 2',
+    'Project Cortex 3',
+  ];
+  const committeeList = ['HR', 'BD', 'I&M', 'EV'];
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+  const [date, setDate] = React.useState<Date | null>(null);
+  const [values, setValues] = useState({
+    name: '',
+    email: '',
+    role: '',
+    rank: '',
+    project: '',
+    committee: '',
+  });
+
+  const handleProjectsChange = (event: SelectChangeEvent) => {
+    setValues({ ...values, project: event.target.value });
   };
+  const handleCommitteeChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setValues({
+      ...values,
+      committee: (event.target as HTMLInputElement).value,
+    });
+  };
+
+  function handleSubmit() {
+    console.log(values);
+  }
 
   return (
     <>
@@ -34,6 +61,7 @@ export default function MemberForm() {
             className="mb-3"
             label="Full Name"
             variant="outlined"
+            onChange={e => setValues({ ...values, name: e.target.value })}
           />
           <br />
           <TextField
@@ -41,6 +69,7 @@ export default function MemberForm() {
             id="outlined-basic"
             label="Email"
             variant="outlined"
+            onChange={e => setValues({ ...values, email: e.target.value })}
           />
           <br />
           <TextField
@@ -48,6 +77,7 @@ export default function MemberForm() {
             id="outlined-basic"
             label="Role"
             variant="outlined"
+            onChange={e => setValues({ ...values, role: e.target.value })}
           />
           <br />
           <TextField
@@ -55,6 +85,7 @@ export default function MemberForm() {
             id="outlined-basic"
             label="Rank"
             variant="outlined"
+            onChange={e => setValues({ ...values, rank: e.target.value })}
           />
           <br />
         </div>
@@ -64,34 +95,19 @@ export default function MemberForm() {
               <FormLabel component="legend">Committee</FormLabel>
               <RadioGroup
                 row
-                aria-label="gender"
+                aria-label="committee"
                 name="row-radio-buttons-group"
+                value={values.committee}
+                onChange={handleCommitteeChange}
               >
-                <FormControlLabel
-                  value="human-resource"
-                  control={<Radio />}
-                  label="HR"
-                />
-                <FormControlLabel
-                  value="male"
-                  control={<Radio />}
-                  label="Male"
-                />
-                <FormControlLabel
-                  value="events"
-                  control={<Radio />}
-                  label="EV"
-                />
-                <FormControlLabel
-                  value="business-dev"
-                  control={<Radio />}
-                  label="BD"
-                />
-                <FormControlLabel
-                  value="Innovation-media"
-                  control={<Radio />}
-                  label="I&M"
-                />
+                {committeeList.map((com, index) => (
+                  <FormControlLabel
+                    key={index}
+                    value={com}
+                    control={<Radio />}
+                    label={com}
+                  />
+                ))}
               </RadioGroup>
             </FormControl>
           </div>
@@ -101,13 +117,15 @@ export default function MemberForm() {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={age}
+                value={values.project}
                 label="Project"
-                onChange={handleChange}
+                onChange={handleProjectsChange}
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {projectsList.map((proj, index) => (
+                  <MenuItem key={index} value={proj}>
+                    {proj}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>
@@ -115,17 +133,19 @@ export default function MemberForm() {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Basic example"
-                value={value}
+                value={date}
                 onChange={newValue => {
-                  setValue(newValue);
+                  setDate(newValue);
                 }}
                 renderInput={params => <TextField {...params} />}
               />
             </LocalizationProvider>
           </div>
           <div className="d-flex mt-4">
-            <Button variant="contained">Submit</Button>
-            <Button variant="contained" color="secondary" className="ms-2">
+            <Button variant="contained" onClick={handleSubmit}>
+              Submit
+            </Button>
+            <Button variant="outlined" color="secondary" className="ms-2">
               Reset
             </Button>
           </div>
