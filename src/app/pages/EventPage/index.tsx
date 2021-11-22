@@ -1,17 +1,20 @@
 import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import {
+  TextField,
+  Autocomplete,
+  InputLabel,
+  MenuItem,
+  ListSubheader,
+  Select,
+  Button,
+  FormControl,
+} from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import ListSubheader from '@mui/material/ListSubheader';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Button from '@mui/material/Button';
 import { useRef } from 'react';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 interface Props {}
 
@@ -50,6 +53,9 @@ export function EventPage(props: Props) {
   const nameFieldRef = useRef<HTMLInputElement | null>(null);
   const dateRef = useRef<HTMLInputElement | null>(null);
   // const [value, setValue] = useState<string | null>('');
+  const [conductedByValue, setConductedByValue] = React.useState<string | null>(
+    '',
+  );
   const [datevalue, setDateValue] = React.useState<string | null>('');
 
   function handleSubmit() {
@@ -57,7 +63,7 @@ export function EventPage(props: Props) {
     const name = nameFieldRef.current?.value;
     const topic = topicRef.current?.value;
     const date = dateRef.current?.value;
-    console.log(conductedBy, name, topic, date);
+    console.log(conductedBy, name, topic, date, conductedByValue);
   }
 
   function handleChange(e: string | null) {
@@ -72,15 +78,16 @@ export function EventPage(props: Props) {
     }
   }
 
-  function handleConductedByChange(e: any) {
-    console.log(e);
-    if (e === 'individual') {
+  const handleConductedByChange = (event: SelectChangeEvent) => {
+    setConductedByValue(event.target.value);
+    if (event.target.value === 'individual') {
       nameDisplayRef.current &&
         (nameDisplayRef.current.style.display = 'block');
     } else {
       nameDisplayRef.current && (nameDisplayRef.current.style.display = 'none');
     }
-  }
+    console.log(event.target.value);
+  };
 
   return (
     <>
@@ -112,9 +119,7 @@ export function EventPage(props: Props) {
                 id="grouped-select"
                 label="Grouping"
                 inputRef={conductedByRef}
-                onChange={(e, val) => {
-                  handleConductedByChange(val);
-                }}
+                onChange={handleConductedByChange}
               >
                 <ListSubheader>Projects</ListSubheader>
                 <MenuItem value="cortex">Cortex</MenuItem>
