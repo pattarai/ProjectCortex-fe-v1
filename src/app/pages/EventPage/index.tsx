@@ -101,7 +101,7 @@ export function EventPage(props: Props) {
           </div>
 
           <div
-            className=""
+            className="my-md-0 mx-md-2 mx-0 my-2"
             style={{ display: 'none' }}
             ref={conductedByDisplayRef}
           >
@@ -134,7 +134,7 @@ export function EventPage(props: Props) {
             </FormControl>
           </div>
 
-          <div className="">
+          <div className="my-md-0 my-2">
             <TextField
               id="outlined-basic"
               label="Topic"
@@ -143,7 +143,7 @@ export function EventPage(props: Props) {
             />
           </div>
 
-          <div className="">
+          <div className="my-md-0 my-2 mx-md-2 mx-0">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateTimePicker
                 renderInput={props => <TextField {...props} />}
@@ -182,6 +182,7 @@ export function EventPage(props: Props) {
           variant="contained"
           style={{ backgroundColor: '#8E2DE2' }}
           onClick={handleSubmit}
+          className="mt-3"
         >
           Add event
         </Button>
