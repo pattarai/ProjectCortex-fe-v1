@@ -19,6 +19,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import Popup from './Popup';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
@@ -53,6 +54,7 @@ export function UserManagement(props: Props) {
   const { actions } = useUserManagementSlice();
 
   const [userData, setUserData] = useState(user);
+  const [openPopup, setOpenPopup] = useState(false);
 
   function handleChange(searchedVal: string | null) {
     if (searchedVal === '' || searchedVal === null) {
@@ -102,6 +104,7 @@ export function UserManagement(props: Props) {
                 variant="outlined"
                 className="w-100"
                 style={{ width: '100%' }}
+                onClick={() => setOpenPopup(true)}
               >
                 <RiAddFill />
                 <span className="d-none d-md-block">Add User</span>
@@ -162,6 +165,7 @@ export function UserManagement(props: Props) {
           </TableContainer>
         </Card>
       </div>
+      <Popup openModal={openPopup} setOpenModal={setOpenPopup} />
     </>
   );
 }
