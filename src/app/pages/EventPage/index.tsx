@@ -52,6 +52,7 @@ export function EventPage(props: Props) {
   const conductedByDisplayRef = useRef<HTMLDivElement>(null);
   const conductedByRef = useRef<HTMLSelectElement>(null);
   const topicRef = useRef<HTMLInputElement | null>(null);
+  const phaseRef = useRef<HTMLInputElement | null>(null);
   const nameDisplayRef = useRef<HTMLDivElement | null>(null);
   const nameFieldRef = useRef<HTMLInputElement | null>(null);
   const dateRef = useRef<HTMLInputElement | null>(null);
@@ -152,6 +153,15 @@ export function EventPage(props: Props) {
               label="Topic"
               variant="outlined"
               inputRef={topicRef}
+            />
+          </div>
+
+          <div className="my-md-0 my-2">
+            <TextField
+              id="outlined-basic"
+              label="Phase"
+              variant="outlined"
+              inputRef={phaseRef}
             />
           </div>
 
