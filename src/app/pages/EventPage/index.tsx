@@ -9,9 +9,12 @@ import {
   Button,
   FormControl,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
+import DatePicker from '@mui/lab/DatePicker';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useRef } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
@@ -56,7 +59,8 @@ export function EventPage(props: Props) {
   const [conductedByValue, setConductedByValue] = React.useState<string | null>(
     '',
   );
-  const [datevalue, setDateValue] = React.useState<string | null>('');
+  // const [datevalue, setDateValue] = React.useState<string | null>('');
+  const [date, setDate] = React.useState<Date | null>(null);
 
   function handleSubmit() {
     const conductedBy = conductedByRef.current?.value;
@@ -64,6 +68,10 @@ export function EventPage(props: Props) {
     const topic = topicRef.current?.value;
     const date = dateRef.current?.value;
     console.log(conductedBy, name, topic, date, conductedByValue);
+  }
+
+  function handleDelete() {
+    console.log('delete');
   }
 
   function handleChange(e: string | null) {
@@ -149,7 +157,7 @@ export function EventPage(props: Props) {
           </div>
 
           <div className="my-md-0 my-2 mx-md-2 mx-0">
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+            {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateTimePicker
                 renderInput={props => <TextField {...props} />}
                 label="Date Time"
@@ -159,6 +167,16 @@ export function EventPage(props: Props) {
                   setDateValue(newValue);
                 }}
                 inputRef={dateRef}
+              />
+            </LocalizationProvider> */}
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DateTimePicker
+                label="Date Time"
+                value={date}
+                onChange={newValue => {
+                  setDate(newValue);
+                }}
+                renderInput={params => <TextField {...params} />}
               />
             </LocalizationProvider>
           </div>
@@ -183,14 +201,35 @@ export function EventPage(props: Props) {
             rowsPerPageOptions={[5]}
           />
         </div>
-        <Button
-          variant="contained"
-          style={{ backgroundColor: '#8E2DE2' }}
-          onClick={handleSubmit}
-          className="mt-3"
-        >
-          Add event
-        </Button>
+        <div className="row">
+          <div className="col">
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              style={{ backgroundColor: '#8E2DE2', height: 40, float: 'right' }}
+              onClick={handleSubmit}
+              className="mt-3"
+            >
+              ADD
+            </Button>
+          </div>
+          <div className="col">
+            <Button
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              style={{
+                backgroundColor: '#8E2DE2',
+                height: 40,
+                float: 'right',
+                color: '#fff',
+              }}
+              onClick={handleDelete}
+              className="mt-3"
+            >
+              DELETE
+            </Button>
+          </div>
+        </div>
       </section>
     </>
   );
