@@ -59,8 +59,7 @@ export function EventPage(props: Props) {
   const [conductedByValue, setConductedByValue] = React.useState<string | null>(
     '',
   );
-  // const [datevalue, setDateValue] = React.useState<string | null>('');
-  const [date, setDate] = React.useState<Date | null>(null);
+  const [datevalue, setDateValue] = React.useState<Date | null>(null);
 
   function handleSubmit() {
     const conductedBy = conductedByRef.current?.value;
@@ -157,7 +156,7 @@ export function EventPage(props: Props) {
           </div>
 
           <div className="my-md-0 my-2 mx-md-2 mx-0">
-            {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateTimePicker
                 renderInput={props => <TextField {...props} />}
                 label="Date Time"
@@ -167,16 +166,6 @@ export function EventPage(props: Props) {
                   setDateValue(newValue);
                 }}
                 inputRef={dateRef}
-              />
-            </LocalizationProvider> */}
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateTimePicker
-                label="Date Time"
-                value={date}
-                onChange={newValue => {
-                  setDate(newValue);
-                }}
-                renderInput={params => <TextField {...params} />}
               />
             </LocalizationProvider>
           </div>
