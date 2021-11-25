@@ -6,6 +6,7 @@ interface UserManagement {
   email: string;
   role: string;
   project: string;
+  date: Date | string;
 }
 
 export interface UserManagementState extends Array<UserManagement> {}

@@ -11,6 +11,7 @@ export const initialState: UserManagementState = [
     email: 'joshuafrankle7@gmail.com',
     role: 'VPE',
     project: 'Cortex',
+    date: '',
   },
   {
     id: 101,
@@ -18,6 +19,7 @@ export const initialState: UserManagementState = [
     email: 'jesinthan@gmail.com',
     role: 'Director of Activities',
     project: 'Cortex',
+    date: '',
   },
 ];
 
@@ -25,6 +27,12 @@ const slice = createSlice({
   name: 'userManagement',
   initialState,
   reducers: {
+    addUser(state, action: PayloadAction<any>) {
+      const id =
+        state.length > 0 ? state[state.length - 1].id + 1 : state.length + 100;
+      let newData = { id, ...action.payload };
+      state.push(newData);
+    },
     deleteUser(state, action: PayloadAction<any>) {
       state.forEach(
         st => st.id === action.payload && state.splice(state.indexOf(st), 1),

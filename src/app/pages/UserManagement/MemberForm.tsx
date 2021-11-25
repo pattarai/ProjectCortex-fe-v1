@@ -19,6 +19,9 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 
+import { useDispatch } from 'react-redux';
+import { useUserManagementSlice } from './slice';
+
 type MemberData = {
   name: string;
   email: string;
@@ -33,6 +36,9 @@ export default function MemberForm() {
   const projectsList = ['Project Cortex', 'Project Pager', 'Project Opencloud'];
   const committeeList = ['HR', 'BD', 'I&M', 'EV'];
 
+  const dispatch = useDispatch();
+  const { actions } = useUserManagementSlice();
+
   const [values, setValues] = useState<MemberData>({
     name: '',
     email: '',
@@ -44,7 +50,6 @@ export default function MemberForm() {
   });
 
   const [errors, setErrors] = useState({
-    isError: false,
     nameError: '',
     emailError: '',
     roleError: '',
@@ -52,6 +57,7 @@ export default function MemberForm() {
     projectError: '',
     committeeError: '',
     dateError: '',
+    isError: false,
   });
 
   const handleProjectsChange = (event: SelectChangeEvent) => {
@@ -70,18 +76,16 @@ export default function MemberForm() {
     let noofErrors = 0;
     let err = { ...errors };
 
-    if (values.name === '') {
-      err.nameError = 'Name is required';
-      noofErrors++;
-    }
-
-    if (values.email === '') {
-      err.emailError = 'Email is required';
-      noofErrors++;
-    }
+    Object.entries(values).forEach(([key, value]) => {
+      if (value === '') {
+        err[`${key}Error`] = 'This field is required';
+        noofErrors++;
+      }
+    });
 
     if (noofErrors === 0) {
       console.log(values);
+      dispatch(actions.addUser(values));
     } else {
       err.isError = true;
       setErrors(err);
