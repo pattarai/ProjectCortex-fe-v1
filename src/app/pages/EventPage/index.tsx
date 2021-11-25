@@ -47,6 +47,7 @@ const rows = [
 ];
 
 const options = ['Crew', 'Learnzeit', 'External'];
+const phaseOptions = ['One', 'Two', 'Three', 'Four'];
 
 export function EventPage(props: Props) {
   const conductedByDisplayRef = useRef<HTMLDivElement>(null);
@@ -156,12 +157,15 @@ export function EventPage(props: Props) {
             />
           </div>
 
-          <div className="my-md-0 my-2">
-            <TextField
-              id="outlined-basic"
-              label="Phase"
-              variant="outlined"
-              inputRef={phaseRef}
+          <div className="">
+            <Autocomplete
+              id="controllable-states-demo"
+              options={phaseOptions}
+              sx={{ width: 200 }}
+              renderInput={params => <TextField {...params} label="Phase" />}
+              onChange={(e, v) => {
+                handleChange(v);
+              }}
             />
           </div>
 
