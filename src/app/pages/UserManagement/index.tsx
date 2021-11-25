@@ -88,10 +88,9 @@ export function UserManagement(props: Props) {
         >
           <div className="d-md-flex justify-content-between align-items-center mb-4 w-md-100">
             <TextField
-              sx={{ width: '70%' }}
               label="Search Members"
               id="outlined-start-adornment"
-              className="mb-3 mb-md-0"
+              className="mb-3 mb-md-0 w-md-50"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -109,7 +108,7 @@ export function UserManagement(props: Props) {
                 onClick={() => setOpenPopup(true)}
               >
                 <RiAddFill />
-                <span className="d-none d-md-block">Add User</span>
+                <span className="">Add User</span>
               </Button>
             </div>
           </div>

@@ -180,7 +180,7 @@ export default function MemberForm() {
               </FormHelperText>
             </FormControl>
           </div>
-          <div className="mb-2">
+          <div className="my-3">
             <FormControl
               error={
                 errors.isError && (errors.projectError !== '' ? true : false)
