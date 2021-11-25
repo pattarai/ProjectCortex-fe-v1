@@ -5,6 +5,7 @@ import {
   Radio,
   RadioGroup,
   FormControl,
+  FormHelperText,
   FormControlLabel,
   FormLabel,
   InputLabel,
@@ -18,22 +19,39 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 
+type MemberData = {
+  name: string;
+  email: string;
+  rank: string;
+  role: string;
+  project: string;
+  committee: string;
+  date: Date | null;
+};
+
 export default function MemberForm() {
-  const projectsList = [
-    'Project Cortex',
-    'Project Cortex 2',
-    'Project Cortex 3',
-  ];
+  const projectsList = ['Project Cortex', 'Project Pager', 'Project Opencloud'];
   const committeeList = ['HR', 'BD', 'I&M', 'EV'];
 
-  const [date, setDate] = React.useState<Date | null>(null);
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<MemberData>({
     name: '',
     email: '',
     role: '',
     rank: '',
     project: '',
     committee: '',
+    date: null,
+  });
+
+  const [errors, setErrors] = useState({
+    isError: false,
+    nameError: '',
+    emailError: '',
+    roleError: '',
+    rankError: '',
+    projectError: '',
+    committeeError: '',
+    dateError: '',
   });
 
   const handleProjectsChange = (event: SelectChangeEvent) => {
@@ -49,7 +67,25 @@ export default function MemberForm() {
   };
 
   function handleSubmit() {
-    console.log(values);
+    let noofErrors = 0;
+    let err = { ...errors };
+
+    if (values.name === '') {
+      err.nameError = 'Name is required';
+      noofErrors++;
+    }
+
+    if (values.email === '') {
+      err.emailError = 'Email is required';
+      noofErrors++;
+    }
+
+    if (noofErrors === 0) {
+      console.log(values);
+    } else {
+      err.isError = true;
+      setErrors(err);
+    }
   }
 
   return (
@@ -57,6 +93,11 @@ export default function MemberForm() {
       <div className="d-md-flex">
         <div className="me-3">
           <TextField
+            error={errors.isError && (errors.nameError !== '' ? true : false)}
+            helperText={
+              errors.isError &&
+              (errors.nameError !== '' ? errors.nameError : '')
+            }
             id="outlined-basic"
             className="mb-3"
             label="Full Name"
@@ -65,6 +106,11 @@ export default function MemberForm() {
           />
           <br />
           <TextField
+            error={errors.isError && (errors.emailError !== '' ? true : false)}
+            helperText={
+              errors.isError &&
+              (errors.emailError !== '' ? errors.emailError : '')
+            }
             className="mb-3"
             id="outlined-basic"
             label="Email"
@@ -73,6 +119,11 @@ export default function MemberForm() {
           />
           <br />
           <TextField
+            error={errors.isError && (errors.roleError !== '' ? true : false)}
+            helperText={
+              errors.isError &&
+              (errors.roleError !== '' ? errors.roleError : '')
+            }
             className="mb-3"
             id="outlined-basic"
             label="Role"
@@ -81,6 +132,11 @@ export default function MemberForm() {
           />
           <br />
           <TextField
+            error={errors.isError && (errors.rankError !== '' ? true : false)}
+            helperText={
+              errors.isError &&
+              (errors.rankError !== '' ? errors.rankError : '')
+            }
             className="mb-3"
             id="outlined-basic"
             label="Rank"
@@ -89,9 +145,14 @@ export default function MemberForm() {
           />
           <br />
         </div>
-        <div className="ms-3">
+        <div className="ms-md-3">
           <div className="mb-2">
-            <FormControl component="fieldset">
+            <FormControl
+              error={
+                errors.isError && (errors.committeeError !== '' ? true : false)
+              }
+              component="fieldset"
+            >
               <FormLabel component="legend">Committee</FormLabel>
               <RadioGroup
                 row
@@ -109,10 +170,19 @@ export default function MemberForm() {
                   />
                 ))}
               </RadioGroup>
+              <FormHelperText>
+                {errors.isError &&
+                  (errors.committeeError !== '' ? errors.committeeError : '')}
+              </FormHelperText>
             </FormControl>
           </div>
           <div className="mb-2">
-            <FormControl fullWidth>
+            <FormControl
+              error={
+                errors.isError && (errors.projectError !== '' ? true : false)
+              }
+              fullWidth
+            >
               <InputLabel id="demo-simple-select-label">Project</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -127,15 +197,19 @@ export default function MemberForm() {
                   </MenuItem>
                 ))}
               </Select>
+              <FormHelperText>
+                {errors.isError &&
+                  (errors.projectError !== '' ? errors.projectError : '')}
+              </FormHelperText>
             </FormControl>
           </div>
           <div className="my-3">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Basic example"
-                value={date}
+                value={values.date}
                 onChange={newValue => {
-                  setDate(newValue);
+                  setValues({ ...values, date: newValue });
                 }}
                 renderInput={params => <TextField {...params} />}
               />

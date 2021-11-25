@@ -31,7 +31,11 @@ export default function TransitionsModal({
           timeout: 500,
         }}
       >
-        <Box sx={style} className="w-md-50">
+        <Box
+          sx={style}
+          style={{ width: '95%', height: '95%', overflowX: 'auto' }}
+          className="w-md-50 h-md-60 d-md-flex flex-column justify-content-center"
+        >
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h1>{title}</h1>
             <IconButton
