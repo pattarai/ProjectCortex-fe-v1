@@ -33,6 +33,8 @@ type MemberData = {
 };
 
 export default function MemberForm() {
+  const { actions } = useUserManagementSlice();
+
   const projectsList = ['Project Cortex', 'Project Pager', 'Project Opencloud'];
   const committeeList = ['HR', 'BD', 'I&M', 'EV'];
 
