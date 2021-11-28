@@ -6,6 +6,7 @@ interface UserManagement {
   email: string;
   role: string;
   project: string;
+  committee: string;
   date: Date | string;
 }
 
