@@ -34,12 +34,10 @@ type MemberData = {
 
 export default function MemberForm() {
   const { actions } = useUserManagementSlice();
+  const dispatch = useDispatch();
 
   const projectsList = ['Project Cortex', 'Project Pager', 'Project Opencloud'];
   const committeeList = ['HR', 'BD', 'I&M', 'EV'];
-
-  const dispatch = useDispatch();
-  const { actions } = useUserManagementSlice();
 
   const [values, setValues] = useState<MemberData>({
     name: '',
@@ -99,7 +97,7 @@ export default function MemberForm() {
       <div className="d-md-flex">
         <div className="me-3">
           <TextField
-            error={errors.isError && (errors.nameError !== '' ? true : false)}
+            error={errors.isError && (values.name === '' ? true : false)}
             helperText={
               errors.isError &&
               (errors.nameError !== '' ? errors.nameError : '')
@@ -112,7 +110,7 @@ export default function MemberForm() {
           />
           <br />
           <TextField
-            error={errors.isError && (errors.emailError !== '' ? true : false)}
+            error={errors.isError && (values.email === '' ? true : false)}
             helperText={
               errors.isError &&
               (errors.emailError !== '' ? errors.emailError : '')
@@ -125,7 +123,7 @@ export default function MemberForm() {
           />
           <br />
           <TextField
-            error={errors.isError && (errors.roleError !== '' ? true : false)}
+            error={errors.isError && (values.role === '' ? true : false)}
             helperText={
               errors.isError &&
               (errors.roleError !== '' ? errors.roleError : '')
@@ -138,7 +136,7 @@ export default function MemberForm() {
           />
           <br />
           <TextField
-            error={errors.isError && (errors.rankError !== '' ? true : false)}
+            error={errors.isError && (values.rank === '' ? true : false)}
             helperText={
               errors.isError &&
               (errors.rankError !== '' ? errors.rankError : '')
@@ -154,9 +152,7 @@ export default function MemberForm() {
         <div className="ms-md-3">
           <div className="mb-2">
             <FormControl
-              error={
-                errors.isError && (errors.committeeError !== '' ? true : false)
-              }
+              error={errors.isError && (values.committee === '' ? true : false)}
               component="fieldset"
             >
               <FormLabel component="legend">Committee</FormLabel>
@@ -184,9 +180,7 @@ export default function MemberForm() {
           </div>
           <div className="my-3">
             <FormControl
-              error={
-                errors.isError && (errors.projectError !== '' ? true : false)
-              }
+              error={errors.isError && (values.project === '' ? true : false)}
               fullWidth
             >
               <InputLabel id="demo-simple-select-label">Project</InputLabel>
