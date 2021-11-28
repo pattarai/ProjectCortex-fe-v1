@@ -51,10 +51,9 @@ const CustomTable = styled(Table)(({ theme }) => ({
 interface Props {}
 
 export function UserManagement(props: Props) {
-  useUserManagementSlice();
+  const { actions } = useUserManagementSlice();
   const dispatch = useDispatch();
   const user = useSelector(selectUserManagement);
-  const { actions } = useUserManagementSlice();
 
   const [userData, setUserData] = useState(user);
   const [openPopup, setOpenPopup] = useState(false);
