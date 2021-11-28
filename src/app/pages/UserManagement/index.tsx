@@ -51,12 +51,17 @@ const CustomTable = styled(Table)(({ theme }) => ({
 interface Props {}
 
 export function UserManagement(props: Props) {
+  useUserManagementSlice();
   const dispatch = useDispatch();
   const user = useSelector(selectUserManagement);
   const { actions } = useUserManagementSlice();
 
   const [userData, setUserData] = useState(user);
   const [openPopup, setOpenPopup] = useState(false);
+
+  useEffect(() => {
+    setUserData(user);
+  }, [user]);
 
   function handleChange(searchedVal: string | null) {
     if (searchedVal === '' || searchedVal === null) {
@@ -68,11 +73,6 @@ export function UserManagement(props: Props) {
       setUserData(filteredUser);
     }
   }
-
-  useEffect(() => {
-    const newData = [...user];
-    setUserData(newData);
-  }, [user]);
 
   return (
     <>

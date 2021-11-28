@@ -210,12 +210,19 @@ export default function MemberForm() {
           <div className="my-3">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                label="Basic example"
+                label="Date"
                 value={values.date}
                 onChange={newValue => {
                   setValues({ ...values, date: newValue });
                 }}
-                renderInput={params => <TextField {...params} />}
+                renderInput={params => (
+                  <TextField
+                    error={
+                      errors.isError && (errors.dateError !== '' ? true : false)
+                    }
+                    {...params}
+                  />
+                )}
               />
             </LocalizationProvider>
           </div>
@@ -223,7 +230,22 @@ export default function MemberForm() {
             <Button variant="contained" onClick={handleSubmit}>
               Submit
             </Button>
-            <Button variant="outlined" color="secondary" className="ms-2">
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setValues({
+                  name: '',
+                  email: '',
+                  role: '',
+                  rank: '',
+                  project: '',
+                  committee: '',
+                  date: null,
+                });
+              }}
+              color="secondary"
+              className="ms-2"
+            >
               Reset
             </Button>
           </div>
