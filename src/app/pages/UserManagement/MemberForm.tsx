@@ -250,6 +250,7 @@ export default function MemberForm({ setOpenModal, updateUser }) {
                       errors.isError &&
                       (errors.dateError !== '' ? errors.dateError : '')
                     }
+                    sx={{ width: '100%' }}
                   />
                 )}
               />
