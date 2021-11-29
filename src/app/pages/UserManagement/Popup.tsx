@@ -40,7 +40,7 @@ export default function TransitionsModal({
             <h1>{title}</h1>
             <IconButton
               color="error"
-              aria-label="upload picture"
+              aria-label="close"
               component="span"
               onClick={() => setOpenModal(false)}
             >

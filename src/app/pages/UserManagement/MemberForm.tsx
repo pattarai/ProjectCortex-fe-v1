@@ -32,7 +32,7 @@ type MemberData = {
   date: Date | null;
 };
 
-export default function MemberForm() {
+export default function MemberForm({ setOpenModal }) {
   const { actions } = useUserManagementSlice();
   const dispatch = useDispatch();
 
@@ -85,6 +85,7 @@ export default function MemberForm() {
 
     if (noofErrors === 0) {
       console.log(values);
+      setOpenModal(false);
       dispatch(actions.addUser(values));
     } else {
       err.isError = true;

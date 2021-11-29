@@ -170,7 +170,7 @@ export function UserManagement(props: Props) {
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
-        <MemberForm />
+        <MemberForm setOpenModal={setOpenPopup} />
       </Popup>
     </>
   );
