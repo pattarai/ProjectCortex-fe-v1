@@ -6,7 +6,7 @@ import { UserManagementState } from './types';
 
 export const initialState: UserManagementState = [
   {
-    id: 100,
+    id: 99,
     name: 'Joshua',
     email: 'joshuafrankle7@gmail.com',
     role: 'VPE',
@@ -15,7 +15,7 @@ export const initialState: UserManagementState = [
     date: null,
   },
   {
-    id: 101,
+    id: 100,
     name: 'Jesin',
     email: 'jesinthan@gmail.com',
     role: 'Director of Activities',
@@ -30,10 +30,9 @@ const slice = createSlice({
   initialState,
   reducers: {
     addUser(state, action: PayloadAction<any>) {
-      const id =
-        state.length > 0 ? state[state.length - 1].id + 1 : state.length + 100;
+      const id = state.length > 0 ? state[0].id - 1 : state.length + 100;
       let newData = { id, ...action.payload };
-      state.push(newData);
+      state.unshift(newData);
     },
     deleteUser(state, action: PayloadAction<any>) {
       state.forEach(
