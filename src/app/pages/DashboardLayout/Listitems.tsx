@@ -38,12 +38,14 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Ranking" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <EventAvailableIcon />
-      </ListItemIcon>
-      <ListItemText primary="Events" />
-    </ListItem>
+    <Link to={{ pathname: '/dashboard/events' }}>
+      <ListItem button>
+        <ListItemIcon>
+          <EventAvailableIcon />
+        </ListItemIcon>
+        <ListItemText primary="Events" />
+      </ListItem>
+    </Link>
   </div>
 );
 
