@@ -19,8 +19,9 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
+import { selectUserManagement } from './slice/selectors';
 
 type MemberData = {
   name: string;
@@ -32,21 +33,21 @@ type MemberData = {
   date: Date | null;
 };
 
-export default function MemberForm({ setOpenModal }) {
+export default function MemberForm({ setOpenModal, updateUser }) {
   const { actions } = useUserManagementSlice();
   const dispatch = useDispatch();
+  const user = useSelector(selectUserManagement);
 
-  const projectsList = ['Project Cortex', 'Project Pager', 'Project Opencloud'];
-  const committeeList = ['HR', 'BD', 'I&M', 'EV'];
+  let updateUserValue = user.find(u => u.id === updateUser);
 
   const [values, setValues] = useState<MemberData>({
-    name: '',
-    email: '',
-    role: '',
-    rank: '',
-    project: '',
-    committee: '',
-    date: null,
+    name: updateUserValue ? updateUserValue.name : '',
+    email: updateUserValue ? updateUserValue.email : '',
+    role: updateUserValue ? updateUserValue.role : '',
+    rank: updateUserValue ? updateUserValue.rank : '',
+    project: updateUserValue ? updateUserValue.project : '',
+    committee: updateUserValue ? updateUserValue.committee : '',
+    date: updateUserValue ? updateUserValue.date : null,
   });
 
   const [errors, setErrors] = useState({
@@ -72,7 +73,7 @@ export default function MemberForm({ setOpenModal }) {
     });
   };
 
-  function handleSubmit() {
+  function checkError() {
     let noofErrors = 0;
     let err = { ...errors };
 
@@ -87,13 +88,30 @@ export default function MemberForm({ setOpenModal }) {
     });
 
     if (noofErrors === 0) {
-      dispatch(actions.addUser(values));
-      setOpenModal(false);
+      return true;
     } else {
       err.isError = true;
       setErrors(err);
+      return false;
     }
   }
+
+  function handleSubmit() {
+    if (checkError()) {
+      dispatch(actions.addUser(values));
+      setOpenModal(false);
+    }
+  }
+
+  function handleUpdate() {
+    if (checkError()) {
+      dispatch(actions.updateUser(values));
+      setOpenModal(false);
+    }
+  }
+
+  const projectsList = ['Project Cortex', 'Project Pager', 'Project Opencloud'];
+  const committeeList = ['HR', 'BD', 'I&M', 'EV'];
 
   return (
     <>
@@ -236,12 +254,18 @@ export default function MemberForm({ setOpenModal }) {
             </LocalizationProvider>
           </div>
           <div className="d-flex mt-4">
-            <Button variant="contained" onClick={handleSubmit}>
-              Submit
-            </Button>
+            {updateUserValue ? (
+              <Button variant="contained" onClick={handleUpdate}>
+                Update
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={handleSubmit}>
+                Submit
+              </Button>
+            )}
             <Button
               variant="outlined"
-              onClick={() => {
+              onClick={() =>
                 setValues({
                   name: '',
                   email: '',
@@ -250,8 +274,8 @@ export default function MemberForm({ setOpenModal }) {
                   project: '',
                   committee: '',
                   date: null,
-                });
-              }}
+                })
+              }
               color="secondary"
               className="ms-2"
             >

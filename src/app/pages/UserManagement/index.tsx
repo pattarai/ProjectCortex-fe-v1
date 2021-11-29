@@ -56,6 +56,8 @@ export function UserManagement(props: Props) {
   const user = useSelector(selectUserManagement);
 
   const [userData, setUserData] = useState(user);
+  const [updateUser, setUpdateUser] = useState<number | null>(null);
+
   const [openPopup, setOpenPopup] = useState(false);
 
   useEffect(() => {
@@ -104,7 +106,10 @@ export function UserManagement(props: Props) {
                 variant="outlined"
                 className="w-100"
                 style={{ width: '100%' }}
-                onClick={() => setOpenPopup(true)}
+                onClick={() => {
+                  setUpdateUser(null);
+                  setOpenPopup(true);
+                }}
               >
                 <RiAddFill />
                 <span className="">Add User</span>
@@ -143,7 +148,14 @@ export function UserManagement(props: Props) {
                       <TableCell>{row.project}</TableCell>
                       <TableCell align="center">{row.committee}</TableCell>
                       <TableCell align="center">
-                        <IconButton color="primary" aria-label="Edit">
+                        <IconButton
+                          aria-label="Edit"
+                          color="primary"
+                          onClick={() => {
+                            setUpdateUser(row.id);
+                            setOpenPopup(true);
+                          }}
+                        >
                           <MdEdit />
                         </IconButton>
                         <IconButton
@@ -172,7 +184,7 @@ export function UserManagement(props: Props) {
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
-        <MemberForm setOpenModal={setOpenPopup} />
+        <MemberForm setOpenModal={setOpenPopup} updateUser={updateUser} />
       </Popup>
     </>
   );

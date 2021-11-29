@@ -41,6 +41,12 @@ const slice = createSlice({
         st => st.id === action.payload && state.splice(state.indexOf(st), 1),
       );
     },
+    updateUser(state, action: PayloadAction<any>) {
+      const { email, ...rest } = action.payload;
+      const newArray = state.findIndex(st => st.email === email);
+      state[newArray] = { ...state[newArray], ...rest };
+      console.log(state);
+    },
   },
 });
 
