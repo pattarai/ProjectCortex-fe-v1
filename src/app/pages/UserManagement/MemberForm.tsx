@@ -24,6 +24,7 @@ import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
 
 type MemberData = {
+  id?: number;
   name: string;
   email: string;
   rank: string;
@@ -41,6 +42,7 @@ export default function MemberForm({ setOpenModal, updateUser }) {
   let updateUserValue = user.find(u => u.id === updateUser);
 
   const [values, setValues] = useState<MemberData>({
+    id: updateUserValue ? updateUserValue.id : 0,
     name: updateUserValue ? updateUserValue.name : '',
     email: updateUserValue ? updateUserValue.email : '',
     role: updateUserValue ? updateUserValue.role : '',

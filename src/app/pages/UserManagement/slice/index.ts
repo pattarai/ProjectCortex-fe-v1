@@ -11,8 +11,8 @@ export const initialState: UserManagementState = [
     email: 'joshuafrankle7@gmail.com',
     role: 'VPE',
     rank: 'Copper',
-    committee: 'EV',
     project: 'Project Cortex',
+    committee: 'EV',
     date: null,
   },
   {
@@ -21,8 +21,8 @@ export const initialState: UserManagementState = [
     email: 'jesinthan@gmail.com',
     role: 'Director of Activities',
     rank: 'Gold',
-    committee: 'EV',
     project: 'Project Cortex',
+    committee: 'EV',
     date: null,
   },
 ];
@@ -32,8 +32,9 @@ const slice = createSlice({
   initialState,
   reducers: {
     addUser(state, action: PayloadAction<any>) {
-      const id = state.length > 0 ? state[0].id - 1 : state.length + 100;
-      let newData = { id, ...action.payload };
+      const { id, ...rest } = action.payload;
+      const newId = state.length > 0 ? state[0].id - 1 : state.length + 100;
+      const newData = { id: newId, ...rest };
       state.unshift(newData);
     },
     deleteUser(state, action: PayloadAction<any>) {
@@ -42,10 +43,8 @@ const slice = createSlice({
       );
     },
     updateUser(state, action: PayloadAction<any>) {
-      const { email, ...rest } = action.payload;
-      const newArray = state.findIndex(st => st.email === email);
-      state[newArray] = { ...state[newArray], ...rest };
-      console.log(state);
+      const newArray = state.findIndex(st => st.id === action.payload.id);
+      state[newArray] = { ...action.payload };
     },
   },
 });
