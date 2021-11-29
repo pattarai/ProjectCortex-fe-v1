@@ -121,7 +121,8 @@ export function UserManagement(props: Props) {
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Role</TableCell>
-                  <TableCell align="left">Project</TableCell>
+                  <TableCell>Project</TableCell>
+                  <TableCell align="center">Committee</TableCell>
                   <TableCell align="center">Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -140,6 +141,7 @@ export function UserManagement(props: Props) {
                       <TableCell>{row.email}</TableCell>
                       <TableCell>{row.role}</TableCell>
                       <TableCell>{row.project}</TableCell>
+                      <TableCell align="center">{row.committee}</TableCell>
                       <TableCell align="center">
                         <IconButton color="primary" aria-label="Edit">
                           <MdEdit />
