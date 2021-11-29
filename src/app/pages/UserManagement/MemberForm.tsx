@@ -97,6 +97,7 @@ export default function MemberForm() {
       <div className="d-md-flex">
         <div className="me-3">
           <TextField
+            value={values.name}
             error={errors.isError && (values.name === '' ? true : false)}
             helperText={
               errors.isError &&
@@ -110,6 +111,7 @@ export default function MemberForm() {
           />
           <br />
           <TextField
+            value={values.email}
             error={errors.isError && (values.email === '' ? true : false)}
             helperText={
               errors.isError &&
@@ -123,6 +125,7 @@ export default function MemberForm() {
           />
           <br />
           <TextField
+            value={values.role}
             error={errors.isError && (values.role === '' ? true : false)}
             helperText={
               errors.isError &&
@@ -136,6 +139,7 @@ export default function MemberForm() {
           />
           <br />
           <TextField
+            value={values.rank}
             error={errors.isError && (values.rank === '' ? true : false)}
             helperText={
               errors.isError &&
