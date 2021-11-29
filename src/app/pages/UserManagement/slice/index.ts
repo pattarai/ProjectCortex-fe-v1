@@ -10,8 +10,9 @@ export const initialState: UserManagementState = [
     name: 'Joshua',
     email: 'joshuafrankle7@gmail.com',
     role: 'VPE',
-    project: 'Cortex',
+    rank: 'Copper',
     committee: 'EV',
+    project: 'Cortex',
     date: null,
   },
   {
@@ -19,8 +20,9 @@ export const initialState: UserManagementState = [
     name: 'Jesin',
     email: 'jesinthan@gmail.com',
     role: 'Director of Activities',
-    project: 'Cortex',
+    rank: 'Gold',
     committee: 'EV',
+    project: 'Cortex',
     date: null,
   },
 ];
