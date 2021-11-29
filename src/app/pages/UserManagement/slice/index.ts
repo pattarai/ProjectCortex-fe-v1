@@ -12,7 +12,7 @@ export const initialState: UserManagementState = [
     role: 'VPE',
     rank: 'Copper',
     committee: 'EV',
-    project: 'Cortex',
+    project: 'Project Cortex',
     date: null,
   },
   {
@@ -22,7 +22,7 @@ export const initialState: UserManagementState = [
     role: 'Director of Activities',
     rank: 'Gold',
     committee: 'EV',
-    project: 'Cortex',
+    project: 'Project Cortex',
     date: null,
   },
 ];
