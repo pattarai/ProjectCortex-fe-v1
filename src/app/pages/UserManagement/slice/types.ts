@@ -7,7 +7,7 @@ interface UserManagement {
   role: string;
   project: string;
   committee: string;
-  date: Date | string;
+  date: Date | null;
 }
 
 export interface UserManagementState extends Array<UserManagement> {}
