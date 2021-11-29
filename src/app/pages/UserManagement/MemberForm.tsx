@@ -77,16 +77,15 @@ export default function MemberForm({ setOpenModal }) {
     let err = { ...errors };
 
     Object.entries(values).forEach(([key, value]) => {
-      if (value === '') {
+      if (value === '' || value === null) {
         err[`${key}Error`] = 'This field is required';
         noofErrors++;
       }
     });
 
     if (noofErrors === 0) {
-      console.log(values);
-      setOpenModal(false);
       dispatch(actions.addUser(values));
+      setOpenModal(false);
     } else {
       err.isError = true;
       setErrors(err);
@@ -218,10 +217,14 @@ export default function MemberForm({ setOpenModal }) {
                 }}
                 renderInput={params => (
                   <TextField
-                    error={
-                      errors.isError && (errors.dateError !== '' ? true : false)
-                    }
                     {...params}
+                    error={
+                      errors.isError && (values.date === null ? true : false)
+                    }
+                    helperText={
+                      errors.isError &&
+                      (errors.dateError !== '' ? errors.dateError : '')
+                    }
                   />
                 )}
               />
