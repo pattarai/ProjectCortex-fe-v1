@@ -20,6 +20,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './Listitems';
 import Img from './subiksha.jpeg';
+import Svg from './Circle_logo_White.svg';
 
 const drawerWidth: number = 240;
 
@@ -83,7 +84,13 @@ export default function Dashboard({ children }: { children: ReactNode }) {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar
+          position="absolute"
+          sx={{
+            bgcolor: '#a11cf9',
+          }}
+          open={open}
+        >
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -99,7 +106,9 @@ export default function Dashboard({ children }: { children: ReactNode }) {
                 ...(open && { display: 'none' }),
               }}
             >
-              <MenuIcon />
+              <div className="d-flex justify-content-start pe-5">
+                <img src={Svg} width="15%" />
+              </div>
             </IconButton>
             <Typography
               component="h1"

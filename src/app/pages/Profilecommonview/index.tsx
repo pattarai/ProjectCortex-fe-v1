@@ -21,6 +21,10 @@ import ListItemText from '@mui/material/ListItemText';
 import EventIcon from '@mui/icons-material/Event';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box } from '@mui/system';
+import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useProfileCommonViewSlice } from './slice';
 
 interface Props {}
 

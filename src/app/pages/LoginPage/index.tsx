@@ -15,6 +15,8 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import Logo from '../../images/Logo.svg';
+import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { useLoginSlice } from './slice';
@@ -31,20 +33,49 @@ const CenterItem = styled.div`
 export function LoginPage() {
   const dispatch = useDispatch();
   const { actions } = useLoginSlice();
+  const history = useHistory();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    dispatch(
-      actions.login({
-        email: data.get('email'),
-        password: data.get('password'),
-      }),
-    );
+  const [values, setValues] = useState({
+    email: '',
+    password: '',
+  });
+
+  const [error, setError] = useState({
+    emailError: '',
+    passwordError: '',
+  });
+
+  const handleSubmit = () => {
+    let noofErrors = 0;
+    let errorMessage = { ...error };
+
+    if (values.email === null || values.email === '') {
+      errorMessage.emailError = 'Email cannot be empty';
+      noofErrors++;
+    }
+    if (values.password === null || values.password === '') {
+      errorMessage.passwordError = 'Password cannot be empty';
+      noofErrors++;
+    }
+
+    setError(errorMessage);
+
+    setTimeout(() => {
+      setError({
+        emailError: '',
+        passwordError: '',
+      });
+    }, 3000);
+
+    if (noofErrors === 0) {
+      dispatch(
+        actions.login({
+          email: values.email,
+          password: values.password,
+        }),
+      );
+      history.push('/');
+    }
   };
 
   return (
@@ -106,7 +137,12 @@ export function LoginPage() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={values.email}
+                onChange={e => setValues({ ...values, email: e.target.value })}
               />
+              {error.emailError !== '' && (
+                <p className="text-danger">{error.emailError}</p>
+              )}
               <TextField
                 // variant="standard"
                 margin="normal"
@@ -117,7 +153,14 @@ export function LoginPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={values.password}
+                onChange={e =>
+                  setValues({ ...values, password: e.target.value })
+                }
               />
+              {error.passwordError !== '' && (
+                <p className="text-danger">{error.passwordError}</p>
+              )}
               {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
@@ -137,11 +180,12 @@ export function LoginPage() {
               {/* <Copyright sx={{ mt: 5 }} /> */}
               <CenterItem>
                 <Button
-                  type="submit"
+                  type="button"
                   variant="contained"
                   size="medium"
                   sx={{ mt: 3, mb: 2 }}
                   color="secondary"
+                  onClick={handleSubmit}
                 >
                   Sign In
                 </Button>
