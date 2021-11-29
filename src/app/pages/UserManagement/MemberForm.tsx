@@ -77,7 +77,10 @@ export default function MemberForm({ setOpenModal }) {
     let err = { ...errors };
 
     Object.entries(values).forEach(([key, value]) => {
-      if (value === '' || value === null) {
+      if (
+        value === null ||
+        (typeof value === 'string' && value.trim() === '')
+      ) {
         err[`${key}Error`] = 'This field is required';
         noofErrors++;
       }
@@ -98,7 +101,7 @@ export default function MemberForm({ setOpenModal }) {
         <div className="me-3">
           <TextField
             value={values.name}
-            error={errors.isError && (values.name === '' ? true : false)}
+            error={errors.isError && (values.name.trim() === '' ? true : false)}
             helperText={
               errors.isError &&
               (errors.nameError !== '' ? errors.nameError : '')
@@ -112,7 +115,9 @@ export default function MemberForm({ setOpenModal }) {
           <br />
           <TextField
             value={values.email}
-            error={errors.isError && (values.email === '' ? true : false)}
+            error={
+              errors.isError && (values.email.trim() === '' ? true : false)
+            }
             helperText={
               errors.isError &&
               (errors.emailError !== '' ? errors.emailError : '')
@@ -126,7 +131,7 @@ export default function MemberForm({ setOpenModal }) {
           <br />
           <TextField
             value={values.role}
-            error={errors.isError && (values.role === '' ? true : false)}
+            error={errors.isError && (values.role.trim() === '' ? true : false)}
             helperText={
               errors.isError &&
               (errors.roleError !== '' ? errors.roleError : '')
@@ -140,7 +145,7 @@ export default function MemberForm({ setOpenModal }) {
           <br />
           <TextField
             value={values.rank}
-            error={errors.isError && (values.rank === '' ? true : false)}
+            error={errors.isError && (values.rank.trim() === '' ? true : false)}
             helperText={
               errors.isError &&
               (errors.rankError !== '' ? errors.rankError : '')
