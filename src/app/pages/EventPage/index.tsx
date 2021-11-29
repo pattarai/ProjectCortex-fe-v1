@@ -209,7 +209,12 @@ export function EventPage(props: Props) {
             <Button
               variant="contained"
               startIcon={<AddIcon />}
-              style={{ backgroundColor: '#8E2DE2', height: 40, float: 'right' }}
+              style={{
+                backgroundColor: '#8E2DE2',
+                height: 40,
+                width: 100,
+                float: 'right',
+              }}
               onClick={handleSubmit}
               className="mt-3"
             >
@@ -217,7 +222,7 @@ export function EventPage(props: Props) {
             </Button>
           </div>
           <div className="col">
-            <Button
+            {/* <Button
               variant="outlined"
               startIcon={<DeleteIcon />}
               style={{
@@ -230,7 +235,7 @@ export function EventPage(props: Props) {
               className="mt-3"
             >
               DELETE
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>
