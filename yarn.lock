@@ -1837,18 +1837,6 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
-"@mui/core@5.0.0-alpha.51":
-  version "5.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@mui/core/-/core-5.0.0-alpha.51.tgz#3c5f715a0ee5ab123e0987047b8e4651964ecc54"
-  integrity sha512-Dum1SM5qk9eGeC6TLw6Au/53yuHqpkFM65hFYEtZccjJhUtdQMve+XVsmhgYPNkhiC0HyWgIR8Q5E1q5Fkc+pQ==
-  dependencies:
-    "@babel/runtime" "^7.15.4"
-    "@emotion/is-prop-valid" "^1.1.0"
-    "@mui/utils" "^5.0.1"
-    clsx "^1.1.1"
-    prop-types "^15.7.2"
-    react-is "^17.0.2"
-
 "@mui/icons-material@5.0.3":
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.0.3.tgz#2a9d4f9078f375cef40f63a240b59cefa4a27eec"
@@ -1856,34 +1844,19 @@
   dependencies:
     "@babel/runtime" "^7.15.4"
 
-<<<<<<< HEAD
-"@mui/lab@5.0.0-alpha.51":
-  version "5.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-5.0.0-alpha.51.tgz#1c5a0441d2ea8a7d070bc298db88182237f0928f"
-  integrity sha512-eV7C9G5kWLh4TOQN0Jzu8ri/6ozdvja3C9yTbXhX4bpnG8T9Y7lU/qhZTZZ2j4QovTUwbwNV4bX5nSeY6vwkPg==
-  dependencies:
-    "@babel/runtime" "^7.15.4"
-=======
 "@mui/lab@5.0.0-alpha.55":
   version "5.0.0-alpha.55"
   resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-5.0.0-alpha.55.tgz#0f96a3aa83c66cdca1bee6cc4ba8954e9905267a"
   integrity sha512-ahjGdvh8Dc7FXcWPzOjTK8kXW5musONsw3r5whGpSa/04vqgMJXiAF/Pmu15vbA9VWBqPABf+acfVN8H24ztdA==
   dependencies:
     "@babel/runtime" "^7.16.3"
->>>>>>> 8a5d94142ce716ba4ae0c0cd26e96ea15d3502d5
     "@date-io/date-fns" "^2.11.0"
     "@date-io/dayjs" "^2.11.0"
     "@date-io/luxon" "^2.11.1"
     "@date-io/moment" "^2.11.0"
-<<<<<<< HEAD
-    "@mui/core" "5.0.0-alpha.51"
-    "@mui/system" "^5.0.4"
-    "@mui/utils" "^5.0.1"
-=======
     "@mui/base" "5.0.0-alpha.55"
     "@mui/system" "^5.1.1"
     "@mui/utils" "^5.1.1"
->>>>>>> 8a5d94142ce716ba4ae0c0cd26e96ea15d3502d5
     clsx "^1.1.1"
     prop-types "^15.7.2"
     react-is "^17.0.2"
@@ -1966,18 +1939,6 @@
     csstype "^3.0.9"
     prop-types "^15.7.2"
 
-<<<<<<< HEAD
-"@mui/system@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@mui/system/-/system-5.0.4.tgz#cff806533c9063efc9e1c6ec99731b64ac0632e8"
-  integrity sha512-d+7dhT0eBGrPoah91GX1Q2i4S/5QsiVAp7e06lIMC/LXFWQSrsSnvNbVnW8TgttCvo0ypQ/RHNmWZ/f1eAbd/Q==
-  dependencies:
-    "@babel/runtime" "^7.15.4"
-    "@mui/private-theming" "^5.0.1"
-    "@mui/styled-engine" "^5.0.1"
-    "@mui/types" "^7.0.0"
-    "@mui/utils" "^5.0.1"
-=======
 "@mui/system@^5.1.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@mui/system/-/system-5.1.1.tgz#64bf13c9137fdd858834f3921ded276b6b9767c4"
@@ -1988,7 +1949,6 @@
     "@mui/styled-engine" "^5.1.1"
     "@mui/types" "^7.1.0"
     "@mui/utils" "^5.1.1"
->>>>>>> 8a5d94142ce716ba4ae0c0cd26e96ea15d3502d5
     clsx "^1.1.1"
     csstype "^3.0.9"
     prop-types "^15.7.2"
@@ -2014,17 +1974,6 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
-<<<<<<< HEAD
-"@mui/x-data-grid@5.0.0-beta.5":
-  version "5.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@mui/x-data-grid/-/x-data-grid-5.0.0-beta.5.tgz#00102251a258eeb8a39c0204091acf38af16767c"
-  integrity sha512-q1CRHgzOvc4Xt/H590qsHlLSwmJso09eBbMz0orn8/1BNLH/hW/IqVaUHu0WDz23e8RQWxPfcaS+WHvW01hXYw==
-  dependencies:
-    "@mui/utils" "^5.0.1"
-    clsx "^1.1.1"
-    prop-types "^15.7.2"
-    reselect "^4.0.0"
-=======
 "@mui/utils@^5.1.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@mui/utils/-/utils-5.1.1.tgz#3cb2c049731dacb3830336bc8011141e84434aad"
@@ -2035,7 +1984,16 @@
     "@types/react-is" "^16.7.1 || ^17.0.0"
     prop-types "^15.7.2"
     react-is "^17.0.2"
->>>>>>> 8a5d94142ce716ba4ae0c0cd26e96ea15d3502d5
+
+"@mui/x-data-grid@5.0.0-beta.5":
+  version "5.0.0-beta.5"
+  resolved "https://registry.yarnpkg.com/@mui/x-data-grid/-/x-data-grid-5.0.0-beta.5.tgz#00102251a258eeb8a39c0204091acf38af16767c"
+  integrity sha512-q1CRHgzOvc4Xt/H590qsHlLSwmJso09eBbMz0orn8/1BNLH/hW/IqVaUHu0WDz23e8RQWxPfcaS+WHvW01hXYw==
+  dependencies:
+    "@mui/utils" "^5.0.1"
+    clsx "^1.1.1"
+    prop-types "^15.7.2"
+    reselect "^4.0.0"
 
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
