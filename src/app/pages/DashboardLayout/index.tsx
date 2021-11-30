@@ -12,11 +12,9 @@ interface Props {}
 
 export function DashboardLayout(props: Props) {
   return (
-    <>
-      <Dashboard>
-        <Routes />
-      </Dashboard>
+    <div>
       {/* <TopNav /> */}
-    </>
+      <Routes />
+    </div>
   );
 }
