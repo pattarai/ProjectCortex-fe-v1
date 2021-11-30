@@ -1,5 +1,6 @@
 import { LoginState } from '../app/pages/LoginPage/slice/types';
 import { ProfileCommonViewState } from '../app/pages/ProfileCommonView/slice/types';
+import { UserManagementState } from '../app/pages/UserManagement/slice/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -9,5 +10,6 @@ import { ProfileCommonViewState } from '../app/pages/ProfileCommonView/slice/typ
 export interface RootState {
   login?: LoginState;
   profileCommonView?: ProfileCommonViewState;
+  userManagement?: UserManagementState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
