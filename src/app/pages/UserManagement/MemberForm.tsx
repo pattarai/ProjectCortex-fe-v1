@@ -117,7 +117,7 @@ export default function MemberForm({ setOpenModal, updateUser }) {
 
   return (
     <>
-      <div className="d-md-flex">
+      <div className="d-md-flex mt-2">
         <div className="me-3">
           <TextField
             value={values.name}
