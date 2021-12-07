@@ -15,7 +15,6 @@ import Avatar from '@mui/material/Avatar';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './Listitems';
@@ -107,7 +106,7 @@ export default function Dashboard({ children }: { children: ReactNode }) {
               }}
             >
               <div className="d-flex justify-content-start pe-5">
-                <img src={Svg} width="15%" />
+                <img src={Svg} width="15%" alt="" />
               </div>
             </IconButton>
             <Typography

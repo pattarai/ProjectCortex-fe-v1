@@ -6,8 +6,13 @@ import { ProfileCommonViewState } from './types';
 export const initialState: ProfileCommonViewState = [
   {
     name: 'Subi',
-    committee: 'President',
+    committee: 'Innovation & Media',
     project: 'Cortex',
+  },
+  {
+    name: 'Abi',
+    committee: 'Events',
+    project: 'Helix',
   },
 ];
 
