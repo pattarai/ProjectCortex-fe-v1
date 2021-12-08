@@ -6,10 +6,38 @@ import { AttendanceState } from './types';
 
 export const initialState: AttendanceState = [
   {
+    id: 99,
+    eventName: 'Think Tank',
+    eventDate: null,
+    members: [
+      {
+        id: 1,
+        name: 'Joshua',
+        status: 'present',
+      },
+      {
+        id: 2,
+        name: 'Jesin',
+        status: 'absent',
+      },
+    ],
+  },
+  {
     id: 100,
-    sno: 1,
-    name: 'Joshua',
-    status: 'present',
+    eventName: 'Elevate',
+    eventDate: null,
+    members: [
+      {
+        id: 1,
+        name: 'Joshua',
+        status: 'present',
+      },
+      {
+        id: 2,
+        name: 'Jesin',
+        status: 'absent',
+      },
+    ],
   },
 ];
 
