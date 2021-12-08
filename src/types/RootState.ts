@@ -1,5 +1,6 @@
 import { LoginState } from '../app/pages/LoginPage/slice/types';
 import { UserManagementState } from '../app/pages/UserManagement/slice/types';
+import { EventsState } from 'app/pages/EventPage/slice/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -9,5 +10,6 @@ import { UserManagementState } from '../app/pages/UserManagement/slice/types';
 export interface RootState {
   login?: LoginState;
   userManagement?: UserManagementState;
+  events?: EventsState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
