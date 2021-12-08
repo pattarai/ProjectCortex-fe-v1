@@ -23,7 +23,7 @@ import { MdDelete, MdEdit } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
 
-import Popup from './Popup';
+import Popup from '../../components/Popup';
 import MemberForm from './MemberForm';
 
 import { useSelector, useDispatch } from 'react-redux';
