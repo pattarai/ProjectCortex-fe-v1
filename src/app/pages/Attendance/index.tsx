@@ -49,8 +49,8 @@ export function Attendance(props: Props) {
   };
   return (
     <>
-      <div className="p-3 d-flex">
-        <FormControl fullWidth sx={{ marginRight: '30px' }}>
+      <div className="py-3 px-4 d-md-flex">
+        <FormControl fullWidth sx={{ mr: '20px' }}>
           <InputLabel id="demo-simple-select-label">Event Name</InputLabel>
           <Select
             name="eventName"
@@ -67,7 +67,10 @@ export function Attendance(props: Props) {
             ))}
           </Select>
         </FormControl>
-        <FormControl fullWidth sx={{ marginX: '30px' }}>
+        <FormControl
+          fullWidth
+          sx={{ mx: { md: '20px' }, my: { xs: '20px', md: '0px' } }}
+        >
           <InputLabel id="demo-simple-select-label">Event Type</InputLabel>
           <Select
             name="eventType"
@@ -92,7 +95,7 @@ export function Attendance(props: Props) {
             renderInput={params => (
               <TextField
                 {...params}
-                sx={{ width: '100%', marginLeft: '30px' }}
+                sx={{ width: '100%', ml: { md: '20px' } }}
               />
             )}
           />
