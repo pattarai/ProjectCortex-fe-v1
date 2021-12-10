@@ -42,6 +42,15 @@ export function Attendance(props: Props) {
   });
 
   const [rows, setRows] = useState<null | MemberAttendanceType[]>(null);
+  const [currentEventId, setCurrentEventId] = useState<null | number>(null);
+
+  useEffect(() => {
+    if (rows) {
+      const theValue = user.find(e => e.id === currentEventId)?.members;
+      theValue && setRows(theValue);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const columns = [
     { field: 'id', headerName: 'S.No.', width: 400 },
@@ -72,6 +81,7 @@ export function Attendance(props: Props) {
         item.eventName === value.eventName
       ) {
         const userData = user[user.indexOf(item)].members;
+        setCurrentEventId(item.id);
         setRows(userData);
       }
     });
@@ -176,7 +186,10 @@ export function Attendance(props: Props) {
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
-        <MemberForm />
+        <MemberForm
+          currentEventId={currentEventId}
+          setOpenModal={setOpenPopup}
+        />
       </Popup>
     </>
   );
