@@ -3,7 +3,7 @@
  * Attendance
  *
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Button,
   InputLabel,
@@ -20,6 +20,7 @@ import { DataGrid } from '@mui/x-data-grid';
 
 import Popup from '../../components/Popup';
 import MemberForm from './MemberForm';
+import { RiAddFill } from 'react-icons/ri';
 
 import { useSelector } from 'react-redux';
 import { useAttendanceSlice } from './slice';
@@ -29,7 +30,7 @@ import { MemberAttendanceType } from './slice/types';
 interface Props {}
 
 export function Attendance(props: Props) {
-  const { actions } = useAttendanceSlice();
+  useAttendanceSlice();
   const user = useSelector(selectAttendance);
 
   const eventsList = ['Think Tank', 'Elevate'];
@@ -66,8 +67,9 @@ export function Attendance(props: Props) {
 
   function EditToolbar() {
     return (
-      <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2">
+      <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2 mb-3">
         <Button variant="outlined" onClick={() => setOpenPopup(true)}>
+          <RiAddFill />
           Add
         </Button>
       </div>
@@ -89,9 +91,9 @@ export function Attendance(props: Props) {
 
   return (
     <>
-      <div className="my-3 mx-3 mx-md-5 d-flex flex-column align-justify-center vh-100">
+      <div className="py-4 py-md-0 mx-3 mx-md-5 d-flex flex-column align-justify-center vh-100">
         <Card
-          className="d-flex flex-column align-justify-center p-3 p-md-5"
+          className="d-flex flex-column align-justify-center py-4 px-3 p-md-5"
           sx={{ width: '100%', height: '100%' }}
         >
           <div className="pb-3 d-md-flex w-md-100">
