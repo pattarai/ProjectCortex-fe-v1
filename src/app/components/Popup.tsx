@@ -15,7 +15,7 @@ export default function TransitionsModal({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          <div className="d-flex justify-content-between align-items-center my-2">
+          <div className="d-flex justify-content-between align-items-center">
             <h2>{title}</h2>
             <IconButton
               color="error"
@@ -27,7 +27,9 @@ export default function TransitionsModal({
             </IconButton>
           </div>
         </DialogTitle>
-        <DialogContent>{children}</DialogContent>
+        <DialogContent>
+          <div className="mt-2">{children}</div>
+        </DialogContent>
       </Dialog>
     </>
   );
