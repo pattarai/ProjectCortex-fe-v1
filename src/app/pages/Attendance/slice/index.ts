@@ -46,10 +46,12 @@ const slice = createSlice({
   initialState,
   reducers: {
     addUser(state, action: PayloadAction<any>) {
-      const { id, ...rest } = action.payload;
-      const newId = state.length > 0 ? state[0].id - 1 : state.length + 100;
-      const newData = { id: newId, ...rest };
-      state.unshift(newData);
+      const { eventId, ...rest } = action.payload;
+      const thedata = state.find(event => event.id === eventId)?.members;
+      if (thedata) {
+        const newData = { id: thedata?.length + 1, ...rest };
+        thedata?.push(newData);
+      }
     },
     deleteUser(state, action: PayloadAction<any>) {
       state.forEach(
