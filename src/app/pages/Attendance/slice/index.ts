@@ -8,7 +8,7 @@ export const initialState: AttendanceState = [
   {
     id: 99,
     eventName: 'Think Tank',
-    eventDate: null,
+    eventDate: 'Wed Dec 01 2021',
     members: [
       {
         id: 1,
@@ -25,16 +25,16 @@ export const initialState: AttendanceState = [
   {
     id: 100,
     eventName: 'Elevate',
-    eventDate: null,
+    eventDate: 'Wed Dec 01 2021',
     members: [
       {
         id: 1,
-        name: 'Joshua',
+        name: 'Dhivya',
         status: 'present',
       },
       {
         id: 2,
-        name: 'Jesin',
+        name: 'Veroni',
         status: 'absent',
       },
     ],
