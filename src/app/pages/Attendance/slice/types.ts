@@ -1,14 +1,14 @@
 /* --- STATE --- */
-interface MemberAttendanceType {
+export interface MemberAttendanceType {
   id: number;
   name: string;
   status: string;
 }
 
-export interface Attendance {
+interface Attendance {
   id: number;
   eventName: string;
-  eventDate: Date | null;
+  eventDate: string | Date;
   members: MemberAttendanceType[];
 }
 
