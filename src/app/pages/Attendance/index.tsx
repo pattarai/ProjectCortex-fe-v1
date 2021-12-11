@@ -58,6 +58,7 @@ export function Attendance(props: Props) {
     { field: 'name', headerName: 'Name', width: 400 },
     {
       field: 'status',
+      type: 'singleSelect',
       headerName: 'Status',
       width: 400,
       editable: true,
@@ -67,12 +68,16 @@ export function Attendance(props: Props) {
 
   function EditToolbar() {
     return (
-      <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2 mb-3">
-        <Button variant="outlined" onClick={() => setOpenPopup(true)}>
-          <RiAddFill />
-          Add
-        </Button>
-      </div>
+      <>
+        {value.eventType !== 'crew' && (
+          <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2 mb-3">
+            <Button variant="outlined" onClick={() => setOpenPopup(true)}>
+              <RiAddFill />
+              Add
+            </Button>
+          </div>
+        )}
+      </>
     );
   }
 
