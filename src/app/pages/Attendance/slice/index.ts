@@ -13,12 +13,12 @@ export const initialState: AttendanceState = [
       {
         id: 1,
         name: 'Joshua',
-        status: 'present',
+        status: 'Present',
       },
       {
         id: 2,
         name: 'Jesin',
-        status: 'absent',
+        status: 'Absent',
       },
     ],
   },
@@ -30,12 +30,12 @@ export const initialState: AttendanceState = [
       {
         id: 1,
         name: 'Dhivya',
-        status: 'present',
+        status: 'Present',
       },
       {
         id: 2,
         name: 'Veroni',
-        status: 'absent',
+        status: 'Absent',
       },
     ],
   },
@@ -49,8 +49,8 @@ const slice = createSlice({
       const { eventId, ...rest } = action.payload;
       const thedata = state.find(event => event.id === eventId)?.members;
       if (thedata) {
-        const newData = { id: thedata?.length + 1, ...rest };
-        thedata?.push(newData);
+        const newData = { id: thedata.length + 1, ...rest };
+        thedata.push(newData);
       }
     },
     deleteUser(state, action: PayloadAction<any>) {
