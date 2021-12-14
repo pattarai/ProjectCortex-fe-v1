@@ -1,12 +1,7 @@
 import { Dialog, DialogTitle, DialogContent, IconButton } from '@mui/material';
 import { MdOutlineCancel } from 'react-icons/md';
 
-export default function TransitionsModal({
-  title,
-  openModal,
-  setOpenModal,
-  children,
-}) {
+export default function Popup({ title, openModal, setOpenModal, children }) {
   return (
     <>
       <Dialog
