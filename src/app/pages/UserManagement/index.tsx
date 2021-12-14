@@ -25,8 +25,9 @@ import { RiAddFill } from 'react-icons/ri';
 
 import Popup from '../../components/Popup';
 import MemberForm from './MemberForm';
+import DeleteForm from './DeleteForm';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
 
@@ -52,11 +53,11 @@ interface Props {}
 
 export function UserManagement(props: Props) {
   const { actions } = useUserManagementSlice();
-  const dispatch = useDispatch();
   const user = useSelector(selectUserManagement);
 
   const [userData, setUserData] = useState(user);
   const [updateUser, setUpdateUser] = useState<number | null>(null);
+  const [deleteUser, setDeleteUser] = useState<number | null>(null);
 
   const [openPopup, setOpenPopup] = useState(false);
 
@@ -108,6 +109,7 @@ export function UserManagement(props: Props) {
                 style={{ width: '100%' }}
                 onClick={() => {
                   setUpdateUser(null);
+                  setDeleteUser(null);
                   setOpenPopup(true);
                 }}
               >
@@ -152,6 +154,7 @@ export function UserManagement(props: Props) {
                           aria-label="Edit"
                           color="primary"
                           onClick={() => {
+                            setDeleteUser(null);
                             setUpdateUser(row.id);
                             setOpenPopup(true);
                           }}
@@ -162,7 +165,10 @@ export function UserManagement(props: Props) {
                           aria-label="Delete"
                           color="secondary"
                           className="ms-2"
-                          onClick={() => dispatch(actions.deleteUser(row.id))}
+                          onClick={() => {
+                            setDeleteUser(row.id);
+                            setOpenPopup(true);
+                          }}
                         >
                           <MdDelete />
                         </IconButton>
@@ -180,11 +186,19 @@ export function UserManagement(props: Props) {
         </Card>
       </div>
       <Popup
-        title="Member Form"
+        title={deleteUser ? 'Are you sure wanna delete?' : 'Member Form'}
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
-        <MemberForm setOpenModal={setOpenPopup} updateUser={updateUser} />
+        {deleteUser ? (
+          <DeleteForm
+            deleteUser={deleteUser}
+            setOpenModal={setOpenPopup}
+            actions={actions}
+          />
+        ) : (
+          <MemberForm setOpenModal={setOpenPopup} updateUser={updateUser} />
+        )}
       </Popup>
     </>
   );
