@@ -30,7 +30,7 @@ import { MemberAttendanceType } from './slice/types';
 interface Props {}
 
 export function Attendance(props: Props) {
-  useAttendanceSlice();
+  const { actions } = useAttendanceSlice();
   const user = useSelector(selectAttendance);
 
   const eventsList = ['Think Tank', 'Elevate'];
@@ -208,6 +208,7 @@ export function Attendance(props: Props) {
         setOpenModal={setOpenPopup}
       >
         <MemberForm
+          actions={actions}
           currentEventId={currentEventId}
           setOpenModal={setOpenPopup}
         />

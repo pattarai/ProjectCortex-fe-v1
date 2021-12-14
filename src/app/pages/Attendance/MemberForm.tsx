@@ -4,15 +4,14 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
+  FormHelperText,
   Select,
   TextField,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { useDispatch } from 'react-redux';
-import { useAttendanceSlice } from './slice';
 
-export default function MemberForm({ currentEventId, setOpenModal }) {
-  const { actions } = useAttendanceSlice();
+export default function MemberForm({ currentEventId, setOpenModal, actions }) {
   const dispatch = useDispatch();
 
   const [member, setMember] = useState({
@@ -20,6 +19,32 @@ export default function MemberForm({ currentEventId, setOpenModal }) {
     name: '',
     status: '',
   });
+
+  const [errors, setErrors] = useState({
+    nameError: '',
+    statusError: '',
+    isError: false,
+  });
+
+  function handleSubmit() {
+    let noofErrors = 0;
+    let err = { ...errors };
+
+    Object.entries(member).forEach(([key, value]) => {
+      if (typeof value === 'string' && value.trim() === '') {
+        err[`${key}Error`] = 'This field is required';
+        noofErrors++;
+      }
+    });
+
+    if (noofErrors === 0) {
+      dispatch(actions.addUser(member));
+      setOpenModal(false);
+    } else {
+      err.isError = true;
+      setErrors(err);
+    }
+  }
 
   const handleChange = (event: SelectChangeEvent) => {
     setMember({ ...member, status: event.target.value });
@@ -29,12 +54,20 @@ export default function MemberForm({ currentEventId, setOpenModal }) {
     <div>
       <TextField
         id="outlined-basic"
+        error={errors.isError && (member.name.trim() === '' ? true : false)}
+        helperText={
+          errors.isError && (errors.nameError !== '' ? errors.nameError : '')
+        }
         label="Name"
         variant="outlined"
         sx={{ width: '100%' }}
         onChange={e => setMember({ ...member, name: e.target.value })}
       />
-      <FormControl fullWidth sx={{ my: '20px' }}>
+      <FormControl
+        fullWidth
+        sx={{ my: '20px' }}
+        error={errors.isError && (member.status === '' ? true : false)}
+      >
         <InputLabel id="demo-simple-select-label">Status</InputLabel>
         <Select
           value={member.status}
@@ -47,15 +80,16 @@ export default function MemberForm({ currentEventId, setOpenModal }) {
           <MenuItem value="absent">Absent</MenuItem>
           <MenuItem value="informed">Informed</MenuItem>
         </Select>
+        <FormHelperText>
+          {errors.isError &&
+            (errors.statusError !== '' ? errors.statusError : '')}
+        </FormHelperText>
       </FormControl>
       <Button
         variant="outlined"
         color="primary"
         sx={{ width: '100%' }}
-        onClick={() => {
-          dispatch(actions.addUser(member));
-          setOpenModal(false);
-        }}
+        onClick={handleSubmit}
       >
         Add Member
       </Button>
