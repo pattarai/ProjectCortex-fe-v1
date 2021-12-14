@@ -78,7 +78,7 @@ export function UserManagement(props: Props) {
   return (
     <>
       <div
-        className="vh-100 d-flex flex-column align-justify-center"
+        className="vh-75 d-flex flex-column align-justify-center"
         style={{
           backgroundColor: '#f4f5fd',
         }}
