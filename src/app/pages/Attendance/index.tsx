@@ -41,6 +41,7 @@ export function Attendance(props: Props) {
     eventType: '',
     eventDate: '',
   });
+  const [eventMsg, setEventMsg] = useState('');
 
   const [rows, setRows] = useState<null | MemberAttendanceType[]>(null);
   const [currentEventId, setCurrentEventId] = useState<null | number>(null);
@@ -82,6 +83,7 @@ export function Attendance(props: Props) {
   }
 
   function handleSubmit() {
+    let rowData = false;
     user.forEach(item => {
       if (
         item.eventDate === value.eventDate &&
@@ -90,8 +92,13 @@ export function Attendance(props: Props) {
         const userData = user[user.indexOf(item)].members;
         setCurrentEventId(item.id);
         setRows(userData);
+        rowData = true;
       }
     });
+    if (!rowData) {
+      setRows(null);
+      setEventMsg('No such Event');
+    }
   }
 
   function dateFormat(date: Date) {
@@ -189,7 +196,7 @@ export function Attendance(props: Props) {
               Submit
             </Button>
           </div>
-          {rows !== null && (
+          {rows !== null ? (
             <div className="mt-3" style={{ height: 400, width: '100%' }}>
               <DataGrid
                 components={{
@@ -199,6 +206,8 @@ export function Attendance(props: Props) {
                 columns={columns}
               />
             </div>
+          ) : (
+            <h2 className="mt-4">{eventMsg}</h2>
           )}
         </Card>
       </div>
