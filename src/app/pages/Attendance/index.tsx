@@ -83,21 +83,17 @@ export function Attendance(props: Props) {
   }
 
   function handleSubmit() {
-    let rowData = false;
-    user.forEach(item => {
-      if (
+    const rowData = user.find(
+      item =>
         item.eventDate === value.eventDate &&
-        item.eventName === value.eventName
-      ) {
-        const userData = user[user.indexOf(item)].members;
-        setCurrentEventId(item.id);
-        setRows(userData);
-        rowData = true;
-      }
-    });
+        item.eventName === value.eventName,
+    );
     if (!rowData) {
       setRows(null);
       setEventMsg('No such Event');
+    } else {
+      setCurrentEventId(rowData.id);
+      setRows(rowData.members);
     }
   }
 
