@@ -76,9 +76,9 @@ export default function MemberForm({ currentEventId, setOpenModal, actions }) {
           label="Status"
           onChange={handleChange}
         >
-          <MenuItem value="present">Present</MenuItem>
-          <MenuItem value="absent">Absent</MenuItem>
-          <MenuItem value="informed">Informed</MenuItem>
+          <MenuItem value="Present">Present</MenuItem>
+          <MenuItem value="Absent">Absent</MenuItem>
+          <MenuItem value="Informed">Informed</MenuItem>
         </Select>
         <FormHelperText>
           {errors.isError &&
