@@ -16,13 +16,13 @@ import {
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridValueSetterParams } from '@mui/x-data-grid';
 
 import Popup from '../../components/Popup';
 import MemberForm from './MemberForm';
 import { RiAddFill } from 'react-icons/ri';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useAttendanceSlice } from './slice';
 import { selectAttendance } from './slice/selectors';
 import { MemberAttendanceType } from './slice/types';
@@ -31,6 +31,7 @@ interface Props {}
 
 export function Attendance(props: Props) {
   const { actions } = useAttendanceSlice();
+  const dispatch = useDispatch();
   const user = useSelector(selectAttendance);
 
   const eventsList = ['Think Tank', 'Elevate'];
@@ -48,13 +49,20 @@ export function Attendance(props: Props) {
 
   useEffect(() => {
     if (rows) {
-      const theValue = user.find(e => e.id === currentEventId)?.members;
-      theValue && setRows(theValue);
+      const searchedEvent = user.find(e => e.id === currentEventId)?.members;
+      searchedEvent && setRows(searchedEvent);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  const columns = [
+  function setStatus(params: GridValueSetterParams) {
+    dispatch(
+      actions.updateUser({ eventId: currentEventId, member: params.row }),
+    );
+    return { ...params.row, status: params.value };
+  }
+
+  const columns: GridColDef[] = [
     { field: 'id', headerName: 'S.No.', width: 400 },
     { field: 'name', headerName: 'Name', width: 400 },
     {
@@ -64,20 +72,19 @@ export function Attendance(props: Props) {
       width: 400,
       editable: true,
       valueOptions: ['Present', 'Absent', 'Informed'],
+      valueSetter: setStatus,
     },
   ];
 
   function EditToolbar() {
     return (
       <>
-        {value.eventType !== 'crew' && (
-          <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2 mb-3">
-            <Button variant="outlined" onClick={() => setOpenPopup(true)}>
-              <RiAddFill />
-              Add
-            </Button>
-          </div>
-        )}
+        <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2 mb-3">
+          <Button variant="outlined" onClick={() => setOpenPopup(true)}>
+            <RiAddFill />
+            Add
+          </Button>
+        </div>
       </>
     );
   }

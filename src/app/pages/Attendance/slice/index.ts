@@ -59,8 +59,12 @@ const slice = createSlice({
       );
     },
     updateUser(state, action: PayloadAction<any>) {
-      const newArray = state.findIndex(st => st.id === action.payload.id);
-      state[newArray] = { ...action.payload };
+      const { eventId, member } = action.payload;
+      const selectedEventId = state.findIndex(event => event.id === eventId);
+      const selectedMemberId = state[selectedEventId].members.findIndex(
+        user => user.id === member.id,
+      );
+      state[selectedEventId].members[selectedMemberId] = member;
     },
   },
 });
