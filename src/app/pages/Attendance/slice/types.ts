@@ -12,7 +12,4 @@ interface Attendance {
   members: MemberAttendanceType[];
 }
 
-export interface AttendanceState {
-  currentAction: string;
-  events: Attendance[];
-}
+export interface AttendanceState extends Array<Attendance> {}

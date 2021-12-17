@@ -4,54 +4,50 @@ import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { attendanceSaga } from './saga';
 import { AttendanceState } from './types';
 
-export const initialState: AttendanceState = {
-  currentAction: '',
-  events: [
-    {
-      id: 99,
-      eventName: 'Think Tank',
-      eventDate: '12/01/2021',
-      members: [
-        {
-          id: 1,
-          name: 'Joshua',
-          status: 'Present',
-        },
-        {
-          id: 2,
-          name: 'Jesin',
-          status: 'Absent',
-        },
-      ],
-    },
-    {
-      id: 100,
-      eventName: 'Elevate',
-      eventDate: '12/01/2021',
-      members: [
-        {
-          id: 1,
-          name: 'Dhivya',
-          status: 'Present',
-        },
-        {
-          id: 2,
-          name: 'Veroni',
-          status: 'Absent',
-        },
-      ],
-    },
-  ],
-};
+export const initialState: AttendanceState = [
+  {
+    id: 99,
+    eventName: 'Think Tank',
+    eventDate: '12/01/2021',
+    members: [
+      {
+        id: 1,
+        name: 'Joshua',
+        status: 'Present',
+      },
+      {
+        id: 2,
+        name: 'Jesin',
+        status: 'Absent',
+      },
+    ],
+  },
+  {
+    id: 100,
+    eventName: 'Elevate',
+    eventDate: '12/01/2021',
+    members: [
+      {
+        id: 1,
+        name: 'Dhivya',
+        status: 'Present',
+      },
+      {
+        id: 2,
+        name: 'Veroni',
+        status: 'Absent',
+      },
+    ],
+  },
+];
 
 const slice = createSlice({
   name: 'attendance',
   initialState,
   reducers: {
     addUser(state, action: PayloadAction<any>) {
-      state.currentAction = 'addMember';
       const { eventId, ...rest } = action.payload;
-      const thedata = state.events.find(event => event.id === eventId)?.members;
+      const thedata = state.find(event => event.id === eventId)?.members;
       if (thedata) {
         const newData = { id: thedata.length + 1, ...rest };
         thedata.push(newData);
@@ -59,15 +55,23 @@ const slice = createSlice({
     },
 
     updateUser(state, action: PayloadAction<any>) {
-      state.currentAction = 'updateMember';
       const { eventId, member } = action.payload;
-      const selectedEventId = state.events.findIndex(
-        event => event.id === eventId,
-      );
-      const selectedMemberId = state.events[selectedEventId].members.findIndex(
+      const selectedEventId = state.findIndex(event => event.id === eventId);
+      const selectedMemberId = state[selectedEventId].members.findIndex(
         user => user.id === member.id,
       );
-      state.events[selectedEventId].members[selectedMemberId] = member;
+      state[selectedEventId].members[selectedMemberId] = member;
+    },
+
+    deleteUser(state, action: PayloadAction<any>) {
+      const { eventId, deleteMembers } = action.payload;
+      const selectedEventId = state.findIndex(event => event.id === eventId);
+      deleteMembers.forEach((member: number) => {
+        const selectedMemberId = state[selectedEventId].members.findIndex(
+          user => user.id === member,
+        );
+        state[selectedEventId].members.splice(selectedMemberId, 1);
+      });
     },
   },
 });
