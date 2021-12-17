@@ -58,10 +58,9 @@ export function Attendance(props: Props) {
   }, [user]);
 
   function setStatus(params: GridValueSetterParams) {
-    dispatch(
-      actions.updateUser({ eventId: currentEventId, member: params.row }),
-    );
-    return { ...params.row, status: params.value };
+    const newRow = { ...params.row, status: params.value };
+    dispatch(actions.updateUser({ eventId: currentEventId, member: newRow }));
+    return newRow;
   }
 
   const columns: GridColDef[] = [

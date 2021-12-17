@@ -1,4 +1,4 @@
-import { PayloadAction, current } from '@reduxjs/toolkit';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { attendanceSaga } from './saga';
@@ -68,9 +68,6 @@ const slice = createSlice({
         user => user.id === member.id,
       );
       state.events[selectedEventId].members[selectedMemberId] = member;
-      console.log(
-        current(state.events[selectedEventId].members[selectedMemberId]),
-      );
     },
   },
 });
