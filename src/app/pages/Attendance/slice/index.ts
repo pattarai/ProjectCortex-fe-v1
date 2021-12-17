@@ -1,70 +1,76 @@
-import { PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, current } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { attendanceSaga } from './saga';
 import { AttendanceState } from './types';
 
-export const initialState: AttendanceState = [
-  {
-    id: 99,
-    eventName: 'Think Tank',
-    eventDate: '12/01/2021',
-    members: [
-      {
-        id: 1,
-        name: 'Joshua',
-        status: 'Present',
-      },
-      {
-        id: 2,
-        name: 'Jesin',
-        status: 'Absent',
-      },
-    ],
-  },
-  {
-    id: 100,
-    eventName: 'Elevate',
-    eventDate: '12/01/2021',
-    members: [
-      {
-        id: 1,
-        name: 'Dhivya',
-        status: 'Present',
-      },
-      {
-        id: 2,
-        name: 'Veroni',
-        status: 'Absent',
-      },
-    ],
-  },
-];
+export const initialState: AttendanceState = {
+  currentAction: '',
+  events: [
+    {
+      id: 99,
+      eventName: 'Think Tank',
+      eventDate: '12/01/2021',
+      members: [
+        {
+          id: 1,
+          name: 'Joshua',
+          status: 'Present',
+        },
+        {
+          id: 2,
+          name: 'Jesin',
+          status: 'Absent',
+        },
+      ],
+    },
+    {
+      id: 100,
+      eventName: 'Elevate',
+      eventDate: '12/01/2021',
+      members: [
+        {
+          id: 1,
+          name: 'Dhivya',
+          status: 'Present',
+        },
+        {
+          id: 2,
+          name: 'Veroni',
+          status: 'Absent',
+        },
+      ],
+    },
+  ],
+};
 
 const slice = createSlice({
   name: 'attendance',
   initialState,
   reducers: {
     addUser(state, action: PayloadAction<any>) {
+      state.currentAction = 'addMember';
       const { eventId, ...rest } = action.payload;
-      const thedata = state.find(event => event.id === eventId)?.members;
+      const thedata = state.events.find(event => event.id === eventId)?.members;
       if (thedata) {
         const newData = { id: thedata.length + 1, ...rest };
         thedata.push(newData);
       }
     },
-    deleteUser(state, action: PayloadAction<any>) {
-      state.forEach(
-        st => st.id === action.payload && state.splice(state.indexOf(st), 1),
-      );
-    },
+
     updateUser(state, action: PayloadAction<any>) {
+      state.currentAction = 'updateMember';
       const { eventId, member } = action.payload;
-      const selectedEventId = state.findIndex(event => event.id === eventId);
-      const selectedMemberId = state[selectedEventId].members.findIndex(
+      const selectedEventId = state.events.findIndex(
+        event => event.id === eventId,
+      );
+      const selectedMemberId = state.events[selectedEventId].members.findIndex(
         user => user.id === member.id,
       );
-      state[selectedEventId].members[selectedMemberId] = member;
+      state.events[selectedEventId].members[selectedMemberId] = member;
+      console.log(
+        current(state.events[selectedEventId].members[selectedMemberId]),
+      );
     },
   },
 });
@@ -76,15 +82,3 @@ export const useAttendanceSlice = () => {
   useInjectSaga({ key: slice.name, saga: attendanceSaga });
   return { actions: slice.actions };
 };
-
-/**
- * Example Usage:
- *
- * export function MyComponentNeedingThisSlice() {
- *  const { actions } = useAttendanceSlice();
- *
- *  const onButtonClick = (evt) => {
- *    dispatch(actions.someAction());
- *   };
- * }
- */

@@ -48,8 +48,10 @@ export function Attendance(props: Props) {
   const [currentEventId, setCurrentEventId] = useState<null | number>(null);
 
   useEffect(() => {
-    if (rows) {
-      const searchedEvent = user.find(e => e.id === currentEventId)?.members;
+    if (rows && user.currentAction === 'addMember') {
+      const searchedEvent = user.events.find(
+        e => e.id === currentEventId,
+      )?.members;
       searchedEvent && setRows(searchedEvent);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,12 +92,12 @@ export function Attendance(props: Props) {
   }
 
   function handleSubmit() {
-    const rowData = user.find(
+    const rowData = user.events.find(
       item =>
         item.eventDate === value.eventDate &&
         item.eventName === value.eventName,
     );
-    if (!rowData) {
+    if (typeof rowData === 'undefined') {
       setRows(null);
       setEventMsg('No such Event');
     } else {
