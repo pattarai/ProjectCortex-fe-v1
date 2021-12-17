@@ -5,7 +5,6 @@
  */
 import { useState, useEffect } from 'react';
 import {
-  Box,
   Button,
   InputLabel,
   MenuItem,
@@ -17,12 +16,19 @@ import {
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import { DataGrid, GridColDef, GridValueSetterParams } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridColDef,
+  GridValueSetterParams,
+  GridSelectionModel,
+} from '@mui/x-data-grid';
 
 import Popup from '../../components/Popup';
 import { dateFormat } from '../../components/dateFormat';
+import DeleteForm from '../../components/DeleteForm';
 import MemberForm from './MemberForm';
 import { RiAddFill } from 'react-icons/ri';
+import { MdDelete } from 'react-icons/md';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useAttendanceSlice } from './slice';
@@ -48,12 +54,11 @@ export function Attendance(props: Props) {
 
   const [rows, setRows] = useState<null | MemberAttendanceType[]>(null);
   const [currentEventId, setCurrentEventId] = useState<null | number>(null);
+  const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   useEffect(() => {
-    if (rows && user.currentAction === 'addMember') {
-      const searchedEvent = user.events.find(
-        e => e.id === currentEventId,
-      )?.members;
+    if (rows) {
+      const searchedEvent = user.find(e => e.id === currentEventId)?.members;
       searchedEvent && setRows(searchedEvent);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,17 +88,34 @@ export function Attendance(props: Props) {
     return (
       <>
         <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2 mb-3">
-          <Button variant="outlined" onClick={() => setOpenPopup(true)}>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setSelectionModel([]);
+              setOpenPopup(true);
+            }}
+          >
             <RiAddFill />
             Add
           </Button>
+          {selectionModel.length > 0 && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              sx={{ ml: 2 }}
+              onClick={() => setOpenPopup(true)}
+            >
+              <MdDelete />
+              Delete
+            </Button>
+          )}
         </div>
       </>
     );
   }
 
   function handleSubmit() {
-    const rowData = user.events.find(
+    const rowData = user.find(
       item =>
         item.eventDate === value.eventDate &&
         item.eventName === value.eventName,
@@ -199,9 +221,12 @@ export function Attendance(props: Props) {
             {rows !== null && (
               <div className="mt-3" style={{ height: 400, width: '100%' }}>
                 <DataGrid
-                  getRowClassName={params =>
-                    `super-app-theme--${params.getValue(params.id, 'status')}`
-                  }
+                  checkboxSelection
+                  disableSelectionOnClick
+                  onSelectionModelChange={newSelectionModel => {
+                    setSelectionModel(newSelectionModel);
+                  }}
+                  selectionModel={selectionModel}
                   components={{
                     Toolbar: EditToolbar,
                   }}
@@ -219,15 +244,27 @@ export function Attendance(props: Props) {
         </div>
       </div>
       <Popup
-        title="Add Member"
+        title={
+          selectionModel.length > 0 ? 'Are you sure wanna delete' : 'Add Member'
+        }
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
-        <MemberForm
-          actions={actions}
-          currentEventId={currentEventId}
-          setOpenModal={setOpenPopup}
-        />
+        {selectionModel.length > 0 ? (
+          <DeleteForm
+            setOpenModal={setOpenPopup}
+            action={actions.deleteUser({
+              eventId: currentEventId,
+              deleteMembers: selectionModel,
+            })}
+          />
+        ) : (
+          <MemberForm
+            actions={actions}
+            currentEventId={currentEventId}
+            setOpenModal={setOpenPopup}
+          />
+        )}
       </Popup>
     </>
   );
