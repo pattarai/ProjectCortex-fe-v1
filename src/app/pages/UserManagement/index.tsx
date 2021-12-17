@@ -24,8 +24,8 @@ import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
 
 import Popup from '../../components/Popup';
+import DeleteForm from '../../components/DeleteForm';
 import MemberForm from './MemberForm';
-import DeleteForm from './DeleteForm';
 
 import { useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
@@ -192,9 +192,8 @@ export function UserManagement(props: Props) {
       >
         {deleteUser ? (
           <DeleteForm
-            deleteUser={deleteUser}
             setOpenModal={setOpenPopup}
-            actions={actions}
+            action={actions.deleteUser(deleteUser)}
           />
         ) : (
           <MemberForm setOpenModal={setOpenPopup} updateUser={updateUser} />
