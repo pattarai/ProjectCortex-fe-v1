@@ -19,6 +19,7 @@ import DatePicker from '@mui/lab/DatePicker';
 import { DataGrid, GridColDef, GridValueSetterParams } from '@mui/x-data-grid';
 
 import Popup from '../../components/Popup';
+import { dateFormat } from '../../components/dateFormat';
 import MemberForm from './MemberForm';
 import { RiAddFill } from 'react-icons/ri';
 
@@ -105,19 +106,6 @@ export function Attendance(props: Props) {
     }
   }
 
-  function dateFormat(date: Date) {
-    let currentDate: string | number = date.getDate();
-    let currentMonth: string | number = date.getMonth() + 1;
-    let currentYear = date.getFullYear();
-    if (currentDate < 10) {
-      currentDate = `0${currentDate}`;
-    }
-    if (currentMonth < 10) {
-      currentMonth = `0${currentMonth}`;
-    }
-    return `${currentMonth}/${currentDate}/${currentYear}`;
-  }
-
   return (
     <>
       <div className="py-4 py-md-0 mx-3 mx-md-5 d-flex flex-column align-justify-center vh-100">
@@ -176,8 +164,7 @@ export function Attendance(props: Props) {
                 label="Date"
                 value={value.eventDate === '' ? null : value.eventDate}
                 onChange={newValue => {
-                  let date = new Date(`${newValue}`);
-                  const newDate = dateFormat(date);
+                  const newDate = dateFormat(newValue);
                   setValue({ ...value, eventDate: newDate });
                 }}
                 renderInput={params => (
