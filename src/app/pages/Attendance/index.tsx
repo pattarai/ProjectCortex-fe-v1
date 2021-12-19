@@ -110,14 +110,20 @@ export function Attendance(props: Props) {
   }
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'S.No.', minWidth: 400 },
-    { field: 'name', headerName: 'Name', minWidth: 400 },
+    {
+      field: 'id',
+      headerName: 'S.No.',
+      minWidth: 400,
+      filterable: false,
+    },
+    { field: 'name', headerName: 'Name', minWidth: 400, sortable: false },
     {
       field: 'status',
       type: 'singleSelect',
       headerName: 'Status',
       minWidth: 400,
       editable: true,
+      sortable: false,
       valueOptions: [0, 1, 2],
       valueSetter: setStatus,
       renderCell: customCellRender,
