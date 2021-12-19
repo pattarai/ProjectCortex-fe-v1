@@ -45,10 +45,6 @@ export default function MemberForm({ currentEventId, setOpenModal, actions }) {
     }
   }
 
-  const handleChange = (event: any) => {
-    setMember({ ...member, status: event.target.value });
-  };
-
   return (
     <div>
       <TextField
@@ -73,7 +69,9 @@ export default function MemberForm({ currentEventId, setOpenModal, actions }) {
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           label="Status"
-          onChange={handleChange}
+          onChange={e =>
+            setMember({ ...member, status: parseInt(e.target.value) })
+          }
         >
           <MenuItem value={1}>Present</MenuItem>
           <MenuItem value={0}>Absent</MenuItem>
