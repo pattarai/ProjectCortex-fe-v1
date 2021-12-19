@@ -14,12 +14,12 @@ export const initialState: AttendanceState = [
       {
         id: 1,
         name: 'Joshua',
-        status: 'Present',
+        status: 1,
       },
       {
         id: 2,
         name: 'Jesin',
-        status: 'Absent',
+        status: 0,
       },
     ],
   },
@@ -32,12 +32,12 @@ export const initialState: AttendanceState = [
       {
         id: 1,
         name: 'Dhivya',
-        status: 'Present',
+        status: 1,
       },
       {
         id: 2,
         name: 'Veroni',
-        status: 'Absent',
+        status: 2,
       },
     ],
   },

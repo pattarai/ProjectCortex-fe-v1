@@ -8,7 +8,6 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
 import { useDispatch } from 'react-redux';
 
 export default function MemberForm({ currentEventId, setOpenModal, actions }) {
@@ -17,7 +16,7 @@ export default function MemberForm({ currentEventId, setOpenModal, actions }) {
   const [member, setMember] = useState({
     eventId: currentEventId,
     name: '',
-    status: '',
+    status: 0,
   });
 
   const [errors, setErrors] = useState({
@@ -46,7 +45,7 @@ export default function MemberForm({ currentEventId, setOpenModal, actions }) {
     }
   }
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChange = (event: any) => {
     setMember({ ...member, status: event.target.value });
   };
 
@@ -66,19 +65,19 @@ export default function MemberForm({ currentEventId, setOpenModal, actions }) {
       <FormControl
         fullWidth
         sx={{ my: '20px' }}
-        error={errors.isError && (member.status === '' ? true : false)}
+        error={errors.isError && (member.status === 5 ? true : false)}
       >
         <InputLabel id="demo-simple-select-label">Status</InputLabel>
         <Select
-          value={member.status}
+          value={member.status.toString()}
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           label="Status"
           onChange={handleChange}
         >
-          <MenuItem value="Present">Present</MenuItem>
-          <MenuItem value="Absent">Absent</MenuItem>
-          <MenuItem value="Informed">Informed</MenuItem>
+          <MenuItem value={1}>Present</MenuItem>
+          <MenuItem value={0}>Absent</MenuItem>
+          <MenuItem value={2}>Informed</MenuItem>
         </Select>
         <FormHelperText>
           {errors.isError &&

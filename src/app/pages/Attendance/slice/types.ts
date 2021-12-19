@@ -2,7 +2,7 @@
 export interface MemberAttendanceType {
   id: number;
   name: string;
-  status: string;
+  status: number;
 }
 
 interface Attendance {

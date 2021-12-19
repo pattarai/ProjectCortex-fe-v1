@@ -80,8 +80,17 @@ export function Attendance(props: Props) {
       headerName: 'Status',
       minWidth: 400,
       editable: true,
-      valueOptions: ['Present', 'Absent', 'Informed'],
+      valueOptions: [0, 1, 2],
       valueSetter: setStatus,
+      valueFormatter: params => {
+        if (params.value === 0) {
+          return `Absent`;
+        } else if (params.value === 1) {
+          return `Present`;
+        } else if (params.value === 2) {
+          return `Informed`;
+        }
+      },
     },
   ];
 
