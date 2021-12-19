@@ -71,13 +71,13 @@ export function Attendance(props: Props) {
   }
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'S.No.', width: 400 },
-    { field: 'name', headerName: 'Name', width: 400 },
+    { field: 'id', headerName: 'S.No.', minWidth: 400 },
+    { field: 'name', headerName: 'Name', minWidth: 400 },
     {
       field: 'status',
       type: 'singleSelect',
       headerName: 'Status',
-      width: 400,
+      minWidth: 400,
       editable: true,
       valueOptions: ['Present', 'Absent', 'Informed'],
       valueSetter: setStatus,
@@ -131,118 +131,122 @@ export function Attendance(props: Props) {
 
   return (
     <>
-      <div style={{ backgroundColor: '#123c69' }}>
-        <div className="py-4 py-md-0 mx-3 mx-md-5 d-flex flex-column align-justify-center vh-100">
-          <Card
-            className="d-flex flex-column align-justify-center py-4 px-3 p-md-5"
-            sx={{
-              width: '100%',
-              height: '100%',
-            }}
-          >
-            <div className="pb-3 d-md-flex w-md-100">
-              <FormControl fullWidth sx={{ mr: '20px' }}>
-                <InputLabel id="demo-simple-select-label">
-                  Event Name
-                </InputLabel>
-                <Select
-                  name="eventName"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={value.eventName}
-                  label="Event Name"
-                  onChange={event =>
-                    setValue({
-                      ...value,
-                      eventName: event.target.value,
-                    })
-                  }
-                >
-                  {eventsList.map(event => (
-                    <MenuItem key={event} value={event}>
-                      {event}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl
-                fullWidth
-                sx={{ mx: { md: '20px' }, my: { xs: '20px', md: '0px' } }}
+      <div className="py-4 py-md-0 mx-3 mx-md-5 d-flex flex-column align-justify-center vh-100">
+        <Card
+          className="d-flex flex-column align-justify-center p-4 p-md-5"
+          sx={{
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <div className="d-md-flex w-md-100">
+            <FormControl fullWidth sx={{ mr: '20px' }}>
+              <InputLabel id="demo-simple-select-label">Event Name</InputLabel>
+              <Select
+                name="eventName"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={value.eventName}
+                label="Event Name"
+                onChange={event =>
+                  setValue({
+                    ...value,
+                    eventName: event.target.value,
+                  })
+                }
               >
-                <InputLabel id="demo-simple-select-label">
-                  Event Type
-                </InputLabel>
-                <Select
-                  name="eventType"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={value.eventType}
-                  label="Event type"
-                  onChange={event =>
-                    setValue({
-                      ...value,
-                      eventType: event.target.value,
-                    })
-                  }
-                >
-                  <MenuItem value="crew">Crew</MenuItem>
-                  <MenuItem value="learnzeit">Learnzeit</MenuItem>
-                  <MenuItem value="external">External</MenuItem>
-                </Select>
-              </FormControl>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="Date"
-                  value={value.eventDate === '' ? null : value.eventDate}
-                  onChange={newValue => {
-                    const newDate = dateFormat(newValue);
-                    setValue({ ...value, eventDate: newDate });
-                  }}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      sx={{ width: '100%', mx: { md: '20px' } }}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-              <Button
-                variant="contained"
-                sx={{
-                  width: { xs: '100%', md: '50%' },
-                  mt: { xs: '20px', md: '0px' },
-                  mx: { xs: '0px', md: '20px' },
+                {eventsList.map(event => (
+                  <MenuItem key={event} value={event}>
+                    {event}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl
+              fullWidth
+              sx={{ mx: { md: '20px' }, my: { xs: '20px', md: '0px' } }}
+            >
+              <InputLabel id="demo-simple-select-label">Event Type</InputLabel>
+              <Select
+                name="eventType"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={value.eventType}
+                label="Event type"
+                onChange={event =>
+                  setValue({
+                    ...value,
+                    eventType: event.target.value,
+                  })
+                }
+              >
+                <MenuItem value="crew">Crew</MenuItem>
+                <MenuItem value="learnzeit">Learnzeit</MenuItem>
+                <MenuItem value="external">External</MenuItem>
+              </Select>
+            </FormControl>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Date"
+                value={value.eventDate === '' ? null : value.eventDate}
+                onChange={newValue => {
+                  const newDate = dateFormat(newValue);
+                  setValue({ ...value, eventDate: newDate });
                 }}
-                onClick={handleSubmit}
-              >
-                Submit
-              </Button>
-            </div>
-            {rows !== null && (
-              <div className="mt-3" style={{ height: 400, width: '100%' }}>
-                <DataGrid
-                  checkboxSelection
-                  disableSelectionOnClick
-                  onSelectionModelChange={newSelectionModel => {
-                    setSelectionModel(newSelectionModel);
-                  }}
-                  selectionModel={selectionModel}
-                  components={{
-                    Toolbar: EditToolbar,
-                  }}
-                  rows={rows}
-                  columns={columns}
-                />
-              </div>
-            )}
-          </Card>
-          {rows === null && (
-            <h2 className="mt-5" style={{ color: 'white' }}>
-              {eventMsg}
-            </h2>
-          )}
-        </div>
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    sx={{ width: '100%', mx: { md: '20px' } }}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+            <Button
+              variant="contained"
+              sx={{
+                width: { xs: '100%', md: '50%' },
+                mt: { xs: '20px', md: '0px' },
+                mx: { xs: '0px', md: '20px' },
+              }}
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
+          </div>
+        </Card>
+        {rows !== null ? (
+          <div className="mt-3" style={{ height: 500, width: '100%' }}>
+            <DataGrid
+              checkboxSelection
+              disableSelectionOnClick
+              rows={rows}
+              columns={columns}
+              loading={rows.length === 0}
+              selectionModel={selectionModel}
+              onSelectionModelChange={newSelectionModel => {
+                setSelectionModel(newSelectionModel);
+              }}
+              components={{
+                Toolbar: EditToolbar,
+              }}
+              sx={{
+                boxShadow: 2,
+                backgroundColor: 'white',
+                padding: { xs: '10px', md: '15px' },
+                '& .MuiDataGrid-columnHeaders': {
+                  backgroundColor: '#e8f3ff',
+                  fontSize: '16px',
+                },
+              }}
+            />
+          </div>
+        ) : (
+          <h2 className="mt-5" style={{ color: 'white' }}>
+            {eventMsg}
+          </h2>
+        )}
       </div>
+
       <Popup
         title={
           selectionModel.length > 0 ? 'Are you sure wanna delete' : 'Add Member'

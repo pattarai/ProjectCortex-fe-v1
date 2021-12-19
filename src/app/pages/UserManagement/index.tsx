@@ -31,21 +31,9 @@ import { useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
 
-const CustomTable = styled(Table)(({ theme }) => ({
-  table: {
-    marginTop: theme.spacing(3),
-    '& thead th': {
-      fontWeight: '600',
-      color: theme.palette.primary.main,
-      backgroundColor: theme.palette.primary.light,
-    },
-    '& tbody td': {
-      fontWeight: '300',
-    },
-    '& tbody tr:hover': {
-      backgroundColor: '#fffbf2',
-      cursor: 'pointer',
-    },
+const CustomTableRow = styled(TableRow)(({ theme }) => ({
+  '&:hover': {
+    backgroundColor: '#fff8e0',
   },
 }));
 
@@ -78,12 +66,7 @@ export function UserManagement(props: Props) {
 
   return (
     <>
-      <div
-        className="vh-100 d-flex flex-column align-justify-center"
-        style={{
-          backgroundColor: '#f4f5fd',
-        }}
-      >
+      <div className="vh-100 d-flex flex-column align-justify-center">
         <Card
           className="d-flex flex-column align-justify-center p-5"
           style={{ width: '90%' }}
@@ -119,10 +102,7 @@ export function UserManagement(props: Props) {
             </div>
           </div>
           <TableContainer>
-            <CustomTable
-              sx={{ minWidth: 650 }}
-              aria-label="User Management table"
-            >
+            <Table sx={{ minWidth: 650 }} aria-label="User Management table">
               <TableHead sx={{ bgcolor: '#dee2fc' }}>
                 <TableRow>
                   <TableCell>Name</TableCell>
@@ -136,7 +116,7 @@ export function UserManagement(props: Props) {
               <TableBody>
                 {userData.length > 0 ? (
                   userData.map(row => (
-                    <TableRow
+                    <CustomTableRow
                       key={row.id}
                       sx={{
                         '&:last-child td, &:last-child th': { border: 0 },
@@ -173,7 +153,7 @@ export function UserManagement(props: Props) {
                           <MdDelete />
                         </IconButton>
                       </TableCell>
-                    </TableRow>
+                    </CustomTableRow>
                   ))
                 ) : (
                   <TableRow>
@@ -181,7 +161,7 @@ export function UserManagement(props: Props) {
                   </TableRow>
                 )}
               </TableBody>
-            </CustomTable>
+            </Table>
           </TableContainer>
         </Card>
       </div>
