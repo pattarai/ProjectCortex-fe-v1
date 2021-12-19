@@ -8,7 +8,7 @@ interface UserManagement {
   rank: string;
   project: string;
   committee: string;
-  date: Date | null;
+  date: string | null;
 }
 
 export interface UserManagementState extends Array<UserManagement> {}

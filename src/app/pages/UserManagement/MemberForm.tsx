@@ -14,11 +14,11 @@ import {
   Button,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
-
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 
+import { dateFormat } from '../../components/dateFormat';
 import { useDispatch, useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
@@ -31,7 +31,7 @@ type MemberData = {
   role: string;
   project: string;
   committee: string;
-  date: Date | null;
+  date: string | null;
 };
 
 export default function MemberForm({ setOpenModal, updateUser }) {
@@ -238,7 +238,8 @@ export default function MemberForm({ setOpenModal, updateUser }) {
                 label="Date"
                 value={values.date}
                 onChange={newValue => {
-                  setValues({ ...values, date: newValue });
+                  const newDate = dateFormat(newValue);
+                  setValues({ ...values, date: newDate });
                 }}
                 renderInput={params => (
                   <TextField
