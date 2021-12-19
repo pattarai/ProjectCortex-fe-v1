@@ -32,12 +32,22 @@ export const initialState: AttendanceState = [
       {
         id: 1,
         name: 'Dhivya',
-        status: 1,
+        status: 0,
       },
       {
         id: 2,
         name: 'Veroni',
         status: 2,
+      },
+      {
+        id: 3,
+        name: 'Raksha',
+        status: 1,
+      },
+      {
+        id: 4,
+        name: 'Subi',
+        status: 0,
       },
     ],
   },
