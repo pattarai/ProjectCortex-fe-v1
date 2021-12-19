@@ -7,7 +7,8 @@ import { AttendanceState } from './types';
 export const initialState: AttendanceState = [
   {
     id: 99,
-    eventName: 'Think Tank',
+    eventName: 'React basics',
+    eventType: 'learnzeit',
     eventDate: '12/01/2021',
     members: [
       {
@@ -25,6 +26,7 @@ export const initialState: AttendanceState = [
   {
     id: 100,
     eventName: 'Elevate',
+    eventType: 'crew',
     eventDate: '12/01/2021',
     members: [
       {

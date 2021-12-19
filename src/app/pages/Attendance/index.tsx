@@ -42,7 +42,7 @@ export function Attendance(props: Props) {
   const dispatch = useDispatch();
   const user = useSelector(selectAttendance);
 
-  const eventsList = ['Think Tank', 'Elevate'];
+  const eventsList = ['React basics', 'Elevate'];
   const [openPopup, setOpenPopup] = useState(false);
 
   const [value, setValue] = useState({
@@ -55,6 +55,7 @@ export function Attendance(props: Props) {
   const [rows, setRows] = useState<null | MemberAttendanceType[]>(null);
   const [currentEventId, setCurrentEventId] = useState<null | number>(null);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
+  const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
     if (rows) {
@@ -87,29 +88,31 @@ export function Attendance(props: Props) {
   function EditToolbar() {
     return (
       <>
-        <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2 mb-3">
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setSelectionModel([]);
-              setOpenPopup(true);
-            }}
-          >
-            <RiAddFill />
-            Add
-          </Button>
-          {selectionModel.length > 0 && (
+        {showButton && (
+          <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2 mb-3">
             <Button
               variant="outlined"
-              color="secondary"
-              sx={{ ml: 2 }}
-              onClick={() => setOpenPopup(true)}
+              onClick={() => {
+                setSelectionModel([]);
+                setOpenPopup(true);
+              }}
             >
-              <MdDelete />
-              Delete
+              <RiAddFill />
+              Add
             </Button>
-          )}
-        </div>
+            {selectionModel.length > 0 && (
+              <Button
+                variant="outlined"
+                color="secondary"
+                sx={{ ml: 2 }}
+                onClick={() => setOpenPopup(true)}
+              >
+                <MdDelete />
+                Delete
+              </Button>
+            )}
+          </div>
+        )}
       </>
     );
   }
@@ -118,12 +121,14 @@ export function Attendance(props: Props) {
     const rowData = user.find(
       item =>
         item.eventDate === value.eventDate &&
-        item.eventName === value.eventName,
+        item.eventName === value.eventName &&
+        item.eventType === value.eventType,
     );
     if (typeof rowData === 'undefined') {
       setRows(null);
       setEventMsg('No such Event');
     } else {
+      rowData.eventType !== 'crew' ? setShowButton(true) : setShowButton(false);
       setCurrentEventId(rowData.id);
       setRows(rowData.members);
     }
@@ -217,11 +222,11 @@ export function Attendance(props: Props) {
         {rows !== null ? (
           <div className="mt-3" style={{ height: 500, width: '100%' }}>
             <DataGrid
-              checkboxSelection
+              checkboxSelection={showButton}
               disableSelectionOnClick
               rows={rows}
               columns={columns}
-              loading={rows.length === 0}
+              //loading={rows.length === 0}
               selectionModel={selectionModel}
               onSelectionModelChange={newSelectionModel => {
                 setSelectionModel(newSelectionModel);

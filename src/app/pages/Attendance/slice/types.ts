@@ -8,6 +8,7 @@ export interface MemberAttendanceType {
 interface Attendance {
   id: number;
   eventName: string;
+  eventType: string;
   eventDate: string | Date;
   members: MemberAttendanceType[];
 }
