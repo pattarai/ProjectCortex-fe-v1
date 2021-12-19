@@ -12,6 +12,7 @@ import {
   Select,
   TextField,
   Card,
+  Chip,
 } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -21,6 +22,7 @@ import {
   GridColDef,
   GridValueSetterParams,
   GridSelectionModel,
+  GridRenderCellParams,
 } from '@mui/x-data-grid';
 
 import Popup from '../../components/Popup';
@@ -28,7 +30,12 @@ import { dateFormat } from '../../components/dateFormat';
 import DeleteForm from '../../components/DeleteForm';
 import MemberForm from './MemberForm';
 import { RiAddFill } from 'react-icons/ri';
-import { MdDelete } from 'react-icons/md';
+import {
+  MdDelete,
+  MdOutlineCheck,
+  MdNotInterested,
+  MdInfoOutline,
+} from 'react-icons/md';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useAttendanceSlice } from './slice';
@@ -71,6 +78,37 @@ export function Attendance(props: Props) {
     return newRow;
   }
 
+  function customCellRender(params: GridRenderCellParams) {
+    return (
+      <>
+        {params.value === 1 && (
+          <Chip
+            icon={<MdOutlineCheck />}
+            variant="outlined"
+            color="success"
+            label="Present"
+          />
+        )}
+        {params.value === 0 && (
+          <Chip
+            icon={<MdNotInterested />}
+            variant="outlined"
+            color="error"
+            label="Absent"
+          />
+        )}
+        {params.value === 2 && (
+          <Chip
+            icon={<MdInfoOutline />}
+            variant="outlined"
+            color="info"
+            label="Informed"
+          />
+        )}
+      </>
+    );
+  }
+
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'S.No.', minWidth: 400 },
     { field: 'name', headerName: 'Name', minWidth: 400 },
@@ -82,6 +120,7 @@ export function Attendance(props: Props) {
       editable: true,
       valueOptions: [0, 1, 2],
       valueSetter: setStatus,
+      renderCell: customCellRender,
       valueFormatter: params => {
         if (params.value === 0) {
           return `Absent`;
@@ -248,7 +287,8 @@ export function Attendance(props: Props) {
                 backgroundColor: 'white',
                 padding: { xs: '10px', md: '15px' },
                 '& .MuiDataGrid-columnHeaders': {
-                  backgroundColor: '#e8f3ff',
+                  backgroundColor: '#dee2fc',
+                  borderRadius: '5px',
                   fontSize: '16px',
                 },
               }}
