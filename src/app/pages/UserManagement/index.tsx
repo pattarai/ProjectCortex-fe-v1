@@ -33,7 +33,7 @@ import { selectUserManagement } from './slice/selectors';
 
 const CustomTableRow = styled(TableRow)(({ theme }) => ({
   '&:hover': {
-    backgroundColor: '#fff8e0',
+    backgroundColor: '#ffeee6',
   },
 }));
 
@@ -68,7 +68,7 @@ export function UserManagement(props: Props) {
     <>
       <div className="vh-100 d-flex flex-column align-justify-center">
         <Card
-          className="d-flex flex-column align-justify-center p-5"
+          className="d-flex flex-column align-justify-center p-3 p-md-5"
           style={{ width: '90%' }}
         >
           <div className="d-md-flex justify-content-between align-items-center mb-4 w-md-100">
