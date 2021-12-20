@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import {
-  Button,
   InputLabel,
   MenuItem,
   FormControl,
-  FormHelperText,
   Select,
   TextField,
 } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useDispatch } from 'react-redux';
 
 export default function MemberForm({ currentEventId, setOpenModal, actions }) {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const [member, setMember] = useState({
@@ -21,27 +21,19 @@ export default function MemberForm({ currentEventId, setOpenModal, actions }) {
 
   const [errors, setErrors] = useState({
     nameError: '',
-    statusError: '',
     isError: false,
   });
 
-  function handleSubmit() {
-    let noofErrors = 0;
+  async function handleSubmit() {
     let err = { ...errors };
-
-    Object.entries(member).forEach(([key, value]) => {
-      if (typeof value === 'string' && value.trim() === '') {
-        err[`${key}Error`] = 'This field is required';
-        noofErrors++;
-      }
-    });
-
-    if (noofErrors === 0) {
-      dispatch(actions.addUser(member));
-      setOpenModal(false);
-    } else {
+    if (member.name.trim() === '') {
+      err.nameError = 'Name is required';
       err.isError = true;
       setErrors(err);
+    } else {
+      setLoading(true);
+      await dispatch(actions.addUser(member));
+      setOpenModal(false);
     }
   }
 
@@ -58,11 +50,7 @@ export default function MemberForm({ currentEventId, setOpenModal, actions }) {
         sx={{ width: '100%' }}
         onChange={e => setMember({ ...member, name: e.target.value })}
       />
-      <FormControl
-        fullWidth
-        sx={{ my: '20px' }}
-        error={errors.isError && (member.status === 5 ? true : false)}
-      >
+      <FormControl fullWidth sx={{ my: '20px' }}>
         <InputLabel id="demo-simple-select-label">Status</InputLabel>
         <Select
           value={member.status.toString()}
@@ -77,19 +65,15 @@ export default function MemberForm({ currentEventId, setOpenModal, actions }) {
           <MenuItem value={0}>Absent</MenuItem>
           <MenuItem value={2}>Informed</MenuItem>
         </Select>
-        <FormHelperText>
-          {errors.isError &&
-            (errors.statusError !== '' ? errors.statusError : '')}
-        </FormHelperText>
       </FormControl>
-      <Button
+      <LoadingButton
+        loading={loading}
         variant="outlined"
-        color="primary"
         sx={{ width: '100%' }}
         onClick={handleSubmit}
       >
         Add Member
-      </Button>
+      </LoadingButton>
     </div>
   );
 }
