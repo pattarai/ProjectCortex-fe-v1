@@ -78,12 +78,10 @@ const slice = createSlice({
     deleteUser(state, action: PayloadAction<any>) {
       const { eventId, deleteMembers } = action.payload;
       const selectedEventId = state.findIndex(event => event.id === eventId);
-      deleteMembers.forEach((member: number) => {
-        const selectedMemberId = state[selectedEventId].members.findIndex(
-          user => user.id === member,
-        );
-        state[selectedEventId].members.splice(selectedMemberId, 1);
+      const newMemberList = state[selectedEventId].members.filter(user => {
+        return !deleteMembers.includes(user.id);
       });
+      state[selectedEventId].members = newMemberList;
     },
   },
 });
