@@ -59,10 +59,12 @@ const slice = createSlice({
   reducers: {
     addUser(state, action: PayloadAction<any>) {
       const { eventId, ...rest } = action.payload;
-      const thedata = state.find(event => event.id === eventId)?.members;
-      if (thedata) {
-        const newData = { id: thedata.length + 1, ...rest };
-        thedata.push(newData);
+      const memberList = state.find(event => event.id === eventId)?.members;
+      if (memberList) {
+        const newId =
+          memberList.length > 0 ? memberList[memberList.length - 1].id + 1 : 1;
+        const newMember = { id: newId, ...rest };
+        memberList.push(newMember);
       }
     },
 
