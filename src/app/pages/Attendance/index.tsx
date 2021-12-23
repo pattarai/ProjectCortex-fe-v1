@@ -20,9 +20,9 @@ import DatePicker from '@mui/lab/DatePicker';
 import {
   DataGrid,
   GridColDef,
-  GridValueSetterParams,
   GridSelectionModel,
   GridRenderCellParams,
+  GridValueSetterParams,
 } from '@mui/x-data-grid';
 
 import Popup from '../../components/Popup';
@@ -113,15 +113,23 @@ export function Attendance(props: Props) {
     {
       field: 'id',
       headerName: 'S.No.',
-      minWidth: 400,
+      minWidth: 100,
+      flex: 0.5,
       filterable: false,
     },
-    { field: 'name', headerName: 'Name', minWidth: 400, sortable: false },
+    {
+      field: 'name',
+      headerName: 'Name',
+      minWidth: 150,
+      flex: 0.5,
+      sortable: false,
+    },
     {
       field: 'status',
       type: 'singleSelect',
       headerName: 'Status',
-      minWidth: 400,
+      minWidth: 150,
+      flex: 0.5,
       editable: true,
       sortable: false,
       valueOptions: [0, 1, 2],
