@@ -58,7 +58,7 @@ export function UserManagement(props: Props) {
       setUserData(user);
     } else {
       const filteredUser = user.filter(row =>
-        row.name.toLowerCase().includes(searchedVal.toLowerCase()),
+        row.first_name.toLowerCase().includes(searchedVal.toLowerCase()),
       );
       setUserData(filteredUser);
     }
@@ -117,13 +117,13 @@ export function UserManagement(props: Props) {
                 {userData.length > 0 ? (
                   userData.map(row => (
                     <CustomTableRow
-                      key={row.id}
+                      key={row.uid}
                       sx={{
                         '&:last-child td, &:last-child th': { border: 0 },
                       }}
                     >
                       <TableCell component="th" scope="row">
-                        {row.name}
+                        {row.first_name}
                       </TableCell>
                       <TableCell>{row.email}</TableCell>
                       <TableCell>{row.role}</TableCell>
@@ -135,7 +135,7 @@ export function UserManagement(props: Props) {
                           color="primary"
                           onClick={() => {
                             setDeleteUser(null);
-                            setUpdateUser(row.id);
+                            setUpdateUser(row.uid);
                             setOpenPopup(true);
                           }}
                         >
@@ -146,7 +146,7 @@ export function UserManagement(props: Props) {
                           color="secondary"
                           className="ms-2"
                           onClick={() => {
-                            setDeleteUser(row.id);
+                            setDeleteUser(row.uid);
                             setOpenPopup(true);
                           }}
                         >

@@ -6,8 +6,9 @@ import { UserManagementState } from './types';
 
 export const initialState: UserManagementState = [
   {
-    id: 99,
-    name: 'Joshua',
+    uid: 99,
+    first_name: 'Joshua',
+    last_name: 'Frankle',
     email: 'joshuafrankle7@gmail.com',
     role: 'VPE',
     rank: 'Copper',
@@ -16,8 +17,9 @@ export const initialState: UserManagementState = [
     date: null,
   },
   {
-    id: 100,
-    name: 'Jesin',
+    uid: 100,
+    first_name: 'Jesinthan',
+    last_name: 'J',
     email: 'jesinthan@gmail.com',
     role: 'Director of Activities',
     rank: 'Gold',
@@ -33,17 +35,17 @@ const slice = createSlice({
   reducers: {
     addUser(state, action: PayloadAction<any>) {
       const { id, ...rest } = action.payload;
-      const newId = state.length > 0 ? state[0].id - 1 : state.length + 100;
+      const newId = state.length > 0 ? state[0].uid - 1 : state.length + 100;
       const newData = { id: newId, ...rest };
       state.unshift(newData);
     },
     deleteUser(state, action: PayloadAction<any>) {
       state.forEach(
-        st => st.id === action.payload && state.splice(state.indexOf(st), 1),
+        st => st.uid === action.payload && state.splice(state.indexOf(st), 1),
       );
     },
     updateUser(state, action: PayloadAction<any>) {
-      const newArray = state.findIndex(st => st.id === action.payload.id);
+      const newArray = state.findIndex(st => st.uid === action.payload.id);
       state[newArray] = { ...action.payload };
     },
   },

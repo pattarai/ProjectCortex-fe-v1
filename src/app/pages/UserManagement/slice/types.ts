@@ -1,8 +1,9 @@
 /* --- STATE --- */
 
 interface UserManagement {
-  id: number;
-  name: string;
+  uid: number;
+  first_name: string;
+  last_name: string;
   email: string;
   role: string;
   rank: string;

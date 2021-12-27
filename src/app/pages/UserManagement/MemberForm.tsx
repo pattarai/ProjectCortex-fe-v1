@@ -39,11 +39,11 @@ export default function MemberForm({ setOpenModal, updateUser }) {
   const dispatch = useDispatch();
   const user = useSelector(selectUserManagement);
 
-  let updateUserValue = user.find(u => u.id === updateUser);
+  let updateUserValue = user.find(u => u.uid === updateUser);
 
   const [values, setValues] = useState<MemberData>({
-    id: updateUserValue ? updateUserValue.id : 0,
-    name: updateUserValue ? updateUserValue.name : '',
+    id: updateUserValue ? updateUserValue.uid : 0,
+    name: updateUserValue ? updateUserValue.first_name : '',
     email: updateUserValue ? updateUserValue.email : '',
     role: updateUserValue ? updateUserValue.role : '',
     rank: updateUserValue ? updateUserValue.rank : '',
