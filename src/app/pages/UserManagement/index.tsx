@@ -53,10 +53,7 @@ export function UserManagement(props: Props) {
   const [openPopup, setOpenPopup] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
-      await Promise.resolve(dispatch(actions.getUser()));
-    }
-    fetchData();
+    dispatch(actions.getUser());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
