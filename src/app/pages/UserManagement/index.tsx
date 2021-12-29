@@ -27,7 +27,7 @@ import Popup from '../../components/Popup';
 import DeleteForm from '../../components/DeleteForm';
 import MemberForm from './MemberForm';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
 
@@ -42,12 +42,18 @@ interface Props {}
 export function UserManagement(props: Props) {
   const { actions } = useUserManagementSlice();
   const user = useSelector(selectUserManagement);
+  const dispatch = useDispatch();
 
   const [userData, setUserData] = useState(user);
   const [updateUser, setUpdateUser] = useState<number | null>(null);
   const [deleteUser, setDeleteUser] = useState<number | null>(null);
 
   const [openPopup, setOpenPopup] = useState(false);
+
+  useEffect(() => {
+    dispatch(actions.getUser());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setUserData(user);
