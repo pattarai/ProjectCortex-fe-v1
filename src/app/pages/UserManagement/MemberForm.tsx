@@ -31,7 +31,7 @@ type MemberData = {
   role: string;
   project: string;
   committee: string;
-  date: string | null;
+  start_date: string | null;
 };
 
 export default function MemberForm({ setOpenModal, updateUser }) {
@@ -49,7 +49,7 @@ export default function MemberForm({ setOpenModal, updateUser }) {
     rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
-    date: updateUserValue ? updateUserValue.date : null,
+    start_date: updateUserValue ? updateUserValue.start_date : null,
   });
 
   const [errors, setErrors] = useState({
@@ -236,16 +236,17 @@ export default function MemberForm({ setOpenModal, updateUser }) {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date"
-                value={values.date}
+                value={values.start_date}
                 onChange={newValue => {
                   const newDate = dateFormat(newValue);
-                  setValues({ ...values, date: newDate });
+                  setValues({ ...values, start_date: newDate });
                 }}
                 renderInput={params => (
                   <TextField
                     {...params}
                     error={
-                      errors.isError && (values.date === null ? true : false)
+                      errors.isError &&
+                      (values.start_date === null ? true : false)
                     }
                     helperText={
                       errors.isError &&
@@ -277,7 +278,7 @@ export default function MemberForm({ setOpenModal, updateUser }) {
                   rank: '',
                   project: '',
                   committee: '',
-                  date: null,
+                  start_date: null,
                 })
               }
               color="secondary"

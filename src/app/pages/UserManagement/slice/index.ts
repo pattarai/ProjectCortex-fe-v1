@@ -14,7 +14,7 @@ export const initialState: UserManagementState = [
     rank: 'Copper',
     project: 'Cortex',
     committee: 'EV',
-    date: null,
+    start_date: null,
   },
   {
     uid: 100,
@@ -25,7 +25,7 @@ export const initialState: UserManagementState = [
     rank: 'Gold',
     project: 'Cortex',
     committee: 'EV',
-    date: null,
+    start_date: null,
   },
 ];
 
