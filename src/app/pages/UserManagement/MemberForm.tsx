@@ -112,7 +112,7 @@ export default function MemberForm({ setOpenModal, updateUser }) {
     }
   }
 
-  const projectsList = ['Project Cortex', 'Project Pager', 'Project Opencloud'];
+  const projectsList = ['Cortex', 'Pager', 'Opencloud'];
   const committeeList = ['HR', 'BD', 'I&M', 'EV'];
 
   return (
