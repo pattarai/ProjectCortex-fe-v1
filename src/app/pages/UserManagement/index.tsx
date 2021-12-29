@@ -83,6 +83,7 @@ export function UserManagement(props: Props) {
         >
           <div className="d-md-flex justify-content-between align-items-center mb-4 w-md-100">
             <TextField
+              disabled={loading}
               label="Search Members"
               id="outlined-start-adornment"
               className="mb-3 mb-md-0 w-md-50"
@@ -97,6 +98,7 @@ export function UserManagement(props: Props) {
             />
             <div>
               <Button
+                disabled={loading}
                 variant="outlined"
                 className="w-100"
                 style={{ width: '100%' }}
@@ -142,6 +144,7 @@ export function UserManagement(props: Props) {
                       <TableCell align="center">{row.committee}</TableCell>
                       <TableCell align="center">
                         <IconButton
+                          disabled={loading}
                           aria-label="Edit"
                           color="primary"
                           onClick={() => {
@@ -153,6 +156,7 @@ export function UserManagement(props: Props) {
                           <MdEdit />
                         </IconButton>
                         <IconButton
+                          disabled={loading}
                           aria-label="Delete"
                           color="secondary"
                           className="ms-2"
