@@ -33,6 +33,10 @@ const slice = createSlice({
   name: 'userManagement',
   initialState,
   reducers: {
+    getUser: () => {},
+    setUser(state, action: PayloadAction<any>) {
+      state.push(...action.payload);
+    },
     addUser(state, action: PayloadAction<any>) {
       const { id, ...rest } = action.payload;
       const newId = state.length > 0 ? state[0].uid - 1 : state.length + 100;
