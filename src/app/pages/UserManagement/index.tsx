@@ -45,7 +45,7 @@ export function UserManagement(props: Props) {
   const user = useSelector(selectUserManagement);
   const dispatch = useDispatch();
 
-  const [userData, setUserData] = useState(user);
+  const [userData, setUserData] = useState<typeof user | null>(null);
   const [updateUser, setUpdateUser] = useState<number | null>(null);
   const [deleteUser, setDeleteUser] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -55,7 +55,6 @@ export function UserManagement(props: Props) {
   useEffect(() => {
     async function fetchData() {
       await Promise.resolve(dispatch(actions.getUser()));
-      setLoading(false);
     }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,6 +62,8 @@ export function UserManagement(props: Props) {
 
   useEffect(() => {
     setUserData(user);
+    userData && setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   function handleChange(searchedVal: string | null) {
@@ -127,7 +128,7 @@ export function UserManagement(props: Props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {userData.length > 0 ? (
+                {userData ? (
                   userData.map(row => (
                     <CustomTableRow
                       key={row.uid}
