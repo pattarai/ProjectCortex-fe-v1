@@ -1,8 +1,17 @@
-// import { take, call, put, select, takeLatest } from 'redux-saga/effects';
-// import { userManagementActions as actions } from '.';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { userManagementActions as actions } from '.';
+import { axiosGet } from '../../../requests';
 
-// function* doSomething() {}
+function* handleGetUser() {
+  try {
+    const res = yield call(() => axiosGet('/usermanagement'));
+    const data = res.data.data;
+    yield put(actions.setUser(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export function* userManagementSaga() {
-  // yield takeLatest(actions.someAction.type, doSomething);
+  yield takeLatest(actions.getUser.type, handleGetUser);
 }
