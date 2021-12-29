@@ -17,6 +17,7 @@ import {
   TableContainer,
   TextField,
   IconButton,
+  LinearProgress,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { MdDelete, MdEdit } from 'react-icons/md';
@@ -47,11 +48,16 @@ export function UserManagement(props: Props) {
   const [userData, setUserData] = useState(user);
   const [updateUser, setUpdateUser] = useState<number | null>(null);
   const [deleteUser, setDeleteUser] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const [openPopup, setOpenPopup] = useState(false);
 
   useEffect(() => {
-    dispatch(actions.getUser());
+    async function fetchData() {
+      await Promise.resolve(dispatch(actions.getUser()));
+      setLoading(false);
+    }
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -108,6 +114,7 @@ export function UserManagement(props: Props) {
             </div>
           </div>
           <TableContainer>
+            {loading && <LinearProgress />}
             <Table sx={{ minWidth: 650 }} aria-label="User Management table">
               <TableHead sx={{ bgcolor: '#dee2fc' }}>
                 <TableRow>
