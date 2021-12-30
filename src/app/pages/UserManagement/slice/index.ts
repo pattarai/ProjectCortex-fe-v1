@@ -4,30 +4,7 @@ import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { userManagementSaga } from './saga';
 import { UserManagementState } from './types';
 
-export const initialState: UserManagementState = [
-  {
-    uid: 99,
-    first_name: 'Joshua',
-    last_name: 'Frankle',
-    email: 'joshuafrankle7@gmail.com',
-    role: 'VPE',
-    rank: 'Copper',
-    project: 'Cortex',
-    committee: 'EV',
-    start_date: null,
-  },
-  {
-    uid: 100,
-    first_name: 'Jesinthan',
-    last_name: 'J',
-    email: 'jesinthan@gmail.com',
-    role: 'Director of Activities',
-    rank: 'Gold',
-    project: 'Cortex',
-    committee: 'EV',
-    start_date: null,
-  },
-];
+export const initialState: UserManagementState = [];
 
 const slice = createSlice({
   name: 'userManagement',
