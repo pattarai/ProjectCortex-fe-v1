@@ -191,7 +191,11 @@ export function UserManagement(props: Props) {
             action={actions.deleteUser(deleteUser)}
           />
         ) : (
-          <MemberForm setOpenModal={setOpenPopup} updateUser={updateUser} />
+          <MemberForm
+            setOpenModal={setOpenPopup}
+            updateUser={updateUser}
+            setLoading={setLoading}
+          />
         )}
       </Popup>
     </>
