@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { userManagementActions as actions } from '.';
-import { axiosGet } from '../../../requests';
+import { axiosGet, axiosPatch } from '../../../requests';
 
 function* handleGetUser() {
   try {
@@ -12,6 +12,17 @@ function* handleGetUser() {
   }
 }
 
+function* handleUpdateUser(action: any) {
+  try {
+    console.log(action.payload);
+    yield call(() => axiosPatch('/usermanagement', action.payload));
+    yield put(actions.setUpdateUser(action.payload));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function* userManagementSaga() {
   yield takeLatest(actions.getUser.type, handleGetUser);
+  yield takeLatest(actions.updateUser.type, handleUpdateUser);
 }
