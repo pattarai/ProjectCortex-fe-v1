@@ -9,5 +9,5 @@ export function dateFormat(dat: string | null) {
   if (currentMonth < 10) {
     currentMonth = `0${currentMonth}`;
   }
-  return `${currentYear}/${currentMonth}/${currentDate}`;
+  return `${currentMonth}/${currentDate}/${currentYear}`;
 }
