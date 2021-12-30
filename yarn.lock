@@ -1837,13 +1837,6 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
-"@mui/icons-material@5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.0.3.tgz#2a9d4f9078f375cef40f63a240b59cefa4a27eec"
-  integrity sha512-Lktn+4GNnXdVrOCUUvNNvOD9VyrGazWBsJy0BQeQgBe/+IjFMdlcNrDEUIlGlA5ZXOq7Mr/Mv9Os02mgF65jiw==
-  dependencies:
-    "@babel/runtime" "^7.15.4"
-
 "@mui/lab@5.0.0-alpha.55":
   version "5.0.0-alpha.55"
   resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-5.0.0-alpha.55.tgz#0f96a3aa83c66cdca1bee6cc4ba8954e9905267a"
@@ -1974,15 +1967,6 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
-"@mui/x-data-grid@5.0.0-beta.5":
-  version "5.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@mui/x-data-grid/-/x-data-grid-5.0.0-beta.5.tgz#00102251a258eeb8a39c0204091acf38af16767c"
-  integrity sha512-q1CRHgzOvc4Xt/H590qsHlLSwmJso09eBbMz0orn8/1BNLH/hW/IqVaUHu0WDz23e8RQWxPfcaS+WHvW01hXYw==
-  dependencies:
-    "@mui/utils" "^5.0.1"
-    clsx "^1.1.1"
-    prop-types "^15.7.2"
-    reselect "^4.0.0"
 "@mui/utils@^5.1.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@mui/utils/-/utils-5.1.1.tgz#3cb2c049731dacb3830336bc8011141e84434aad"
@@ -1993,6 +1977,16 @@
     "@types/react-is" "^16.7.1 || ^17.0.0"
     prop-types "^15.7.2"
     react-is "^17.0.2"
+
+"@mui/x-data-grid@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@mui/x-data-grid/-/x-data-grid-5.1.0.tgz#837e51be256fb5a3316bfe1c73ef6f537788785a"
+  integrity sha512-Pj6/FM+fmGjUYqQ26CC0fRiiLENWMfTyp8nOjEm95eqOPbyFM1BMLsZrCU78TR+jUMsE7nc2Y4lYkWlAPcvIgQ==
+  dependencies:
+    "@mui/utils" "^5.1.1"
+    clsx "^1.1.1"
+    prop-types "^15.7.2"
+    reselect "^4.1.4"
 
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
@@ -3722,6 +3716,13 @@ axe-core@^4.0.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.1.2.tgz#7cf783331320098bfbef620df3b3c770147bc224"
   integrity sha512-V+Nq70NxKhYt89ArVcaNL9FDryB3vQOd+BFXZIfO3RP6rwtj+2yqqqdHEkacutglPaZLkJeuXKCjCJDMGPtPqg==
+
+axios@0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
+  dependencies:
+    follow-redirects "^1.14.4"
 
 axobject-query@^2.2.0:
   version "2.2.0"
@@ -6831,6 +6832,11 @@ follow-redirects@^1.0.0:
   version "1.13.2"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.2.tgz#dd73c8effc12728ba5cf4259d760ea5fb83e3147"
   integrity sha512-6mPTgLxYm3r6Bkkg0vNM0HTjfGrOEtsfbhagQvbxDEsEkpNhw582upBaoRZylzen6krEmxXJgt9Ju6HiI4O7BA==
+
+follow-redirects@^1.14.4:
+  version "1.14.6"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.6.tgz#8cfb281bbc035b3c067d6cd975b0f6ade6e855cd"
+  integrity sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==
 
 fontfaceobserver@2.1.0:
   version "2.1.0"
@@ -12458,6 +12464,11 @@ reselect@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.0.0.tgz#f2529830e5d3d0e021408b246a206ef4ea4437f7"
   integrity sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA==
+
+reselect@^4.1.4:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.1.5.tgz#852c361247198da6756d07d9296c2b51eddb79f6"
+  integrity sha512-uVdlz8J7OO+ASpBYoz1Zypgx0KasCY20H+N8JD13oUMtPvSHQuscrHop4KbXrbsBcdB9Ds7lVK7eRkBIfO43vQ==
 
 resolve-cwd@^2.0.0:
   version "2.0.0"
