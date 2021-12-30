@@ -8,7 +8,13 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Avatar, Button, CardActionArea, TextField } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  CardActionArea,
+  TextField,
+  InputAdornment,
+} from '@mui/material';
 import AvatarIcon from './images/raksha.png';
 import Diamond from './images/diamond.png';
 
@@ -19,7 +25,8 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Box } from '@mui/system';
+
+import { FaSearch } from 'react-icons/fa';
 
 interface Props {}
 
@@ -189,16 +196,18 @@ export function RankingCrew(props: Props) {
           </div>
         </div>
         <div className="container my-3">
-          <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-            {/* <SearchIcon
-              sx={{ color: 'action.active', mr: 1, my: 0.5, mt: 1 }}
-            /> */}
-            <TextField
-              id="input-with-sx"
-              label="Search Name"
-              variant="standard"
-            />
-          </Box>
+          <TextField
+            label="Search Members"
+            id="outlined-start-adornment"
+            className="mb-3 mb-md-0 w-md-50 text-white"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FaSearch />
+                </InputAdornment>
+              ),
+            }}
+          />
         </div>
         <div className="container align-items-center d-flex justify-content-center">
           <div className="col m-2">
