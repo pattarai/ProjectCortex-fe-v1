@@ -34,7 +34,7 @@ type MemberData = {
   start_date: string | null;
 };
 
-export default function MemberForm({ setOpenModal, updateUser }) {
+export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useUserManagementSlice();
   const dispatch = useDispatch();
   const user = useSelector(selectUserManagement);
@@ -100,6 +100,8 @@ export default function MemberForm({ setOpenModal, updateUser }) {
 
   function handleSubmit() {
     if (checkError()) {
+      setOpenModal(false);
+      setLoading(true);
       dispatch(actions.addUser(values));
       setOpenModal(false);
     }
@@ -107,6 +109,8 @@ export default function MemberForm({ setOpenModal, updateUser }) {
 
   function handleUpdate() {
     if (checkError()) {
+      setOpenModal(false);
+      setLoading(true);
       dispatch(actions.updateUser(values));
       setOpenModal(false);
     }
