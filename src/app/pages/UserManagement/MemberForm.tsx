@@ -26,8 +26,9 @@ import { selectUserManagement } from './slice/selectors';
 type MemberData = {
   uid?: number;
   first_name: string;
+  last_name: string;
   email: string;
-  rank: string;
+  //rank: string;
   role: string;
   project: string;
   committee: string;
@@ -44,19 +45,21 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const [values, setValues] = useState<MemberData>({
     uid: updateUserValue ? updateUserValue.uid : 0,
     first_name: updateUserValue ? updateUserValue.first_name : '',
+    last_name: updateUserValue ? updateUserValue.last_name : '',
     email: updateUserValue ? updateUserValue.email : '',
     role: updateUserValue ? updateUserValue.role : '',
-    rank: updateUserValue ? updateUserValue.rank : '',
+    // rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
     start_date: updateUserValue ? updateUserValue.start_date : null,
   });
 
   const [errors, setErrors] = useState({
-    nameError: '',
+    first_nameError: '',
+    last_nameError: '',
     emailError: '',
     roleError: '',
-    rankError: '',
+    // rankError: '',
     projectError: '',
     committeeError: '',
     dateError: '',
@@ -103,7 +106,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
       setOpenModal(false);
       setLoading(true);
       dispatch(actions.addUser(values));
-      setOpenModal(false);
     }
   }
 
@@ -112,7 +114,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
       setOpenModal(false);
       setLoading(true);
       dispatch(actions.updateUser(values));
-      setOpenModal(false);
     }
   }
 
@@ -130,13 +131,29 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             }
             helperText={
               errors.isError &&
-              (errors.nameError !== '' ? errors.nameError : '')
+              (errors.first_nameError !== '' ? errors.first_nameError : '')
             }
             id="outlined-basic"
             className="mb-3"
             label="First Name"
             variant="outlined"
             onChange={e => setValues({ ...values, first_name: e.target.value })}
+          />
+          <br />
+          <TextField
+            value={values.last_name}
+            error={
+              errors.isError && (values.last_name.trim() === '' ? true : false)
+            }
+            helperText={
+              errors.isError &&
+              (errors.last_nameError !== '' ? errors.last_nameError : '')
+            }
+            className="mb-3"
+            id="outlined-basic"
+            label="Last Name"
+            variant="outlined"
+            onChange={e => setValues({ ...values, last_name: e.target.value })}
           />
           <br />
           <TextField
@@ -169,7 +186,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             onChange={e => setValues({ ...values, role: e.target.value })}
           />
           <br />
-          <TextField
+          {/* <TextField
             value={values.rank}
             error={errors.isError && (values.rank.trim() === '' ? true : false)}
             helperText={
@@ -181,7 +198,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             label="Rank"
             variant="outlined"
             onChange={e => setValues({ ...values, rank: e.target.value })}
-          />
+          /> */}
           <br />
         </div>
         <div className="ms-md-3">
