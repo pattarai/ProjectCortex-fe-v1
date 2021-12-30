@@ -19,8 +19,6 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import EventIcon from '@mui/icons-material/Event';
-import SearchIcon from '@mui/icons-material/Search';
 import { Box } from '@mui/system';
 
 interface Props {}
@@ -91,18 +89,14 @@ export function RankingCrew(props: Props) {
                   </div>
                 </ListSubheader>
                 <ListItem>
-                  <ListItemIcon>
-                    <EventIcon />
-                  </ListItemIcon>
+                  <ListItemIcon></ListItemIcon>
                   <ListItemText primary="INTACTO" />
                   <div className="d-flex justify-content-end">
                     <ListItemText primary="2" />
                   </div>
                 </ListItem>
                 <ListItem>
-                  <ListItemIcon>
-                    <EventIcon />
-                  </ListItemIcon>
+                  <ListItemIcon></ListItemIcon>
                   <ListItemText primary="FESTX" />
                   <div className="d-flex justify-content-end">
                     <ListItemText primary="5" />
@@ -196,9 +190,9 @@ export function RankingCrew(props: Props) {
         </div>
         <div className="container my-3">
           <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-            <SearchIcon
+            {/* <SearchIcon
               sx={{ color: 'action.active', mr: 1, my: 0.5, mt: 1 }}
-            />
+            /> */}
             <TextField
               id="input-with-sx"
               label="Search Name"
