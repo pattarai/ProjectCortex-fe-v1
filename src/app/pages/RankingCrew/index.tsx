@@ -27,6 +27,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import { FaSearch } from 'react-icons/fa';
+import { RiAddFill } from 'react-icons/ri';
 
 interface Props {}
 
@@ -103,14 +104,18 @@ export function RankingCrew(props: Props) {
                   </div>
                 </ListSubheader>
                 <ListItem>
-                  <ListItemIcon></ListItemIcon>
+                  <ListItemIcon>
+                    <RiAddFill />
+                  </ListItemIcon>
                   <ListItemText primary="INTACTO" />
                   <div className="d-flex justify-content-end">
                     <ListItemText primary="2" />
                   </div>
                 </ListItem>
                 <ListItem>
-                  <ListItemIcon></ListItemIcon>
+                  <ListItemIcon>
+                    <RiAddFill />
+                  </ListItemIcon>
                   <ListItemText primary="FESTX" />
                   <div className="d-flex justify-content-end">
                     <ListItemText primary="5" />
