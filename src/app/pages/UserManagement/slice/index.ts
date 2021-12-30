@@ -10,7 +10,7 @@ const slice = createSlice({
   name: 'userManagement',
   initialState,
   reducers: {
-    getUser: () => {},
+    getUser() {},
     setUser(state, action: PayloadAction<any>) {
       state.push(...action.payload);
     },
@@ -25,8 +25,9 @@ const slice = createSlice({
         st => st.uid === action.payload && state.splice(state.indexOf(st), 1),
       );
     },
-    updateUser(state, action: PayloadAction<any>) {
-      const newArray = state.findIndex(st => st.uid === action.payload.id);
+    updateUser(state, action: PayloadAction<any>) {},
+    setUpdateUser(state, action: PayloadAction<any>) {
+      const newArray = state.findIndex(st => st.uid === action.payload.uid);
       state[newArray] = { ...action.payload };
     },
   },
