@@ -39,6 +39,13 @@ export function RankingCrew(props: Props) {
   //   { label: 'Phase II', id: 2 },
   //   { label: 'Phase III', id: 3 },
   // ];
+
+  const ranklist = [
+    { name: 'Raksha', league: 'Bronze', rank: '1', score: '210' },
+    { name: 'Veroni', league: 'Diamond', rank: '3', score: '100' },
+    { name: 'Josh', league: 'Silver', rank: '8', score: '50' },
+  ];
+
   return (
     <>
       {/* <Autocomplete
@@ -115,86 +122,45 @@ export function RankingCrew(props: Props) {
         </Modal>
         <div className="container my-4">
           <div className="row">
-            <div className="col-12 col-md-4 mb-4">
-              <Card elevation={2} sx={{ textAlign: 'center' }}>
-                <CardActionArea>
-                  <CardContent>
-                    <Avatar
-                      alt="Raksha"
-                      src={AvatarIcon}
-                      sx={{
-                        width: 70,
-                        height: 70,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 'auto',
-                        marginBottom: '5%',
-                      }}
-                    />
-                    <Typography component="h2" variant="h5">
-                      Raksha V G
-                    </Typography>
-                    <Typography variant="subtitle1" color="text.secondary">
-                      Diamond League | 23
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </div>
-            <div className="col-12 col-md-4 mb-4">
-              <Card elevation={2} sx={{ textAlign: 'center' }}>
-                <CardActionArea>
-                  <CardContent>
-                    <Avatar
-                      alt="Raksha"
-                      src={AvatarIcon}
-                      sx={{
-                        width: 70,
-                        height: 70,
-                        margin: 'auto',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginBottom: '5%',
-                      }}
-                    />
-                    <Typography component="h2" variant="h5">
-                      Raksha V G
-                    </Typography>
-                    <Typography variant="subtitle1" color="text.secondary">
-                      Diamond League | 23
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </div>
-            <div className="col-12 col-md-4 mb-4">
-              <Card elevation={2} sx={{ textAlign: 'center' }}>
-                <CardActionArea>
-                  <CardContent>
-                    <Avatar
-                      alt="Raksha"
-                      src={AvatarIcon}
-                      sx={{
-                        width: 70,
-                        height: 70,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 'auto',
-                        marginBottom: '5%',
-                      }}
-                    />
-                    <Typography component="h2" variant="h5">
-                      Raksha V G
-                    </Typography>
-                    <Typography variant="subtitle1" color="text.secondary">
-                      Diamond League | 23
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </div>
+            {
+              //ranklist.length > 3 &&
+              ranklist.map((list, index) => {
+                return (
+                  <div key={index} className="col-12 col-md-4 mb-4">
+                    <Card elevation={2} sx={{ textAlign: 'center' }}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Avatar
+                            alt={list.name}
+                            src={AvatarIcon}
+                            sx={{
+                              width: 70,
+                              height: 70,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              margin: 'auto',
+                              marginBottom: '5%',
+                            }}
+                          />
+                          <Typography component="h2" variant="h5">
+                            {list.name}
+                          </Typography>
+                          <Typography
+                            variant="subtitle1"
+                            color="text.secondary"
+                          >
+                            {list.league} | {list.score}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </div>
+                );
+              })
+            }
           </div>
         </div>
+
         <div className="container my-3">
           <TextField
             label="Search Members"
@@ -209,228 +175,68 @@ export function RankingCrew(props: Props) {
             }}
           />
         </div>
+
         <div className="container align-items-center d-flex justify-content-center">
           <div className="col m-2">
-            <div className="row mb-2">
-              <Card elevation={2}>
-                <CardContent>
-                  <div className="align-items-center d-flex justify-content-center">
-                    <span className="me-3">
-                      <Typography
-                        component="h1"
-                        variant="h6"
-                        color="text.secondary"
-                      >
-                        #4
-                      </Typography>
-                    </span>
-                    <Avatar
-                      alt="Raksha"
-                      src={AvatarIcon}
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 'auto',
-                      }}
-                    />
-                    <div style={{ width: '50%' }}>
-                      <span className="d-none d-md-block ms-2">
-                        <Typography component="h2" variant="h6">
-                          Raksha V G
-                        </Typography>
-                      </span>
-                    </div>
-                    <Avatar
-                      alt="diamond"
-                      src={Diamond}
-                      variant="square"
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 'auto',
-                      }}
-                    />
-                    <div
-                      className="d-flex flex-column justify-content-end align-items-end"
-                      style={{ width: '60%' }}
-                    >
-                      <Typography component="h2" variant="h6">
-                        67
-                      </Typography>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            <div className="row mb-2">
-              <Card elevation={2}>
-                <CardContent>
-                  <div className="align-items-center d-flex justify-content-center">
-                    <span className="me-3">
-                      <Typography
-                        component="h1"
-                        variant="h6"
-                        color="text.secondary"
-                      >
-                        #5
-                      </Typography>
-                    </span>
-                    <Avatar
-                      alt="Raksha"
-                      src={AvatarIcon}
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 'auto',
-                      }}
-                    />
-                    <div style={{ width: '50%' }}>
-                      <span className="d-none d-md-block ms-2">
-                        <Typography component="h2" variant="h6">
-                          Raksha V G
-                        </Typography>
-                      </span>
-                    </div>
-                    <Avatar
-                      alt="diamond"
-                      src={Diamond}
-                      variant="square"
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 'auto',
-                      }}
-                    />
-                    <div
-                      className="d-flex flex-column justify-content-end align-items-end"
-                      style={{ width: '60%' }}
-                    >
-                      <Typography component="h2" variant="h6">
-                        67
-                      </Typography>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            <div className="row mb-2">
-              <Card elevation={2}>
-                <CardContent>
-                  <div className="align-items-center d-flex justify-content-center">
-                    <span className="me-3">
-                      <Typography
-                        component="h1"
-                        variant="h6"
-                        color="text.secondary"
-                      >
-                        #6
-                      </Typography>
-                    </span>
-                    <Avatar
-                      alt="Raksha"
-                      src={AvatarIcon}
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 'auto',
-                      }}
-                    />
-                    <div style={{ width: '50%' }}>
-                      <span className="d-none d-md-block ms-2">
-                        <Typography component="h2" variant="h6">
-                          Raksha V G
-                        </Typography>
-                      </span>
-                    </div>
-                    <Avatar
-                      alt="diamond"
-                      src={Diamond}
-                      variant="square"
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 'auto',
-                      }}
-                    />
-                    <div
-                      className="d-flex flex-column justify-content-end align-items-end"
-                      style={{ width: '60%' }}
-                    >
-                      <Typography component="h2" variant="h6">
-                        67
-                      </Typography>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            <div className="row mb-2">
-              <Card elevation={2}>
-                <CardContent>
-                  <div className="align-items-center d-flex justify-content-center">
-                    <span className="me-3">
-                      <Typography
-                        component="h1"
-                        variant="h6"
-                        color="text.secondary"
-                      >
-                        #7
-                      </Typography>
-                    </span>
-                    <Avatar
-                      alt="Raksha"
-                      src={AvatarIcon}
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 'auto',
-                      }}
-                    />
-                    <div style={{ width: '50%' }}>
-                      <span className="d-none d-md-block ms-2">
-                        <Typography component="h2" variant="h6">
-                          Raksha V G
-                        </Typography>
-                      </span>
-                    </div>
-                    <Avatar
-                      alt="diamond"
-                      src={Diamond}
-                      variant="square"
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 'auto',
-                      }}
-                    />
-                    <div
-                      className="d-flex flex-column justify-content-end align-items-end"
-                      style={{ width: '60%' }}
-                    >
-                      <Typography component="h2" variant="h6">
-                        67
-                      </Typography>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            {ranklist.map((list, index) => {
+              return (
+                <div key={index} className="row mb-2">
+                  <Card elevation={2}>
+                    <CardContent>
+                      <div className="align-items-center d-flex justify-content-center">
+                        <span className="me-3">
+                          <Typography
+                            component="h1"
+                            variant="h6"
+                            color="text.secondary"
+                          >
+                            #{index + 1}
+                          </Typography>
+                        </span>
+                        <Avatar
+                          alt={list.name}
+                          src={AvatarIcon}
+                          sx={{
+                            width: 40,
+                            height: 40,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            margin: 'auto',
+                          }}
+                        />
+                        <div style={{ width: '50%' }}>
+                          <span className="d-none d-md-block ms-2">
+                            <Typography component="h2" variant="h6">
+                              {list.name}
+                            </Typography>
+                          </span>
+                        </div>
+                        <Avatar
+                          alt={list.league}
+                          src={Diamond}
+                          variant="square"
+                          sx={{
+                            width: 40,
+                            height: 40,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            margin: 'auto',
+                          }}
+                        />
+                        <div
+                          className="d-flex flex-column justify-content-end align-items-end"
+                          style={{ width: '60%' }}
+                        >
+                          <Typography component="h2" variant="h6">
+                            {list.score}
+                          </Typography>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
