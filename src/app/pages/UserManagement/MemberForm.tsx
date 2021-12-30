@@ -14,46 +14,52 @@ import {
   Button,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
-
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+//import { dateFormat } from '../../components/dateFormat';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
+import { selectUserManagement } from './slice/selectors';
 
 type MemberData = {
-  name: string;
+  uid?: number;
+  first_name: string;
+  last_name: string;
   email: string;
-  rank: string;
+  //rank: string;
   role: string;
   project: string;
   committee: string;
-  date: Date | null;
+  start_date: string | null;
 };
 
-export default function MemberForm() {
-  const projectsList = ['Project Cortex', 'Project Pager', 'Project Opencloud'];
-  const committeeList = ['HR', 'BD', 'I&M', 'EV'];
-
-  const dispatch = useDispatch();
+export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useUserManagementSlice();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUserManagement);
+
+  let updateUserValue = user.find(u => u.uid === updateUser);
 
   const [values, setValues] = useState<MemberData>({
-    name: '',
-    email: '',
-    role: '',
-    rank: '',
-    project: '',
-    committee: '',
-    date: null,
+    uid: updateUserValue ? updateUserValue.uid : 0,
+    first_name: updateUserValue ? updateUserValue.first_name : '',
+    last_name: updateUserValue ? updateUserValue.last_name : '',
+    email: updateUserValue ? updateUserValue.email : '',
+    role: updateUserValue ? updateUserValue.role : '',
+    // rank: updateUserValue ? updateUserValue.rank : '',
+    project: updateUserValue ? updateUserValue.project : '',
+    committee: updateUserValue ? updateUserValue.committee : '',
+    start_date: updateUserValue ? updateUserValue.start_date : null,
   });
 
   const [errors, setErrors] = useState({
-    nameError: '',
+    first_nameError: '',
+    last_nameError: '',
     emailError: '',
     roleError: '',
-    rankError: '',
+    // rankError: '',
     projectError: '',
     committeeError: '',
     dateError: '',
@@ -72,45 +78,89 @@ export default function MemberForm() {
     });
   };
 
-  function handleSubmit() {
+  function checkError() {
     let noofErrors = 0;
     let err = { ...errors };
 
     Object.entries(values).forEach(([key, value]) => {
-      if (value === '') {
+      if (
+        value === null ||
+        (typeof value === 'string' && value.trim() === '')
+      ) {
         err[`${key}Error`] = 'This field is required';
         noofErrors++;
       }
     });
 
     if (noofErrors === 0) {
-      console.log(values);
-      dispatch(actions.addUser(values));
+      return true;
     } else {
       err.isError = true;
       setErrors(err);
+      return false;
     }
   }
 
+  function handleSubmit() {
+    if (checkError()) {
+      setOpenModal(false);
+      setLoading(true);
+      dispatch(actions.addUser(values));
+    }
+  }
+
+  function handleUpdate() {
+    if (checkError()) {
+      setOpenModal(false);
+      setLoading(true);
+      dispatch(actions.updateUser(values));
+    }
+  }
+
+  const projectsList = ['Cortex', 'Pager', 'Opencloud'];
+  const committeeList = ['HR', 'BD', 'I&M', 'EV'];
+
   return (
     <>
-      <div className="d-md-flex">
+      <div className="d-md-flex mt-2">
         <div className="me-3">
           <TextField
-            error={errors.isError && (errors.nameError !== '' ? true : false)}
+            value={values.first_name}
+            error={
+              errors.isError && (values.first_name.trim() === '' ? true : false)
+            }
             helperText={
               errors.isError &&
-              (errors.nameError !== '' ? errors.nameError : '')
+              (errors.first_nameError !== '' ? errors.first_nameError : '')
             }
             id="outlined-basic"
             className="mb-3"
-            label="Full Name"
+            label="First Name"
             variant="outlined"
-            onChange={e => setValues({ ...values, name: e.target.value })}
+            onChange={e => setValues({ ...values, first_name: e.target.value })}
           />
           <br />
           <TextField
-            error={errors.isError && (errors.emailError !== '' ? true : false)}
+            value={values.last_name}
+            error={
+              errors.isError && (values.last_name.trim() === '' ? true : false)
+            }
+            helperText={
+              errors.isError &&
+              (errors.last_nameError !== '' ? errors.last_nameError : '')
+            }
+            className="mb-3"
+            id="outlined-basic"
+            label="Last Name"
+            variant="outlined"
+            onChange={e => setValues({ ...values, last_name: e.target.value })}
+          />
+          <br />
+          <TextField
+            value={values.email}
+            error={
+              errors.isError && (values.email.trim() === '' ? true : false)
+            }
             helperText={
               errors.isError &&
               (errors.emailError !== '' ? errors.emailError : '')
@@ -123,7 +173,8 @@ export default function MemberForm() {
           />
           <br />
           <TextField
-            error={errors.isError && (errors.roleError !== '' ? true : false)}
+            value={values.role}
+            error={errors.isError && (values.role.trim() === '' ? true : false)}
             helperText={
               errors.isError &&
               (errors.roleError !== '' ? errors.roleError : '')
@@ -135,8 +186,9 @@ export default function MemberForm() {
             onChange={e => setValues({ ...values, role: e.target.value })}
           />
           <br />
-          <TextField
-            error={errors.isError && (errors.rankError !== '' ? true : false)}
+          {/* <TextField
+            value={values.rank}
+            error={errors.isError && (values.rank.trim() === '' ? true : false)}
             helperText={
               errors.isError &&
               (errors.rankError !== '' ? errors.rankError : '')
@@ -146,15 +198,13 @@ export default function MemberForm() {
             label="Rank"
             variant="outlined"
             onChange={e => setValues({ ...values, rank: e.target.value })}
-          />
+          /> */}
           <br />
         </div>
         <div className="ms-md-3">
           <div className="mb-2">
             <FormControl
-              error={
-                errors.isError && (errors.committeeError !== '' ? true : false)
-              }
+              error={errors.isError && (values.committee === '' ? true : false)}
               component="fieldset"
             >
               <FormLabel component="legend">Committee</FormLabel>
@@ -182,9 +232,7 @@ export default function MemberForm() {
           </div>
           <div className="my-3">
             <FormControl
-              error={
-                errors.isError && (errors.projectError !== '' ? true : false)
-              }
+              error={errors.isError && (values.project === '' ? true : false)}
               fullWidth
             >
               <InputLabel id="demo-simple-select-label">Project</InputLabel>
@@ -210,22 +258,39 @@ export default function MemberForm() {
           <div className="my-3">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                label="Basic example"
-                value={values.date}
+                label="Date"
+                value={values.start_date}
                 onChange={newValue => {
-                  setValues({ ...values, date: newValue });
+                  // const newDate = dateFormat(newValue);
+                  setValues({ ...values, start_date: `${newValue}` });
                 }}
-                renderInput={params => <TextField {...params} />}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    error={
+                      errors.isError &&
+                      (values.start_date === null ? true : false)
+                    }
+                    helperText={
+                      errors.isError &&
+                      (errors.dateError !== '' ? errors.dateError : '')
+                    }
+                    sx={{ width: '100%' }}
+                  />
+                )}
               />
             </LocalizationProvider>
           </div>
           <div className="d-flex mt-4">
-            <Button variant="contained" onClick={handleSubmit}>
-              Submit
-            </Button>
-            <Button variant="outlined" color="secondary" className="ms-2">
-              Reset
-            </Button>
+            {updateUserValue ? (
+              <Button variant="contained" onClick={handleUpdate}>
+                Update
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={handleSubmit}>
+                Submit
+              </Button>
+            )}
           </div>
         </div>
       </div>
