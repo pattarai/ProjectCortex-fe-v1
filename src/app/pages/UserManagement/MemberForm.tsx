@@ -270,24 +270,6 @@ export default function MemberForm({ setOpenModal, updateUser }) {
                 Submit
               </Button>
             )}
-            <Button
-              variant="outlined"
-              onClick={() =>
-                setValues({
-                  first_name: '',
-                  email: '',
-                  role: '',
-                  rank: '',
-                  project: '',
-                  committee: '',
-                  start_date: null,
-                })
-              }
-              color="secondary"
-              className="ms-2"
-            >
-              Reset
-            </Button>
           </div>
         </div>
       </div>
