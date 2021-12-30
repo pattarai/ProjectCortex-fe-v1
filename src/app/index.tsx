@@ -17,7 +17,6 @@ import { useTranslation } from 'react-i18next';
 import { Index } from './pages/Index';
 import { DashboardLayout } from './pages/DashboardLayout';
 import { RankingCrew } from './pages/RankingCrew';
-import { RankingAdmin } from './pages/RankingAdmin';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -35,7 +34,6 @@ export function App() {
         <Route exact path="/" component={Index} />
         <Route path="/dashboard" component={DashboardLayout} />
         <Route path="/rank" component={RankingCrew} />
-        <Route path="/rankad" component={RankingAdmin} />
       </Switch>
       <GlobalStyle />
     </BrowserRouter>
