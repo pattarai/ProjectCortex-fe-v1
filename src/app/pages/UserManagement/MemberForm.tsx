@@ -17,15 +17,15 @@ import { SelectChangeEvent } from '@mui/material/Select';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+//import { dateFormat } from '../../components/dateFormat';
 
-import { dateFormat } from '../../components/dateFormat';
 import { useDispatch, useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
 
 type MemberData = {
-  id?: number;
-  name: string;
+  uid?: number;
+  first_name: string;
   email: string;
   rank: string;
   role: string;
@@ -42,8 +42,8 @@ export default function MemberForm({ setOpenModal, updateUser }) {
   let updateUserValue = user.find(u => u.uid === updateUser);
 
   const [values, setValues] = useState<MemberData>({
-    id: updateUserValue ? updateUserValue.uid : 0,
-    name: updateUserValue ? updateUserValue.first_name : '',
+    uid: updateUserValue ? updateUserValue.uid : 0,
+    first_name: updateUserValue ? updateUserValue.first_name : '',
     email: updateUserValue ? updateUserValue.email : '',
     role: updateUserValue ? updateUserValue.role : '',
     rank: updateUserValue ? updateUserValue.rank : '',
@@ -120,17 +120,19 @@ export default function MemberForm({ setOpenModal, updateUser }) {
       <div className="d-md-flex mt-2">
         <div className="me-3">
           <TextField
-            value={values.name}
-            error={errors.isError && (values.name.trim() === '' ? true : false)}
+            value={values.first_name}
+            error={
+              errors.isError && (values.first_name.trim() === '' ? true : false)
+            }
             helperText={
               errors.isError &&
               (errors.nameError !== '' ? errors.nameError : '')
             }
             id="outlined-basic"
             className="mb-3"
-            label="Full Name"
+            label="First Name"
             variant="outlined"
-            onChange={e => setValues({ ...values, name: e.target.value })}
+            onChange={e => setValues({ ...values, first_name: e.target.value })}
           />
           <br />
           <TextField
@@ -238,8 +240,8 @@ export default function MemberForm({ setOpenModal, updateUser }) {
                 label="Date"
                 value={values.start_date}
                 onChange={newValue => {
-                  const newDate = dateFormat(newValue);
-                  setValues({ ...values, start_date: newDate });
+                  // const newDate = dateFormat(newValue);
+                  setValues({ ...values, start_date: `${newValue}` });
                 }}
                 renderInput={params => (
                   <TextField
@@ -272,7 +274,7 @@ export default function MemberForm({ setOpenModal, updateUser }) {
               variant="outlined"
               onClick={() =>
                 setValues({
-                  name: '',
+                  first_name: '',
                   email: '',
                   role: '',
                   rank: '',
