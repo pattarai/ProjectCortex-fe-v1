@@ -41,7 +41,7 @@ export function RankingCrew(props: Props) {
   //   { label: 'Phase III', id: 3 },
   // ];
 
-  const ranklist = [
+  const top3List = [
     { name: 'Raksha', league: 'Bronze', rank: '1', score: '210' },
     { name: 'Veroni', league: 'Diamond', rank: '3', score: '100' },
     { name: 'Josh', league: 'Silver', rank: '8', score: '50' },
