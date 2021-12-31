@@ -171,6 +171,7 @@ export function RankingCrew(props: Props) {
             label="Search Members"
             id="outlined-start-adornment"
             className="mb-3 mb-md-0 w-md-50 text-white"
+            onChange={e => handleChange(e.target.value)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
