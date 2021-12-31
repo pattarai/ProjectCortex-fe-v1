@@ -4,6 +4,7 @@
  *
  */
 import * as React from 'react';
+import { useState } from 'react';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -25,6 +26,8 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+
+// import Autocomplete from '@mui/material/Autocomplete';
 
 import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
@@ -69,16 +72,18 @@ export function RankingCrew(props: Props) {
 
   return (
     <>
-      {/* <Autocomplete
-        disablePortal
-        onClick={handleOpen}
-        id="clear-on-escape"
-        clearOnEscape
-        options={phaseList}
-        renderInput={params => <TextField {...params} label="Select Phase" />}
-      /> */}
       <section className="vh-100">
         <div className="d-flex justify-content-end p-4">
+          {/* <Autocomplete
+            disablePortal
+            onClick={handleOpen}
+            id="clear-on-escape"
+            clearOnEscape
+            options={phaseList}
+            renderInput={params => (
+              <TextField {...params} label="Select Phase" />
+            )}
+          /> */}
           <Button onClick={handleOpen}>Phase I</Button>
         </div>
         <Modal
@@ -147,42 +152,36 @@ export function RankingCrew(props: Props) {
         </Modal>
         <div className="container my-4">
           <div className="row">
-            {
-              //ranklist.length > 3 &&
-              ranklist.map((list, index) => {
-                return (
-                  <div key={index} className="col-12 col-md-4 mb-4">
-                    <Card elevation={2} sx={{ textAlign: 'center' }}>
-                      <CardActionArea>
-                        <CardContent>
-                          <Avatar
-                            alt={list.name}
-                            src={AvatarIcon}
-                            sx={{
-                              width: 70,
-                              height: 70,
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              margin: 'auto',
-                              marginBottom: '5%',
-                            }}
-                          />
-                          <Typography component="h2" variant="h5">
-                            {list.name}
-                          </Typography>
-                          <Typography
-                            variant="subtitle1"
-                            color="text.secondary"
-                          >
-                            {list.league} | {list.score}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  </div>
-                );
-              })
-            }
+            {top3List.map((list, index) => {
+              return (
+                <div key={index} className="col-12 col-md-4 mb-4">
+                  <Card elevation={2} sx={{ textAlign: 'center' }}>
+                    <CardActionArea>
+                      <CardContent>
+                        <Avatar
+                          alt={list.name}
+                          src={AvatarIcon}
+                          sx={{
+                            width: 70,
+                            height: 70,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            margin: 'auto',
+                            marginBottom: '5%',
+                          }}
+                        />
+                        <Typography component="h2" variant="h5">
+                          {list.name}
+                        </Typography>
+                        <Typography variant="subtitle1" color="text.secondary">
+                          {list.league} | {list.score}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -190,6 +189,7 @@ export function RankingCrew(props: Props) {
           <TextField
             label="Search Members"
             id="outlined-start-adornment"
+            sx={{ borderColor: '#fff' }}
             className="mb-3 mb-md-0 w-md-50 text-white"
             onChange={e => handleChange(e.target.value)}
             InputProps={{
@@ -204,7 +204,7 @@ export function RankingCrew(props: Props) {
 
         <div className="container align-items-center d-flex justify-content-center">
           <div className="col m-2">
-            {ranklist.map((list, index) => {
+            {userData.map((list, index) => {
               return (
                 <div key={index} className="row mb-2">
                   <Card elevation={2}>
@@ -216,7 +216,7 @@ export function RankingCrew(props: Props) {
                             variant="h6"
                             color="text.secondary"
                           >
-                            #{index + 1}
+                            #{list.rank}
                           </Typography>
                         </span>
                         <Avatar
