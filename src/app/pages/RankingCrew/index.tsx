@@ -35,6 +35,20 @@ export function RankingCrew(props: Props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const top3List = [
+    { name: 'Raksha', league: 'Bronze', rank: '1', score: '210' },
+    { name: 'Veroni', league: 'Diamond', rank: '3', score: '100' },
+    { name: 'Josh', league: 'Silver', rank: '8', score: '50' },
+  ];
+
+  const ranklist = [
+    { name: 'Jesin', league: 'Silver', rank: '8', score: '50' },
+    { name: 'Subi', league: 'Silver', rank: '8', score: '50' },
+  ];
+
+  const [userData, setUserData] = useState(ranklist);
+
   // const phaseList = [
   //   { label: 'Phase I', id: 1 },
   //   { label: 'Phase II', id: 2 },
