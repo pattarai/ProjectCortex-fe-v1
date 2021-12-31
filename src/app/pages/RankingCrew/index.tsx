@@ -41,11 +41,17 @@ export function RankingCrew(props: Props) {
   //   { label: 'Phase III', id: 3 },
   // ];
 
-  const top3List = [
-    { name: 'Raksha', league: 'Bronze', rank: '1', score: '210' },
-    { name: 'Veroni', league: 'Diamond', rank: '3', score: '100' },
-    { name: 'Josh', league: 'Silver', rank: '8', score: '50' },
-  ];
+  function handleChange(searchedVal: string | null) {
+    if (searchedVal === '' || searchedVal === null) {
+      setUserData(ranklist);
+    } else {
+      const filteredUser = ranklist.filter(row =>
+        row.name.toLowerCase().includes(searchedVal.toLowerCase()),
+      );
+      console.log(filteredUser, searchedVal);
+      setUserData(filteredUser);
+    }
+  }
 
   return (
     <>
