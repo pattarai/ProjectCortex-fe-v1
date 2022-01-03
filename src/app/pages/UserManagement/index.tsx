@@ -155,30 +155,28 @@ export function UserManagement(props: Props) {
     <>
       <div className="vh-100 d-flex align-justify-center">
         <div style={{ height: 600, width: '95%' }}>
-          {userData && (
-            <DataGrid
-              rows={userData}
-              columns={columns}
-              getRowId={r => r.uid}
-              paginationMode="server"
-              disableSelectionOnClick
-              loading={loading}
-              components={{
-                LoadingOverlay: CustomLoadingOverlay,
-                Toolbar: AddUser,
-              }}
-              sx={{
-                boxShadow: 2,
-                backgroundColor: 'white',
-                padding: { xs: '10px', md: '15px' },
-                '& .MuiDataGrid-columnHeaders': {
-                  backgroundColor: '#dee2fc',
-                  borderRadius: '5px',
-                  fontSize: '16px',
-                },
-              }}
-            />
-          )}
+          <DataGrid
+            rows={userData ? userData : []}
+            columns={columns}
+            getRowId={r => r.uid}
+            paginationMode="server"
+            disableSelectionOnClick
+            loading={loading}
+            components={{
+              LoadingOverlay: CustomLoadingOverlay,
+              Toolbar: AddUser,
+            }}
+            sx={{
+              boxShadow: 2,
+              backgroundColor: 'white',
+              padding: { xs: '10px', md: '15px' },
+              '& .MuiDataGrid-columnHeaders': {
+                backgroundColor: '#dee2fc',
+                borderRadius: '5px',
+                fontSize: '16px',
+              },
+            }}
+          />
         </div>
       </div>
       <Popup
