@@ -11,19 +11,21 @@ const slice = createSlice({
   initialState,
   reducers: {
     getUser() {},
-    addUser(state, action: PayloadAction<any>) {},
-    updateUser(state, action: PayloadAction<any>) {},
-    deleteUser(state, action: PayloadAction<any>) {
-      state.forEach(
-        st => st.uid === action.payload && state.splice(state.indexOf(st), 1),
-      );
-    },
     setUser(state, action: PayloadAction<any>) {
       state.push(...action.payload);
     },
+    addUser(state, action: PayloadAction<any>) {},
+    updateUser(state, action: PayloadAction<any>) {},
+    deleteUser(state, action: PayloadAction<any>) {},
+
     setUpdateUser(state, action: PayloadAction<any>) {
       const newArray = state.findIndex(st => st.uid === action.payload.uid);
       state[newArray] = { ...action.payload };
+    },
+    setDeleteUser(state, action: PayloadAction<any>) {
+      state.forEach(
+        st => st.uid === action.payload && state.splice(state.indexOf(st), 1),
+      );
     },
   },
 });
