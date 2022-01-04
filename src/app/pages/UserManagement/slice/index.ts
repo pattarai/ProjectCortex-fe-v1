@@ -19,7 +19,6 @@ const slice = createSlice({
     deleteUser(state, action: PayloadAction<any>) {},
     setUser(state, action: PayloadAction<any>) {
       state.users.push(...action.payload);
-      state.error = false;
     },
 
     setUpdateUser(state, action: PayloadAction<any>) {
@@ -27,7 +26,6 @@ const slice = createSlice({
         st => st.uid === action.payload.uid,
       );
       state.users[newArray] = { ...action.payload };
-      state.error = false;
     },
 
     setDeleteUser(state, action: PayloadAction<any>) {
@@ -36,7 +34,6 @@ const slice = createSlice({
           st.uid === action.payload &&
           state.users.splice(state.users.indexOf(st), 1),
       );
-      state.error = false;
     },
 
     setError(state, action: PayloadAction<any>) {
