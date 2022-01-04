@@ -17,6 +17,7 @@ import { MdDelete, MdEdit } from 'react-icons/md';
 import { RiAddFill } from 'react-icons/ri';
 
 import Popup from '../../components/Popup';
+import Problem from '../../components/Problem';
 import DeleteForm from '../../components/DeleteForm';
 import MemberForm from './MemberForm';
 
@@ -28,20 +29,26 @@ interface Props {}
 
 export function UserManagement(props: Props) {
   const { actions } = useUserManagementSlice();
-  const user = useSelector(selectUserManagement);
+  const { users, error } = useSelector(selectUserManagement);
   const dispatch = useDispatch();
 
+  const [err, setErr] = useState(false);
   const [openPopup, setOpenPopup] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState<typeof user | null>(null);
+
+  const [userData, setUserData] = useState<typeof users | null>(null);
   const [updateUser, setUpdateUser] = useState<number | null>(null);
   const [deleteUser, setDeleteUser] = useState<number | null>(null);
 
   useEffect(() => {
-    setUserData(user);
+    error ? setErr(true) : setErr(false);
+  }, [error]);
+
+  useEffect(() => {
+    setUserData(users);
     userData && setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [users]);
 
   useEffect(() => {
     dispatch(actions.getUser());
@@ -153,6 +160,7 @@ export function UserManagement(props: Props) {
 
   return (
     <>
+      <Problem isError={err} />
       <div className="vh-100 d-flex align-justify-center">
         <div style={{ height: 600, width: '95%' }}>
           <DataGrid

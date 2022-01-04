@@ -38,9 +38,9 @@ type MemberData = {
 export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useUserManagementSlice();
   const dispatch = useDispatch();
-  const user = useSelector(selectUserManagement);
+  const { users } = useSelector(selectUserManagement);
 
-  let updateUserValue = user.find(u => u.uid === updateUser);
+  let updateUserValue = users.find(u => u.uid === updateUser);
 
   const [values, setValues] = useState<MemberData>({
     uid: updateUserValue ? updateUserValue.uid : 0,

@@ -12,4 +12,7 @@ interface UserManagement {
   start_date: string | null;
 }
 
-export interface UserManagementState extends Array<UserManagement> {}
+export interface UserManagementState {
+  error: boolean;
+  users: UserManagement[];
+}

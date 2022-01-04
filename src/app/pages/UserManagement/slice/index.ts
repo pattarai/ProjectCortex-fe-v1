@@ -4,28 +4,43 @@ import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { userManagementSaga } from './saga';
 import { UserManagementState } from './types';
 
-export const initialState: UserManagementState = [];
+export const initialState: UserManagementState = {
+  error: false,
+  users: [],
+};
 
 const slice = createSlice({
   name: 'userManagement',
   initialState,
   reducers: {
     getUser() {},
-    setUser(state, action: PayloadAction<any>) {
-      state.push(...action.payload);
-    },
     addUser(state, action: PayloadAction<any>) {},
     updateUser(state, action: PayloadAction<any>) {},
     deleteUser(state, action: PayloadAction<any>) {},
+    setUser(state, action: PayloadAction<any>) {
+      state.users.push(...action.payload);
+      state.error = false;
+    },
 
     setUpdateUser(state, action: PayloadAction<any>) {
-      const newArray = state.findIndex(st => st.uid === action.payload.uid);
-      state[newArray] = { ...action.payload };
-    },
-    setDeleteUser(state, action: PayloadAction<any>) {
-      state.forEach(
-        st => st.uid === action.payload && state.splice(state.indexOf(st), 1),
+      const newArray = state.users.findIndex(
+        st => st.uid === action.payload.uid,
       );
+      state.users[newArray] = { ...action.payload };
+      state.error = false;
+    },
+
+    setDeleteUser(state, action: PayloadAction<any>) {
+      state.users.forEach(
+        st =>
+          st.uid === action.payload &&
+          state.users.splice(state.users.indexOf(st), 1),
+      );
+      state.error = false;
+    },
+
+    setError(state, action: PayloadAction<any>) {
+      state.error = action.payload;
     },
   },
 });
