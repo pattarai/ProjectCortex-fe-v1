@@ -146,6 +146,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             className="mb-3"
             label="First Name"
             variant="outlined"
+            inputProps={{ maxLength: 15 }}
             onChange={e => setValues({ ...values, first_name: e.target.value })}
           />
           <br />
@@ -162,6 +163,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             id="outlined-basic"
             label="Last Name"
             variant="outlined"
+            inputProps={{ maxLength: 15 }}
             onChange={e => setValues({ ...values, last_name: e.target.value })}
           />
           <br />
@@ -193,6 +195,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             id="outlined-basic"
             label="Role"
             variant="outlined"
+            inputProps={{ maxLength: 30 }}
             onChange={e => setValues({ ...values, role: e.target.value })}
           />
           <br />
