@@ -94,7 +94,7 @@ export function UserManagement(props: Props) {
     {
       field: 'committee',
       headerName: 'Committee',
-      minWidth: 50,
+      minWidth: 100,
       flex: 0.5,
       sortable: false,
     },
@@ -103,7 +103,7 @@ export function UserManagement(props: Props) {
       type: 'actions',
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
-          icon={<MdEdit style={{ fontSize: '25px' }} />}
+          icon={<MdEdit style={{ fontSize: '23px' }} />}
           disabled={loading}
           color="primary"
           onClick={() => {
@@ -115,7 +115,7 @@ export function UserManagement(props: Props) {
         />,
         <GridActionsCellItem
           disabled={loading}
-          icon={<MdDelete style={{ fontSize: '25px' }} />}
+          icon={<MdDelete style={{ fontSize: '23px' }} />}
           color="secondary"
           onClick={() => {
             setDeleteUser(params.row.uid);
