@@ -89,6 +89,15 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
       ) {
         err[`${key}Error`] = 'This field is required';
         noofErrors++;
+      } else if (
+        key === 'email' &&
+        typeof value === 'string' &&
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+      ) {
+        err[`${key}Error`] = 'Invalid email address';
+        noofErrors++;
+      } else {
+        err[`${key}Error`] = '';
       }
     });
 
@@ -159,7 +168,8 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
           <TextField
             value={values.email}
             error={
-              errors.isError && (values.email.trim() === '' ? true : false)
+              (errors.isError && (values.email.trim() === '' ? true : false)) ||
+              (errors.emailError !== '' ? true : false)
             }
             helperText={
               errors.isError &&
