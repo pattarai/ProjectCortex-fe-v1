@@ -103,7 +103,7 @@ export function UserManagement(props: Props) {
       type: 'actions',
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
-          icon={<MdEdit />}
+          icon={<MdEdit style={{ fontSize: '25px' }} />}
           disabled={loading}
           color="primary"
           onClick={() => {
@@ -115,7 +115,7 @@ export function UserManagement(props: Props) {
         />,
         <GridActionsCellItem
           disabled={loading}
-          icon={<MdDelete />}
+          icon={<MdDelete style={{ fontSize: '25px' }} />}
           color="secondary"
           onClick={() => {
             setDeleteUser(params.row.uid);
