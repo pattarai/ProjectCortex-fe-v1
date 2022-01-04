@@ -7,10 +7,10 @@ export default function DeleteForm({ setOpenModal, action, setLoading }) {
     <>
       <Button
         variant="outlined"
-        onClick={async () => {
-          setLoading(true);
-          await dispatch(action);
+        onClick={() => {
           setOpenModal(false);
+          setLoading(true);
+          dispatch(action);
         }}
       >
         yes
