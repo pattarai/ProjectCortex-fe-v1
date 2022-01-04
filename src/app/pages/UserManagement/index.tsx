@@ -168,7 +168,7 @@ export function UserManagement(props: Props) {
             columns={columns}
             getRowId={r => r.uid}
             paginationMode="server"
-            disableSelectionOnClick
+            hideFooterSelectedRowCount
             loading={loading}
             components={{
               LoadingOverlay: CustomLoadingOverlay,
