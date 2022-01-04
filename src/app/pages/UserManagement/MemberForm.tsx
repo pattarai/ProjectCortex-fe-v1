@@ -17,7 +17,7 @@ import { SelectChangeEvent } from '@mui/material/Select';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-//import { dateFormat } from '../../components/dateFormat';
+import { dateFormat } from '../../components/dateFormat';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
@@ -261,8 +261,8 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                 label="Date"
                 value={values.start_date}
                 onChange={newValue => {
-                  // const newDate = dateFormat(newValue);
-                  setValues({ ...values, start_date: `${newValue}` });
+                  const newDate = dateFormat(newValue);
+                  setValues({ ...values, start_date: newDate });
                 }}
                 renderInput={params => (
                   <TextField
