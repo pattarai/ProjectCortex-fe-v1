@@ -40,7 +40,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const dispatch = useDispatch();
   const { users } = useSelector(selectUserManagement);
 
-  let updateUserValue = users.find(u => u.uid === updateUser);
+  const updateUserValue = users.find(u => u.uid === updateUser);
 
   const [values, setValues] = useState<MemberData>({
     uid: updateUserValue ? updateUserValue.uid : 0,
@@ -51,7 +51,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     // rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
-    start_date: updateUserValue ? updateUserValue.start_date : null,
+    start_date: updateUserValue ? dateFormat(updateUserValue.start_date) : null,
   });
 
   const [errors, setErrors] = useState({
