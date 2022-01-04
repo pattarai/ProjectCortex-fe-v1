@@ -41,14 +41,14 @@ export function UserManagement(props: Props) {
   const [deleteUser, setDeleteUser] = useState<number | null>(null);
 
   useEffect(() => {
-    error ? setErr(true) : setErr(false);
-  }, [error]);
-
-  useEffect(() => {
-    setUserData(users);
-    userData && setLoading(false);
+    if (error) {
+      setErr(true);
+    } else {
+      setUserData(users);
+      userData && setLoading(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [users]);
+  }, [users, error]);
 
   useEffect(() => {
     dispatch(actions.getUser());
