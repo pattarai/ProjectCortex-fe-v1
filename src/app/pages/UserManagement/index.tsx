@@ -94,7 +94,7 @@ export function UserManagement(props: Props) {
     {
       field: 'committee',
       headerName: 'Committee',
-      minWidth: 100,
+      minWidth: 70,
       flex: 0.5,
       sortable: false,
     },
