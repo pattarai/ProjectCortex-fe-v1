@@ -3,6 +3,7 @@
  * EventsPage
  *
  */
+
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import {
@@ -64,9 +65,7 @@ export function EventPage(props: Props) {
     '',
   );
   const [datevalue, setDateValue] = React.useState<Date | null>(null);
-
   const [updateUser, setUpdateUser] = useState<number | null>(null);
-
   const [openPopup, setOpenPopup] = useState(false);
 
   function handleSubmit() {
@@ -354,7 +353,7 @@ export function EventPage(props: Props) {
         </div>
       </section>
       <Popup
-        title="Member Form"
+        title="Event Form"
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
