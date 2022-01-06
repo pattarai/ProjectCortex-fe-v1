@@ -19,6 +19,7 @@ import './css/bootstrap-grid.css';
 import './css/custom.css';
 import { theme } from './css/MUIThemes';
 import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 // Import root app
 import { App } from 'app';
@@ -40,6 +41,7 @@ ReactDOM.render(
     <HelmetProvider>
       <React.StrictMode>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <App />
         </ThemeProvider>
       </React.StrictMode>

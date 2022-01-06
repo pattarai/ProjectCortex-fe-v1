@@ -18,8 +18,9 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import EventIcon from '@mui/icons-material/Event';
-import SearchIcon from '@mui/icons-material/Search';
+// import EventIcon from '@mui/icons-material/Event';
+// import SearchIcon from '@mui/icons-material/Search';
+import { MdEventAvailable, MdSearch } from 'react-icons/md';
 import { Box } from '@mui/system';
 
 interface Props {}
@@ -45,7 +46,7 @@ export function ProfileCommonView(props: Props) {
        /> */}
       <div className="container my-3">
         <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-          <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5, mt: 1 }} />
+          {/* <MdSearch sx={{ color: 'action.active', mr: 1, my: 0.5, mt: 1 }} /> */}
           <TextField
             id="input-with-sx"
             label="Search Name"
@@ -101,7 +102,7 @@ export function ProfileCommonView(props: Props) {
                 </ListSubheader>
                 <ListItem>
                   <ListItemIcon>
-                    <EventIcon />
+                    <MdEventAvailable />
                   </ListItemIcon>
                   <ListItemText primary="INTACTO" />
                   <div className="d-flex justify-content-end">
@@ -110,7 +111,7 @@ export function ProfileCommonView(props: Props) {
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
-                    <EventIcon />
+                    <MdEventAvailable />
                   </ListItemIcon>
                   <ListItemText primary="FESTX" />
                   <div className="d-flex justify-content-end">

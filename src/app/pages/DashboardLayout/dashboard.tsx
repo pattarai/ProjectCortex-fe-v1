@@ -10,14 +10,15 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
+
+import { FiSettings, FiChevronLeft } from 'react-icons/fi';
+import { AiOutlineMenu } from 'react-icons/ai';
+import { MdBorderColor } from 'react-icons/md';
+import { IoMdNotifications } from 'react-icons/io';
+
 import Avatar from '@mui/material/Avatar';
-import SettingsIcon from '@mui/icons-material/Settings';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './Listitems';
 import Img from './subiksha.jpeg';
 
@@ -99,7 +100,7 @@ export default function Dashboard({ children }: { children: ReactNode }) {
                 ...(open && { display: 'none' }),
               }}
             >
-              <MenuIcon />
+              <AiOutlineMenu />
             </IconButton>
             <Typography
               component="h1"
@@ -112,17 +113,17 @@ export default function Dashboard({ children }: { children: ReactNode }) {
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={0} color="secondary">
-                <SettingsIcon />
+                <FiSettings />
               </Badge>
             </IconButton>
             <IconButton color="inherit">
               <Badge badgeContent={0} color="secondary">
-                <BorderColorIcon />
+                <MdBorderColor />
               </Badge>
             </IconButton>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
+                <IoMdNotifications />
               </Badge>
             </IconButton>
 
@@ -139,7 +140,7 @@ export default function Dashboard({ children }: { children: ReactNode }) {
             }}
           >
             <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
+              <FiChevronLeft />
             </IconButton>
           </Toolbar>
           <Divider />

@@ -35,7 +35,7 @@ import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
 import { styled } from '@mui/material/styles';
 
-import Popup from '../UserManagement/Popup';
+import Popup from '../../components/Popup';
 import EventForm from './EventForm';
 
 import { useSelector, useDispatch } from 'react-redux';
