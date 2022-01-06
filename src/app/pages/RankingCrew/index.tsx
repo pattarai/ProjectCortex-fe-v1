@@ -66,7 +66,9 @@ export function RankingCrew(props: Props) {
     <>
       <section className="vh-100">
         <div className="d-flex justify-content-end p-4">
-          <Button onClick={handleOpen}>Score Details</Button>
+          <Button sx={{ color: '#dee2fc' }} onClick={handleOpen}>
+            Score Details
+          </Button>
         </div>
         <Modal
           open={open}
@@ -132,6 +134,7 @@ export function RankingCrew(props: Props) {
             </CardContent>
           </Card>
         </Modal>
+
         <div className="container my-4">
           <div className="row">
             {top3List.map((list, index) => {
@@ -170,9 +173,7 @@ export function RankingCrew(props: Props) {
         <div className="container my-3">
           <TextField
             label="Search Members"
-            id="outlined-start-adornment"
-            sx={{ borderColor: '#fff' }}
-            className="mb-3 mb-md-0 w-md-50 text-white"
+            className="mb-3 mb-md-0 w-md-50"
             onChange={e => handleChange(e.target.value)}
             InputProps={{
               startAdornment: (
