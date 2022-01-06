@@ -27,8 +27,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-// import Autocomplete from '@mui/material/Autocomplete';
-
 import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
 
@@ -52,12 +50,6 @@ export function RankingCrew(props: Props) {
 
   const [userData, setUserData] = useState(ranklist);
 
-  // const phaseList = [
-  //   { label: 'Phase I', id: 1 },
-  //   { label: 'Phase II', id: 2 },
-  //   { label: 'Phase III', id: 3 },
-  // ];
-
   function handleChange(searchedVal: string | null) {
     if (searchedVal === '' || searchedVal === null) {
       setUserData(ranklist);
@@ -74,17 +66,7 @@ export function RankingCrew(props: Props) {
     <>
       <section className="vh-100">
         <div className="d-flex justify-content-end p-4">
-          {/* <Autocomplete
-            disablePortal
-            onClick={handleOpen}
-            id="clear-on-escape"
-            clearOnEscape
-            options={phaseList}
-            renderInput={params => (
-              <TextField {...params} label="Select Phase" />
-            )}
-          /> */}
-          <Button onClick={handleOpen}>Phase I</Button>
+          <Button onClick={handleOpen}>Score Details</Button>
         </div>
         <Modal
           open={open}
