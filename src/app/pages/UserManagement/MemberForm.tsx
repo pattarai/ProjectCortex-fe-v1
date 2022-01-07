@@ -162,8 +162,10 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
           <TextField
             value={values.email}
             error={
-              (errors.isError && (values.email.trim() === '' ? true : false)) ||
-              (errors.emailError !== '' ? true : false)
+              errors.isError &&
+              (values.email.trim() === '' || errors.emailError !== ''
+                ? true
+                : false)
             }
             helperText={
               errors.isError &&
