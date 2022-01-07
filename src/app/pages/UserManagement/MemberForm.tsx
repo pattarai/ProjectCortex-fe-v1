@@ -23,26 +23,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
 
-type MemberData = {
-  uid?: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  //rank: string;
-  role: string;
-  project: string;
-  committee: string;
-  start_date: string | null;
-};
-
 export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useUserManagementSlice();
   const dispatch = useDispatch();
   const { users } = useSelector(selectUserManagement);
 
-  const updateUserValue = users.find(u => u.uid === updateUser);
+  const updateUserValue = updateUser
+    ? users.find(u => u.uid === updateUser)
+    : null;
 
-  const [values, setValues] = useState<MemberData>({
+  const [values, setValues] = useState({
     uid: updateUserValue ? updateUserValue.uid : 0,
     first_name: updateUserValue ? updateUserValue.first_name : '',
     last_name: updateUserValue ? updateUserValue.last_name : '',
@@ -121,8 +111,10 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   function handleUpdate() {
     if (checkError()) {
       setOpenModal(false);
-      setLoading(true);
-      dispatch(actions.updateUser(values));
+      if (JSON.stringify(values) !== JSON.stringify(updateUserValue)) {
+        setLoading(true);
+        dispatch(actions.updateUser(values));
+      }
     }
   }
 
