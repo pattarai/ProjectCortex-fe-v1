@@ -52,7 +52,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     // rankError: '',
     projectError: '',
     committeeError: '',
-    dateError: '',
+    start_dateError: '',
     isError: false,
   });
 
@@ -280,7 +280,9 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                     }
                     helperText={
                       errors.isError &&
-                      (errors.dateError !== '' ? errors.dateError : '')
+                      (errors.start_dateError !== ''
+                        ? errors.start_dateError
+                        : '')
                     }
                     sx={{ width: '100%' }}
                   />
