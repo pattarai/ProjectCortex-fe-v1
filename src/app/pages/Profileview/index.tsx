@@ -85,18 +85,18 @@ export function Profileview(props: Props) {
           >
             TOP SKILLS
           </Box>
-          <Typography sx={{ m: 1 }} component="h6" variant="h5">
+          {/* <Typography sx={{ m: 1 }} component="h6" variant="h5">
             {data.topskills}
-          </Typography>
+          </Typography> */}
           <Box
             component="h1"
             sx={{ letterSpacing: 15, m: 1, color: '#8E54E9' }}
           >
             PASSION
           </Box>
-          <Typography sx={{ m: 1 }} component="h6" variant="h5">
+          {/* <Typography sx={{ m: 1 }} component="h6" variant="h5">
             {data.passion}
-          </Typography>
+          </Typography> */}
         </div>
         {userData.map((data, index) => (
           <div className="px-4 w-100">
