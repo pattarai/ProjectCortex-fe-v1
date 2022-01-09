@@ -5,26 +5,19 @@
  */
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { Button, LinearProgress } from '@mui/material';
 import {
-  Card,
-  Table,
-  Button,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableCell,
-  InputAdornment,
-  TableContainer,
-  TextField,
-  IconButton,
-  LinearProgress,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
+  DataGrid,
+  GridColumns,
+  GridRowParams,
+  GridActionsCellItem,
+  GridOverlay,
+} from '@mui/x-data-grid';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import { FaSearch } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
 
 import Popup from '../../components/Popup';
+import Problem from '../../components/Problem';
 import DeleteForm from '../../components/DeleteForm';
 import MemberForm from './MemberForm';
 
@@ -32,153 +25,167 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
 
-const CustomTableRow = styled(TableRow)(({ theme }) => ({
-  '&:hover': {
-    backgroundColor: '#ffeee6',
-  },
-}));
-
 interface Props {}
 
 export function UserManagement(props: Props) {
   const { actions } = useUserManagementSlice();
-  const user = useSelector(selectUserManagement);
+  const { users, error } = useSelector(selectUserManagement);
   const dispatch = useDispatch();
 
-  const [userData, setUserData] = useState<typeof user | null>(null);
-  const [updateUser, setUpdateUser] = useState<number | null>(null);
-  const [deleteUser, setDeleteUser] = useState<number | null>(null);
+  const [err, setErr] = useState(false);
+  const [openPopup, setOpenPopup] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const [openPopup, setOpenPopup] = useState(false);
+  const [userData, setUserData] = useState<typeof users | null>(null);
+  const [updateUser, setUpdateUser] = useState<number | null>(null);
+  const [deleteUser, setDeleteUser] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (error) {
+      setErr(true);
+    } else {
+      setUserData(users);
+      userData && setLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users, error]);
 
   useEffect(() => {
     dispatch(actions.getUser());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    setUserData(user);
-    userData && setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  const columns: GridColumns = [
+    {
+      field: 'uid',
+      headerName: 'S.No.',
+      minWidth: 50,
+      flex: 0.5,
+      filterable: false,
+    },
+    {
+      field: 'first_name',
+      headerName: 'Name',
+      minWidth: 100,
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      minWidth: 150,
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: 'role',
+      headerName: 'Role',
+      minWidth: 100,
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: 'project',
+      headerName: 'Project',
+      minWidth: 100,
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: 'committee',
+      headerName: 'Committee',
+      minWidth: 70,
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      getActions: (params: GridRowParams) => [
+        <GridActionsCellItem
+          icon={<MdEdit style={{ fontSize: '23px' }} />}
+          disabled={loading}
+          color="primary"
+          onClick={() => {
+            setDeleteUser(null);
+            setUpdateUser(params.row.uid);
+            setOpenPopup(true);
+          }}
+          label="Edit"
+        />,
+        <GridActionsCellItem
+          disabled={loading}
+          icon={<MdDelete style={{ fontSize: '23px' }} />}
+          color="secondary"
+          onClick={() => {
+            setDeleteUser(params.row.uid);
+            setOpenPopup(true);
+          }}
+          label="Delete"
+        />,
+      ],
+    },
+  ];
 
-  function handleChange(searchedVal: string | null) {
-    if (searchedVal === '' || searchedVal === null) {
-      setUserData(user);
-    } else {
-      const filteredUser = user.filter(row =>
-        row.first_name.toLowerCase().includes(searchedVal.toLowerCase()),
-      );
-      setUserData(filteredUser);
-    }
+  function AddUser() {
+    return (
+      <div className="my-3 d-md-flex justify-content-end">
+        <Button
+          disabled={loading}
+          aria-label="Add User"
+          color="primary"
+          variant="outlined"
+          onClick={() => {
+            setUpdateUser(null);
+            setDeleteUser(null);
+            setOpenPopup(true);
+          }}
+        >
+          <RiAddFill />
+          Add User
+        </Button>
+      </div>
+    );
+  }
+
+  function CustomLoadingOverlay() {
+    return (
+      <GridOverlay>
+        <div style={{ position: 'absolute', top: 0, width: '100%' }}>
+          <LinearProgress />
+        </div>
+      </GridOverlay>
+    );
   }
 
   return (
     <>
-      <div className="vh-100 d-flex flex-column align-justify-center">
-        <Card
-          className="d-flex flex-column align-justify-center p-3 p-md-5"
-          style={{ width: '90%' }}
-        >
-          <div className="d-md-flex justify-content-between align-items-center mb-4 w-md-100">
-            <TextField
-              disabled={loading}
-              label="Search Members"
-              id="outlined-start-adornment"
-              className="mb-3 mb-md-0 w-md-50"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <FaSearch />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={e => handleChange(e.target.value)}
-            />
-            <div>
-              <Button
-                disabled={loading}
-                variant="outlined"
-                className="w-100"
-                style={{ width: '100%' }}
-                onClick={() => {
-                  setUpdateUser(null);
-                  setDeleteUser(null);
-                  setOpenPopup(true);
-                }}
-              >
-                <RiAddFill />
-                <span className="">Add User</span>
-              </Button>
-            </div>
-          </div>
-          <TableContainer>
-            {loading && <LinearProgress />}
-            <Table sx={{ minWidth: 650 }} aria-label="User Management table">
-              <TableHead sx={{ bgcolor: '#dee2fc' }}>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Role</TableCell>
-                  <TableCell>Project</TableCell>
-                  <TableCell align="center">Committee</TableCell>
-                  <TableCell align="center">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {userData ? (
-                  userData.map(row => (
-                    <CustomTableRow
-                      key={row.uid}
-                      sx={{
-                        '&:last-child td, &:last-child th': { border: 0 },
-                      }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.first_name}
-                      </TableCell>
-                      <TableCell>{row.email}</TableCell>
-                      <TableCell>{row.role}</TableCell>
-                      <TableCell>{row.project}</TableCell>
-                      <TableCell align="center">{row.committee}</TableCell>
-                      <TableCell align="center">
-                        <IconButton
-                          disabled={loading}
-                          aria-label="Edit"
-                          color="primary"
-                          onClick={() => {
-                            setDeleteUser(null);
-                            setUpdateUser(row.uid);
-                            setOpenPopup(true);
-                          }}
-                        >
-                          <MdEdit />
-                        </IconButton>
-                        <IconButton
-                          disabled={loading}
-                          aria-label="Delete"
-                          color="secondary"
-                          className="ms-2"
-                          onClick={() => {
-                            setDeleteUser(row.uid);
-                            setOpenPopup(true);
-                          }}
-                        >
-                          <MdDelete />
-                        </IconButton>
-                      </TableCell>
-                    </CustomTableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell>No User</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Card>
+      <Problem isError={err} />
+      <div className="vh-100 d-flex align-justify-center">
+        <div style={{ height: 600, width: '95%' }}>
+          <DataGrid
+            rows={userData ? userData : []}
+            columns={columns}
+            getRowId={r => r.uid}
+            paginationMode="server"
+            hideFooterSelectedRowCount
+            loading={loading}
+            components={{
+              LoadingOverlay: CustomLoadingOverlay,
+              Toolbar: AddUser,
+            }}
+            sx={{
+              boxShadow: 2,
+              backgroundColor: 'white',
+              padding: { xs: '10px', md: '15px' },
+              '& .MuiDataGrid-columnHeaders': {
+                backgroundColor: '#dee2fc',
+                borderRadius: '5px',
+                fontSize: '16px',
+              },
+            }}
+          />
+        </div>
       </div>
       <Popup
         title={deleteUser ? 'Are you sure wanna delete?' : 'Member Form'}
@@ -189,6 +196,7 @@ export function UserManagement(props: Props) {
           <DeleteForm
             setOpenModal={setOpenPopup}
             action={actions.deleteUser(deleteUser)}
+            setLoading={setLoading}
           />
         ) : (
           <MemberForm

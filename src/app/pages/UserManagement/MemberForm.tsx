@@ -17,32 +17,22 @@ import { SelectChangeEvent } from '@mui/material/Select';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-//import { dateFormat } from '../../components/dateFormat';
+import { dateFormat } from '../../components/dateFormat';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
 
-type MemberData = {
-  uid?: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  //rank: string;
-  role: string;
-  project: string;
-  committee: string;
-  start_date: string | null;
-};
-
 export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useUserManagementSlice();
   const dispatch = useDispatch();
-  const user = useSelector(selectUserManagement);
+  const { users } = useSelector(selectUserManagement);
 
-  let updateUserValue = user.find(u => u.uid === updateUser);
+  const updateUserValue = updateUser
+    ? users.find(u => u.uid === updateUser)
+    : null;
 
-  const [values, setValues] = useState<MemberData>({
+  const [values, setValues] = useState({
     uid: updateUserValue ? updateUserValue.uid : 0,
     first_name: updateUserValue ? updateUserValue.first_name : '',
     last_name: updateUserValue ? updateUserValue.last_name : '',
@@ -51,7 +41,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     // rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
-    start_date: updateUserValue ? updateUserValue.start_date : null,
+    start_date: updateUserValue ? dateFormat(updateUserValue.start_date) : null,
   });
 
   const [errors, setErrors] = useState({
@@ -62,7 +52,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     // rankError: '',
     projectError: '',
     committeeError: '',
-    dateError: '',
+    start_dateError: '',
     isError: false,
   });
 
@@ -89,6 +79,15 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
       ) {
         err[`${key}Error`] = 'This field is required';
         noofErrors++;
+      } else if (
+        key === 'email' &&
+        typeof value === 'string' &&
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+      ) {
+        err[`${key}Error`] = 'Invalid email address';
+        noofErrors++;
+      } else {
+        err[`${key}Error`] = '';
       }
     });
 
@@ -112,8 +111,10 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   function handleUpdate() {
     if (checkError()) {
       setOpenModal(false);
-      setLoading(true);
-      dispatch(actions.updateUser(values));
+      if (JSON.stringify(values) !== JSON.stringify(updateUserValue)) {
+        setLoading(true);
+        dispatch(actions.updateUser(values));
+      }
     }
   }
 
@@ -137,6 +138,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             className="mb-3"
             label="First Name"
             variant="outlined"
+            inputProps={{ maxLength: 15 }}
             onChange={e => setValues({ ...values, first_name: e.target.value })}
           />
           <br />
@@ -153,13 +155,17 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             id="outlined-basic"
             label="Last Name"
             variant="outlined"
+            inputProps={{ maxLength: 15 }}
             onChange={e => setValues({ ...values, last_name: e.target.value })}
           />
           <br />
           <TextField
             value={values.email}
             error={
-              errors.isError && (values.email.trim() === '' ? true : false)
+              errors.isError &&
+              (values.email.trim() === '' || errors.emailError !== ''
+                ? true
+                : false)
             }
             helperText={
               errors.isError &&
@@ -183,6 +189,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             id="outlined-basic"
             label="Role"
             variant="outlined"
+            inputProps={{ maxLength: 30 }}
             onChange={e => setValues({ ...values, role: e.target.value })}
           />
           <br />
@@ -261,8 +268,8 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                 label="Date"
                 value={values.start_date}
                 onChange={newValue => {
-                  // const newDate = dateFormat(newValue);
-                  setValues({ ...values, start_date: `${newValue}` });
+                  const newDate = dateFormat(newValue);
+                  setValues({ ...values, start_date: newDate });
                 }}
                 renderInput={params => (
                   <TextField
@@ -273,7 +280,9 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                     }
                     helperText={
                       errors.isError &&
-                      (errors.dateError !== '' ? errors.dateError : '')
+                      (errors.start_dateError !== ''
+                        ? errors.start_dateError
+                        : '')
                     }
                     sx={{ width: '100%' }}
                   />

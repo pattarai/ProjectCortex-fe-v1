@@ -63,6 +63,7 @@ export function Attendance(props: Props) {
   const [currentEventId, setCurrentEventId] = useState<null | number>(null);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
   const [showButton, setShowButton] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (rows) {
@@ -288,7 +289,7 @@ export function Attendance(props: Props) {
               disableSelectionOnClick
               rows={rows}
               columns={columns}
-              //loading={rows.length === 0}
+              loading={loading}
               selectionModel={selectionModel}
               onSelectionModelChange={newSelectionModel => {
                 setSelectionModel(newSelectionModel);
@@ -324,6 +325,7 @@ export function Attendance(props: Props) {
       >
         {selectionModel.length > 0 ? (
           <DeleteForm
+            setLoading={setLoading}
             setOpenModal={setOpenPopup}
             action={actions.deleteUser({
               eventId: currentEventId,
