@@ -4,39 +4,40 @@ import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { eventsSaga } from './saga';
 import { EventsState } from './types';
 
-export const initialState: EventsState = [
-  {
-    id: 1,
-    name: 'Sofia',
-    dateTime: '2021-02-03 17:00:00',
-    phase: 1,
-  },
-  {
-    id: 2,
-    name: 'Semiya',
-    dateTime: '2021-02-03 17:00:00',
-    phase: 2,
-  },
-];
+export const initialState: EventsState = {
+  error: false,
+  events: [],
+};
 
 const slice = createSlice({
   name: 'events',
   initialState,
   reducers: {
-    addEvent(state, action: PayloadAction<any>) {
-      const { id, ...rest } = action.payload;
-      const newId = state.length > 0 ? state[0].id - 1 : state.length + 100;
-      const newData = { id: newId, ...rest };
-      state.unshift(newData);
+    getEvent() {},
+    addEvent(state, action: PayloadAction<any>) {},
+    updateEvent(state, action: PayloadAction<any>) {},
+    deleteEvent(state, action: PayloadAction<any>) {},
+    setEvent(state, action: PayloadAction<any>) {
+      state.events.push(...action.payload);
     },
-    deleteEvent(state, action: PayloadAction<any>) {
-      state.forEach(
-        st => st.id === action.payload && state.splice(state.indexOf(st), 1),
+
+    setUpdateEvent(state, action: PayloadAction<any>) {
+      const newArray = state.events.findIndex(
+        st => st.event_id === action.payload.uid,
+      );
+      state.events[newArray] = { ...action.payload };
+    },
+
+    setDeleteEvent(state, action: PayloadAction<any>) {
+      state.events.forEach(
+        st =>
+          st.event_id === action.payload &&
+          state.events.splice(state.events.indexOf(st), 1),
       );
     },
-    updateEvent(state, action: PayloadAction<any>) {
-      const newArray = state.findIndex(st => st.id === action.payload.id);
-      state[newArray] = { ...action.payload };
+
+    setError(state, action: PayloadAction<any>) {
+      state.error = action.payload;
     },
   },
 });

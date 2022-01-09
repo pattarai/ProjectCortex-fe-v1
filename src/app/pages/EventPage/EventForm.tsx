@@ -1,19 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import {
-  TextField,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormHelperText,
-  FormControlLabel,
-  FormLabel,
-  InputLabel,
-  Select,
-  MenuItem,
-  Button,
-} from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
+import { TextField, Button } from '@mui/material';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -30,19 +17,22 @@ type MemberData = {
   dateTime: string | null;
 };
 
-export default function MemberForm({ setOpenModal, updateUser }) {
+export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useEventsSlice();
   const dispatch = useDispatch();
-  const user = useSelector(selectEvents);
+  const { events } = useSelector(selectEvents);
 
-  let updateUserValue = user.find(u => u.id === updateUser);
+  let updateUserValue = updateUser
+    ? events.find(u => u.event_id === updateUser)
+    : null;
+
   console.log(updateUserValue);
 
   const [values, setValues] = useState<MemberData>({
-    id: updateUserValue ? updateUserValue.id : 0,
-    name: updateUserValue ? updateUserValue.name : '',
+    id: updateUserValue ? updateUserValue.event_id : 0,
+    name: updateUserValue ? updateUserValue.event_name : '',
     phase: updateUserValue ? updateUserValue.phase : null,
-    dateTime: updateUserValue ? updateUserValue.dateTime : '',
+    dateTime: updateUserValue ? updateUserValue.event_date : '',
   });
 
   const [errors, setErrors] = useState({
@@ -93,15 +83,18 @@ export default function MemberForm({ setOpenModal, updateUser }) {
 
   function handleSubmit() {
     if (checkError()) {
-      dispatch(actions.addEvent(values));
       setOpenModal(false);
+      setLoading(true);
+
+      dispatch(actions.addEvent(values));
     }
   }
 
   function handleUpdate() {
     if (checkError()) {
-      dispatch(actions.updateEvent(values));
       setOpenModal(false);
+      setLoading(true);
+      dispatch(actions.updateEvent(values));
     }
   }
 

@@ -1,9 +1,11 @@
 /* --- STATE --- */
 interface Events {
-  id: number;
-  name: string;
-  dateTime: string;
+  event_id: number;
+  event_name: string;
+  event_date: string;
   phase: number;
 }
-
-export interface EventsState extends Array<Events> {}
+export interface EventsState {
+  error: boolean;
+  events: Events[];
+}
