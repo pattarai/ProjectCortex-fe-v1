@@ -4,8 +4,7 @@
  *
  */
 import * as React from 'react';
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -18,24 +17,18 @@ import {
 } from '@mui/material';
 import AvatarIcon from './images/raksha.png';
 import Diamond from './images/diamond.png';
-
-import Modal from '@mui/material/Modal';
-
-import List from '@mui/material/List';
-import ListSubheader from '@mui/material/ListSubheader';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-
 import { FaSearch } from 'react-icons/fa';
-import { RiAddFill } from 'react-icons/ri';
+import Modal from '@mui/material/Modal';
+import MemberScoreCard from './MemberScoreCard';
+import axios from 'axios';
+interface MemberData {
+  rank: string;
+  score: number;
+  league: string;
+}
 
-interface Props {}
-
-export function RankingCrew(props: Props) {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export function RankingCrew() {
+  const [openPopup, setOpenPopup] = useState(false);
 
   const top3List = [
     { name: 'Raksha', league: 'Bronze', rank: '1', score: '210' },
@@ -43,98 +36,54 @@ export function RankingCrew(props: Props) {
     { name: 'Josh', league: 'Silver', rank: '8', score: '50' },
   ];
 
-  const ranklist = [
-    { name: 'Jesin', league: 'Silver', rank: '8', score: '50' },
-    { name: 'Subi', league: 'Silver', rank: '8', score: '50' },
-  ];
+  // const details = [
+  //   { name: 'Jesin', league: 'Silver', rank: '8', score: '50' },
+  //   { name: 'Subi', league: 'Silver', rank: '8', score: '50' },
+  // ];
 
-  const [userData, setUserData] = useState(ranklist);
+  const [userData, setUserData] = useState<MemberData[] | null>(null);
 
-  function handleChange(searchedVal: string | null) {
-    if (searchedVal === '' || searchedVal === null) {
-      setUserData(ranklist);
-    } else {
-      const filteredUser = ranklist.filter(row =>
-        row.name.toLowerCase().includes(searchedVal.toLowerCase()),
-      );
-      console.log(filteredUser, searchedVal);
-      setUserData(filteredUser);
-    }
-  }
+  useEffect(() => {
+    axios.get('http://127.0.0.1:5000/api/ranking').then(res => {
+      const user = res.data.data;
+      console.log(user);
+      setUserData(user);
+    });
+  }, []);
+
+  // function handleChange(searchedVal: string | null) {
+  //   if (searchedVal === '' || searchedVal === null) {
+  //     setUserData(top3List);
+  //   } else {
+  //     const filteredUser = top3List.filter(row =>
+  //       row.name.toLowerCase().includes(searchedVal.toLowerCase()),
+  //     );
+  //     console.log(filteredUser, searchedVal);
+  //     setUserData(filteredUser);
+  //   }
+  // }
 
   return (
     <>
       <section className="vh-100">
         <div className="d-flex justify-content-end p-4">
-          <Button sx={{ color: '#dee2fc' }} onClick={handleOpen}>
+          <Button
+            sx={{ color: '#dee2fc' }}
+            onClick={() => {
+              setOpenPopup(true);
+            }}
+          >
             Score Details
           </Button>
         </div>
         <Modal
-          open={open}
-          onClose={handleClose}
+          open={openPopup}
+          onClose={setOpenPopup}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Card
-            elevation={2}
-            sx={{
-              display: 'flex',
-              textAlign: 'center',
-              position: 'absolute' as 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: 400,
-              padding: 2,
-            }}
-          >
-            <CardContent sx={{ flex: 1 }}>
-              <Avatar
-                alt="Raksha"
-                src={AvatarIcon}
-                sx={{
-                  width: 70,
-                  height: 70,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: 'auto',
-                  marginBottom: '5%',
-                }}
-              />
-              <Typography id="modal-modal-title" component="h2" variant="h5">
-                Raksha V G - Phase I
-              </Typography>
-              <List id="modal-modal-description">
-                <ListSubheader>
-                  <div className="d-flex justify-content-between">
-                    <span className="text-start">EVENT</span>
-                    <span>SCORE</span>
-                  </div>
-                </ListSubheader>
-                <ListItem>
-                  <ListItemIcon>
-                    <RiAddFill />
-                  </ListItemIcon>
-                  <ListItemText primary="INTACTO" />
-                  <div className="d-flex justify-content-end">
-                    <ListItemText primary="2" />
-                  </div>
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <RiAddFill />
-                  </ListItemIcon>
-                  <ListItemText primary="FESTX" />
-                  <div className="d-flex justify-content-end">
-                    <ListItemText primary="5" />
-                  </div>
-                </ListItem>
-              </List>
-            </CardContent>
-          </Card>
+          <MemberScoreCard />
         </Modal>
-
         <div className="container my-4">
           <div className="row">
             {top3List.map((list, index) => {
@@ -169,12 +118,11 @@ export function RankingCrew(props: Props) {
             })}
           </div>
         </div>
-
         <div className="container my-3">
           <TextField
             label="Search Members"
             className="mb-3 mb-md-0 w-md-50"
-            onChange={e => handleChange(e.target.value)}
+            //onChange={e => handleChange(e.target.value)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -184,68 +132,69 @@ export function RankingCrew(props: Props) {
             }}
           />
         </div>
-
         <div className="container align-items-center d-flex justify-content-center">
           <div className="col m-2">
-            {userData.map((list, index) => {
-              return (
-                <div key={index} className="row mb-2">
-                  <Card elevation={2}>
-                    <CardContent>
-                      <div className="align-items-center d-flex justify-content-center">
-                        <span className="me-3">
-                          <Typography
-                            component="h1"
-                            variant="h6"
-                            color="text.secondary"
-                          >
-                            #{list.rank}
-                          </Typography>
-                        </span>
-                        <Avatar
-                          alt={list.name}
-                          src={AvatarIcon}
-                          sx={{
-                            width: 40,
-                            height: 40,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            margin: 'auto',
-                          }}
-                        />
-                        <div style={{ width: '50%' }}>
-                          <span className="d-none d-md-block ms-2">
-                            <Typography component="h2" variant="h6">
-                              {list.name}
+            {userData &&
+              userData.length > 0 &&
+              userData.map((data, index) => {
+                return (
+                  <div key={index} className="row mb-2">
+                    <Card elevation={2}>
+                      <CardContent>
+                        <div className="align-items-center d-flex justify-content-center">
+                          <span className="me-3">
+                            <Typography
+                              component="h1"
+                              variant="h6"
+                              color="text.secondary"
+                            >
+                              #{data.rank}
                             </Typography>
                           </span>
+                          <Avatar
+                            alt="hi"
+                            src={AvatarIcon}
+                            sx={{
+                              width: 40,
+                              height: 40,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              margin: 'auto',
+                            }}
+                          />
+                          <div style={{ width: '50%' }}>
+                            <span className="d-none d-md-block ms-2">
+                              <Typography component="h2" variant="h6">
+                                Raksha
+                              </Typography>
+                            </span>
+                          </div>
+                          <Avatar
+                            alt={data.league}
+                            src={Diamond}
+                            variant="square"
+                            sx={{
+                              width: 40,
+                              height: 40,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              margin: 'auto',
+                            }}
+                          />
+                          <div
+                            className="d-flex flex-column justify-content-end align-items-end"
+                            style={{ width: '60%' }}
+                          >
+                            <Typography component="h2" variant="h6">
+                              {data.score}
+                            </Typography>
+                          </div>
                         </div>
-                        <Avatar
-                          alt={list.league}
-                          src={Diamond}
-                          variant="square"
-                          sx={{
-                            width: 40,
-                            height: 40,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            margin: 'auto',
-                          }}
-                        />
-                        <div
-                          className="d-flex flex-column justify-content-end align-items-end"
-                          style={{ width: '60%' }}
-                        >
-                          <Typography component="h2" variant="h6">
-                            {list.score}
-                          </Typography>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              );
-            })}
+                      </CardContent>
+                    </Card>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </section>
