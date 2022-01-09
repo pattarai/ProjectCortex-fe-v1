@@ -29,12 +29,14 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Home" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <MdCalendarToday />
-      </ListItemIcon>
-      <ListItemText primary="Attendance" />
-    </ListItem>
+    <Link to={{ pathname: '/dashboard/attendance' }}>
+      <ListItem button>
+        <ListItemIcon>
+          <MdCalendarToday />
+        </ListItemIcon>
+        <ListItemText primary="Attendance" />
+      </ListItem>
+    </Link>
     <ListItem button>
       <ListItemIcon>
         <MdEmojiEvents />
