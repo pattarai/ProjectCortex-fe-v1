@@ -1,13 +1,13 @@
 import * as React from 'react';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import HomeIcon from '@mui/icons-material/Home';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import {
+  MdDashboard as DashboardIcon,
+  MdHome as HomeIcon,
+  MdCalendarToday as CalendarTodayIcon,
+  MdEmojiEvents as EmojiEventsIcon,
+  MdEventAvailable as EventAvailableIcon,
+  MdExitToApp as ExitToAppIcon,
+} from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 export const mainListItems = (

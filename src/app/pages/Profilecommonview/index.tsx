@@ -5,23 +5,19 @@
  */
 import * as React from 'react';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import { Avatar, Button, CardActionArea, TextField } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Avatar,
+  CardActionArea,
+  TextField,
+} from '@mui/material';
+import { BiSearch as SearchIcon } from 'react-icons/bi';
 
-import Modal from '@mui/material/Modal';
-
-import List from '@mui/material/List';
-import ListSubheader from '@mui/material/ListSubheader';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import EventIcon from '@mui/icons-material/Event';
-import SearchIcon from '@mui/icons-material/Search';
 import { Box } from '@mui/system';
-import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useProfileCommonViewSlice } from './slice';
 
@@ -71,7 +67,7 @@ export function ProfileCommonView(props: Props) {
        /> */}
       <div className="container my-3">
         <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-          <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5, mt: 1 }} />
+          <SearchIcon />
           <TextField
             id="input-with-sx"
             label="Search Name"

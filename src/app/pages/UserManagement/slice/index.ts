@@ -4,47 +4,40 @@ import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { userManagementSaga } from './saga';
 import { UserManagementState } from './types';
 
-export const initialState: UserManagementState = [
-  {
-    id: 99,
-    name: 'Joshua',
-    email: 'joshuafrankle7@gmail.com',
-    role: 'VPE',
-    rank: 'Copper',
-    project: 'Project Cortex',
-    committee: 'EV',
-    date: null,
-  },
-  {
-    id: 100,
-    name: 'Jesin',
-    email: 'jesinthan@gmail.com',
-    role: 'Director of Activities',
-    rank: 'Gold',
-    project: 'Project Cortex',
-    committee: 'EV',
-    date: null,
-  },
-];
+export const initialState: UserManagementState = {
+  error: false,
+  users: [],
+};
 
 const slice = createSlice({
   name: 'userManagement',
   initialState,
   reducers: {
-    addUser(state, action: PayloadAction<any>) {
-      const { id, ...rest } = action.payload;
-      const newId = state.length > 0 ? state[0].id - 1 : state.length + 100;
-      const newData = { id: newId, ...rest };
-      state.unshift(newData);
+    getUser() {},
+    addUser(state, action: PayloadAction<any>) {},
+    updateUser(state, action: PayloadAction<any>) {},
+    deleteUser(state, action: PayloadAction<any>) {},
+    setUser(state, action: PayloadAction<any>) {
+      state.users.push(...action.payload);
     },
-    deleteUser(state, action: PayloadAction<any>) {
-      state.forEach(
-        st => st.id === action.payload && state.splice(state.indexOf(st), 1),
+
+    setUpdateUser(state, action: PayloadAction<any>) {
+      const newArray = state.users.findIndex(
+        st => st.uid === action.payload.uid,
+      );
+      state.users[newArray] = { ...action.payload };
+    },
+
+    setDeleteUser(state, action: PayloadAction<any>) {
+      state.users.forEach(
+        st =>
+          st.uid === action.payload &&
+          state.users.splice(state.users.indexOf(st), 1),
       );
     },
-    updateUser(state, action: PayloadAction<any>) {
-      const newArray = state.findIndex(st => st.id === action.payload.id);
-      state[newArray] = { ...action.payload };
+
+    setError(state, action: PayloadAction<any>) {
+      state.error = action.payload;
     },
   },
 });

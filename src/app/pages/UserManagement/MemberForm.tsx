@@ -14,52 +14,45 @@ import {
   Button,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
-
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import { dateFormat } from '../../components/dateFormat';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
 
-type MemberData = {
-  id?: number;
-  name: string;
-  email: string;
-  rank: string;
-  role: string;
-  project: string;
-  committee: string;
-  date: Date | null;
-};
-
-export default function MemberForm({ setOpenModal, updateUser }) {
+export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useUserManagementSlice();
   const dispatch = useDispatch();
-  const user = useSelector(selectUserManagement);
+  const { users } = useSelector(selectUserManagement);
 
-  let updateUserValue = user.find(u => u.id === updateUser);
+  const updateUserValue = updateUser
+    ? users.find(u => u.uid === updateUser)
+    : null;
 
-  const [values, setValues] = useState<MemberData>({
-    id: updateUserValue ? updateUserValue.id : 0,
-    name: updateUserValue ? updateUserValue.name : '',
+  const [values, setValues] = useState({
+    uid: updateUserValue ? updateUserValue.uid : 0,
+    first_name: updateUserValue ? updateUserValue.first_name : '',
+    last_name: updateUserValue ? updateUserValue.last_name : '',
     email: updateUserValue ? updateUserValue.email : '',
     role: updateUserValue ? updateUserValue.role : '',
-    rank: updateUserValue ? updateUserValue.rank : '',
+    // rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
-    date: updateUserValue ? updateUserValue.date : null,
+    start_date: updateUserValue ? dateFormat(updateUserValue.start_date) : null,
   });
 
   const [errors, setErrors] = useState({
-    nameError: '',
+    first_nameError: '',
+    last_nameError: '',
     emailError: '',
     roleError: '',
-    rankError: '',
+    // rankError: '',
     projectError: '',
     committeeError: '',
-    dateError: '',
+    start_dateError: '',
     isError: false,
   });
 
@@ -86,6 +79,15 @@ export default function MemberForm({ setOpenModal, updateUser }) {
       ) {
         err[`${key}Error`] = 'This field is required';
         noofErrors++;
+      } else if (
+        key === 'email' &&
+        typeof value === 'string' &&
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+      ) {
+        err[`${key}Error`] = 'Invalid email address';
+        noofErrors++;
+      } else {
+        err[`${key}Error`] = '';
       }
     });
 
@@ -100,43 +102,70 @@ export default function MemberForm({ setOpenModal, updateUser }) {
 
   function handleSubmit() {
     if (checkError()) {
-      dispatch(actions.addUser(values));
       setOpenModal(false);
+      setLoading(true);
+      dispatch(actions.addUser(values));
     }
   }
 
   function handleUpdate() {
     if (checkError()) {
-      dispatch(actions.updateUser(values));
       setOpenModal(false);
+      if (JSON.stringify(values) !== JSON.stringify(updateUserValue)) {
+        setLoading(true);
+        dispatch(actions.updateUser(values));
+      }
     }
   }
 
-  const projectsList = ['Project Cortex', 'Project Pager', 'Project Opencloud'];
+  const projectsList = ['Cortex', 'Pager', 'Opencloud'];
   const committeeList = ['HR', 'BD', 'I&M', 'EV'];
 
   return (
     <>
-      <div className="d-md-flex">
+      <div className="d-md-flex mt-2">
         <div className="me-3">
           <TextField
-            value={values.name}
-            error={errors.isError && (values.name.trim() === '' ? true : false)}
+            value={values.first_name}
+            error={
+              errors.isError && (values.first_name.trim() === '' ? true : false)
+            }
             helperText={
               errors.isError &&
-              (errors.nameError !== '' ? errors.nameError : '')
+              (errors.first_nameError !== '' ? errors.first_nameError : '')
             }
             id="outlined-basic"
             className="mb-3"
-            label="Full Name"
+            label="First Name"
             variant="outlined"
-            onChange={e => setValues({ ...values, name: e.target.value })}
+            inputProps={{ maxLength: 15 }}
+            onChange={e => setValues({ ...values, first_name: e.target.value })}
+          />
+          <br />
+          <TextField
+            value={values.last_name}
+            error={
+              errors.isError && (values.last_name.trim() === '' ? true : false)
+            }
+            helperText={
+              errors.isError &&
+              (errors.last_nameError !== '' ? errors.last_nameError : '')
+            }
+            className="mb-3"
+            id="outlined-basic"
+            label="Last Name"
+            variant="outlined"
+            inputProps={{ maxLength: 15 }}
+            onChange={e => setValues({ ...values, last_name: e.target.value })}
           />
           <br />
           <TextField
             value={values.email}
             error={
-              errors.isError && (values.email.trim() === '' ? true : false)
+              errors.isError &&
+              (values.email.trim() === '' || errors.emailError !== ''
+                ? true
+                : false)
             }
             helperText={
               errors.isError &&
@@ -160,10 +189,11 @@ export default function MemberForm({ setOpenModal, updateUser }) {
             id="outlined-basic"
             label="Role"
             variant="outlined"
+            inputProps={{ maxLength: 30 }}
             onChange={e => setValues({ ...values, role: e.target.value })}
           />
           <br />
-          <TextField
+          {/* <TextField
             value={values.rank}
             error={errors.isError && (values.rank.trim() === '' ? true : false)}
             helperText={
@@ -175,7 +205,7 @@ export default function MemberForm({ setOpenModal, updateUser }) {
             label="Rank"
             variant="outlined"
             onChange={e => setValues({ ...values, rank: e.target.value })}
-          />
+          /> */}
           <br />
         </div>
         <div className="ms-md-3">
@@ -236,20 +266,25 @@ export default function MemberForm({ setOpenModal, updateUser }) {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date"
-                value={values.date}
+                value={values.start_date}
                 onChange={newValue => {
-                  setValues({ ...values, date: newValue });
+                  const newDate = dateFormat(newValue);
+                  setValues({ ...values, start_date: newDate });
                 }}
                 renderInput={params => (
                   <TextField
                     {...params}
                     error={
-                      errors.isError && (values.date === null ? true : false)
+                      errors.isError &&
+                      (values.start_date === null ? true : false)
                     }
                     helperText={
                       errors.isError &&
-                      (errors.dateError !== '' ? errors.dateError : '')
+                      (errors.start_dateError !== ''
+                        ? errors.start_dateError
+                        : '')
                     }
+                    sx={{ width: '100%' }}
                   />
                 )}
               />
@@ -265,24 +300,6 @@ export default function MemberForm({ setOpenModal, updateUser }) {
                 Submit
               </Button>
             )}
-            <Button
-              variant="outlined"
-              onClick={() =>
-                setValues({
-                  name: '',
-                  email: '',
-                  role: '',
-                  rank: '',
-                  project: '',
-                  committee: '',
-                  date: null,
-                })
-              }
-              color="secondary"
-              className="ms-2"
-            >
-              Reset
-            </Button>
           </div>
         </div>
       </div>
