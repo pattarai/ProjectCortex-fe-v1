@@ -12,6 +12,7 @@ import { ProfileCommonView } from '../Profilecommonview';
 import { EventPage } from '../EventPage';
 import { UserManagement } from '../UserManagement';
 import { Attendance } from '../Attendance';
+import { EventsCrewPage } from '../EventsCrewPage';
 
 interface Props {}
 
@@ -25,6 +26,7 @@ export function Routes(props: Props) {
       <Route exact path="/dashboard/profilecv" component={ProfileCommonView} />
       <Route exact path="/dashboard/events" component={EventPage} />
       <Route exact path="/dashboard/attendance" component={Attendance} />
+      <Route exact path="/dashboard/eventscrew" component={EventsCrewPage} />
     </Switch>
   );
 }
