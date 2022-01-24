@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { Index } from './pages/Index';
 import { DashboardLayout } from './pages/DashboardLayout';
 import { LoginPage } from './pages/LoginPage';
+import { CompleteProfile } from './pages/CompleteProfile';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -33,6 +34,7 @@ export function App() {
       <Switch>
         <Route exact path="/" component={Index} />
         <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/completeprofile" component={CompleteProfile} />
         <Route path="/dashboard" component={DashboardLayout} />
       </Switch>
       <GlobalStyle />

@@ -185,7 +185,8 @@ export function LoginPage() {
                   size="medium"
                   sx={{ mt: 3, mb: 2 }}
                   color="secondary"
-                  onClick={handleSubmit}
+                  // onClick={handleSubmit}
+                  onClick={() => history.push('/completeprofile')}
                 >
                   Sign In
                 </Button>
