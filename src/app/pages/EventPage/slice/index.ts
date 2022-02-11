@@ -23,7 +23,7 @@ const slice = createSlice({
 
     setUpdateEvent(state, action: PayloadAction<any>) {
       const newArray = state.events.findIndex(
-        st => st.event_id === action.payload.uid,
+        st => st.eventId === action.payload.uid,
       );
       state.events[newArray] = { ...action.payload };
     },
@@ -31,7 +31,7 @@ const slice = createSlice({
     setDeleteEvent(state, action: PayloadAction<any>) {
       state.events.forEach(
         st =>
-          st.event_id === action.payload &&
+          st.eventId === action.payload &&
           state.events.splice(state.events.indexOf(st), 1),
       );
     },

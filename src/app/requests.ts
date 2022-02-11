@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const endpoint = 'http://127.0.0.1:5000/api';
+const endpoint = 'http://localhost:5000/api';
 
 export function axiosGet(url: string) {
   return axios.request({

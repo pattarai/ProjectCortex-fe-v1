@@ -9,13 +9,7 @@ import DatePicker from '@mui/lab/DatePicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEventsSlice } from './slice';
 import { selectEvents } from './slice/selectors';
-
-type MemberData = {
-  id?: number;
-  name: string;
-  phase: number | null;
-  dateTime: string | null;
-};
+import { Events } from './slice/types';
 
 export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useEventsSlice();
@@ -23,40 +17,28 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { events } = useSelector(selectEvents);
 
   let updateUserValue = updateUser
-    ? events.find(u => u.event_id === updateUser)
+    ? events.find(u => u.eventId === updateUser)
     : null;
 
-  console.log(updateUserValue);
-
-  const [values, setValues] = useState<MemberData>({
-    id: updateUserValue ? updateUserValue.event_id : 0,
-    name: updateUserValue ? updateUserValue.event_name : '',
-    phase: updateUserValue ? updateUserValue.phase : null,
-    dateTime: updateUserValue ? updateUserValue.event_date : '',
+  const [values, setValues] = useState<Events>({
+    eventId: updateUserValue ? updateUserValue.eventId : 0,
+    eventName: updateUserValue ? updateUserValue.eventName : '',
+    phase: updateUserValue ? updateUserValue.phase : 0,
+    eventDate: updateUserValue ? updateUserValue.eventDate : '',
+    eventType: updateUserValue ? updateUserValue.eventType : '',
+    conductedBy: updateUserValue ? updateUserValue.conductedBy : '',
+    speaker: updateUserValue ? updateUserValue.speaker : '',
   });
 
   const [errors, setErrors] = useState({
-    nameError: '',
-    emailError: '',
-    roleError: '',
-    rankError: '',
-    projectError: '',
-    committeeError: '',
-    dateError: '',
+    eventNameError: '',
+    phaseError: '',
+    eventDateError: '',
+    eventTypeError: '',
+    conductedByError: '',
+    speakerError: '',
     isError: false,
   });
-
-  // const handleProjectsChange = (event: SelectChangeEvent) => {
-  //   setValues({ ...values, project: event.target.value });
-  // };
-  // const handleCommitteeChange = (
-  //   event: React.ChangeEvent<HTMLInputElement>,
-  // ) => {
-  //   setValues({
-  //     ...values,
-  //     committee: (event.target as HTMLInputElement).value,
-  //   });
-  // };
 
   function checkError() {
     let noofErrors = 0;
@@ -85,7 +67,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     if (checkError()) {
       setOpenModal(false);
       setLoading(true);
-
       dispatch(actions.addEvent(values));
     }
   }
@@ -103,17 +84,19 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
       <div className="d-md-flex">
         <div className="me-3">
           <TextField
-            value={values.name}
-            error={errors.isError && (values.name.trim() === '' ? true : false)}
+            value={values.eventName}
+            error={
+              errors.isError && (values.eventName.trim() === '' ? true : false)
+            }
             helperText={
               errors.isError &&
-              (errors.nameError !== '' ? errors.nameError : '')
+              (errors.eventNameError !== '' ? errors.eventNameError : '')
             }
             id="outlined-basic"
             className="mb-3"
             label="Event Name"
             variant="outlined"
-            onChange={e => setValues({ ...values, name: e.target.value })}
+            onChange={e => setValues({ ...values, eventName: e.target.value })}
           />
           <br />
           <TextField
@@ -122,7 +105,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             error={errors.isError && (values.phase === null ? true : false)}
             helperText={
               errors.isError &&
-              (errors.emailError !== '' ? errors.emailError : '')
+              (errors.phaseError !== '' ? errors.phaseError : '')
             }
             className="mb-3"
             id="outlined-basic"
@@ -134,17 +117,17 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
           />
           <br />
           <TextField
-            value={values.dateTime}
-            error={errors.isError && (values.dateTime === '' ? true : false)}
+            value={values.eventType}
+            error={errors.isError && (values.eventType === '' ? true : false)}
             helperText={
               errors.isError &&
-              (errors.roleError !== '' ? errors.roleError : '')
+              (errors.eventTypeError !== '' ? errors.eventTypeError : '')
             }
             className="mb-3"
             id="outlined-basic"
-            label="Role"
+            label="Event Type"
             variant="outlined"
-            onChange={e => setValues({ ...values, dateTime: e.target.value })}
+            onChange={e => setValues({ ...values, eventType: e.target.value })}
           />
           <br />
         </div>
@@ -152,27 +135,64 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
           <div className="my-3">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                label="Date"
-                value={values.dateTime}
+                label="Event Date"
+                value={values.eventDate}
                 onChange={newValue => {
-                  setValues({ ...values, dateTime: newValue });
+                  setValues({ ...values, eventDate: newValue });
                 }}
                 renderInput={params => (
                   <TextField
                     {...params}
                     error={
                       errors.isError &&
-                      (values.dateTime === null ? true : false)
+                      (values.eventDate === null ? true : false)
                     }
                     helperText={
                       errors.isError &&
-                      (errors.dateError !== '' ? errors.dateError : '')
+                      (errors.eventDateError !== ''
+                        ? errors.eventDateError
+                        : '')
                     }
                     sx={{ width: '100%' }}
                   />
                 )}
               />
             </LocalizationProvider>
+            <TextField
+              value={values.conductedBy}
+              error={
+                errors.isError &&
+                (values.conductedBy.trim() === '' ? true : false)
+              }
+              helperText={
+                errors.isError &&
+                (errors.conductedByError !== '' ? errors.conductedByError : '')
+              }
+              id="outlined-basic"
+              className="mb-3"
+              label="Event Type"
+              variant="outlined"
+              onChange={e =>
+                setValues({ ...values, conductedBy: e.target.value })
+              }
+            />
+            <br />
+            <TextField
+              value={values.speaker}
+              error={
+                errors.isError && (values.speaker.trim() === '' ? true : false)
+              }
+              helperText={
+                errors.isError &&
+                (errors.speakerError !== '' ? errors.speakerError : '')
+              }
+              id="outlined-basic"
+              className="mb-3"
+              label="Event Type"
+              variant="outlined"
+              onChange={e => setValues({ ...values, speaker: e.target.value })}
+            />
+            <br />
           </div>
           <div className="d-flex mt-4">
             {updateUserValue ? (
@@ -184,21 +204,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                 Submit
               </Button>
             )}
-            <Button
-              variant="outlined"
-              onClick={() =>
-                setValues({
-                  id: 0,
-                  name: '',
-                  phase: null,
-                  dateTime: '',
-                })
-              }
-              color="secondary"
-              className="ms-2"
-            >
-              Reset
-            </Button>
           </div>
         </div>
       </div>

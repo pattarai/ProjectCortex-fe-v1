@@ -7,39 +7,38 @@ import {
   axiosDelete,
 } from '../../../requests';
 
-function* handleGetUser() {
+function* handleGetEvents() {
   try {
-    const res = yield call(() => axiosGet('/events'));
-    const data = res.data;
-    console.log(data);
+    const res = yield call(() => axiosGet('/admin/events'));
+    const data = res.data.data;
     yield put(actions.setEvent(data));
   } catch (error) {
     yield put(actions.setError(true));
   }
 }
 
-function* handleAddUser(action: any) {
+function* handleAddEvents(action: any) {
   try {
-    const res = yield call(() => axiosPost('/events', action.payload));
-    const data = res.data;
+    const res = yield call(() => axiosPost('/admin/events', action.payload));
+    const data = res.data.data;
     yield put(actions.setEvent(data));
   } catch (error) {
     yield put(actions.setError(true));
   }
 }
 
-function* handleUpdateUser(action: any) {
+function* handleUpdateEvents(action: any) {
   try {
-    yield call(() => axiosPatch('/events', action.payload));
+    yield call(() => axiosPatch('/admin/events', action.payload));
     yield put(actions.setUpdateEvent(action.payload));
   } catch (error) {
     yield put(actions.setError(true));
   }
 }
 
-function* handleDeleteUser(action: any) {
+function* handleDeleteEvents(action: any) {
   try {
-    yield call(() => axiosDelete('/events', { event_id: action.payload }));
+    yield call(() => axiosDelete('/admin/events', { eventId: action.payload }));
     yield put(actions.setDeleteEvent(action.payload));
   } catch (error) {
     yield put(actions.setError(true));
@@ -47,8 +46,8 @@ function* handleDeleteUser(action: any) {
 }
 
 export function* eventsSaga() {
-  yield takeLatest(actions.getEvent.type, handleGetUser);
-  yield takeLatest(actions.addEvent.type, handleAddUser);
-  yield takeLatest(actions.updateEvent.type, handleUpdateUser);
-  yield takeLatest(actions.deleteEvent.type, handleDeleteUser);
+  yield takeLatest(actions.getEvent.type, handleGetEvents);
+  yield takeLatest(actions.addEvent.type, handleAddEvents);
+  yield takeLatest(actions.updateEvent.type, handleUpdateEvents);
+  yield takeLatest(actions.deleteEvent.type, handleDeleteEvents);
 }

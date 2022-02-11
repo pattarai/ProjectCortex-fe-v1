@@ -1,8 +1,11 @@
 /* --- STATE --- */
-interface Events {
-  event_id: number;
-  event_name: string;
-  event_date: string;
+export interface Events {
+  eventId: number;
+  eventName: string;
+  eventDate: string | null;
+  eventType: string;
+  conductedBy: string;
+  speaker: string;
   phase: number;
 }
 export interface EventsState {
