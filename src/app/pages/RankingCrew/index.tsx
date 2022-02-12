@@ -46,8 +46,10 @@ export function RankingCrew() {
     axios.get('http://127.0.0.1:5000/api/users/ranks').then(res => {
       const user = res.data.data;
       const top3List = user.slice(0, 3);
+      const userList = user.slice(3);
       setTop3(top3List);
-      setUserData(user.slice(3));
+      setUserData(userList);
+      setUserSearchData(userList);
       console.log(user);
     });
   }, []);
