@@ -47,7 +47,7 @@ export function RankingCrew() {
       const user = res.data.data;
       const top3List = user.slice(0, 3);
       setTop3(top3List);
-      setUserData(user.splice(3));
+      setUserData(user.slice(3));
       console.log(user);
     });
   }, []);
