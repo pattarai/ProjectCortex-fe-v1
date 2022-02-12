@@ -21,47 +21,48 @@ import { FaSearch } from 'react-icons/fa';
 import Modal from '@mui/material/Modal';
 import MemberScoreCard from './MemberScoreCard';
 import axios from 'axios';
+
+type Users = {
+  firstName: string;
+  lastName: string;
+};
 interface MemberData {
+  users: Users;
   rank: string;
-  score: number;
+  total: number;
   league: string;
 }
 
 export function RankingCrew() {
   const [openPopup, setOpenPopup] = useState(false);
 
-  const top3List = [
-    { name: 'Raksha', league: 'Bronze', rank: '1', score: '210' },
-    { name: 'Veroni', league: 'Diamond', rank: '3', score: '100' },
-    { name: 'Josh', league: 'Silver', rank: '8', score: '50' },
-  ];
-
-  // const details = [
-  //   { name: 'Jesin', league: 'Silver', rank: '8', score: '50' },
-  //   { name: 'Subi', league: 'Silver', rank: '8', score: '50' },
-  // ];
-
   const [userData, setUserData] = useState<MemberData[] | null>(null);
+  const [userSearchData, setUserSearchData] = useState<MemberData[] | null>(
+    null,
+  );
+  const [top3, setTop3] = useState<MemberData[] | null>(null);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:5000/api/ranking').then(res => {
+    axios.get('http://127.0.0.1:5000/api/users/ranks').then(res => {
       const user = res.data.data;
+      const top3List = user.slice(0, 3);
+      setTop3(top3List);
+      setUserData(user.splice(3));
       console.log(user);
-      setUserData(user);
     });
   }, []);
 
-  // function handleChange(searchedVal: string | null) {
-  //   if (searchedVal === '' || searchedVal === null) {
-  //     setUserData(top3List);
-  //   } else {
-  //     const filteredUser = top3List.filter(row =>
-  //       row.name.toLowerCase().includes(searchedVal.toLowerCase()),
-  //     );
-  //     console.log(filteredUser, searchedVal);
-  //     setUserData(filteredUser);
-  //   }
-  // }
+  function handleChange(searchedVal: string | null) {
+    if (searchedVal === '' || searchedVal === null) {
+      setUserSearchData(userData);
+    } else {
+      const filteredUser = userData?.filter(row =>
+        row.users.firstName.toLowerCase().includes(searchedVal.toLowerCase()),
+      );
+      console.log(filteredUser, searchedVal);
+      filteredUser && setUserSearchData(filteredUser);
+    }
+  }
 
   return (
     <>
@@ -86,43 +87,47 @@ export function RankingCrew() {
         </Modal>
         <div className="container my-4">
           <div className="row">
-            {top3List.map((list, index) => {
-              return (
-                <div key={index} className="col-12 col-md-4 mb-4">
-                  <Card elevation={2} sx={{ textAlign: 'center' }}>
-                    <CardActionArea>
-                      <CardContent>
-                        <Avatar
-                          alt={list.name}
-                          src={AvatarIcon}
-                          sx={{
-                            width: 70,
-                            height: 70,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            margin: 'auto',
-                            marginBottom: '5%',
-                          }}
-                        />
-                        <Typography component="h2" variant="h5">
-                          {list.name}
-                        </Typography>
-                        <Typography variant="subtitle1" color="text.secondary">
-                          {list.league} | {list.score}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </div>
-              );
-            })}
+            {top3 &&
+              top3.map((list, index) => {
+                return (
+                  <div key={index} className="col-12 col-md-4 mb-4">
+                    <Card elevation={2} sx={{ textAlign: 'center' }}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Avatar
+                            alt={list.users.firstName}
+                            src={AvatarIcon}
+                            sx={{
+                              width: 70,
+                              height: 70,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              margin: 'auto',
+                              marginBottom: '5%',
+                            }}
+                          />
+                          <Typography component="h2" variant="h5">
+                            {list.users.firstName} {list.users.lastName}
+                          </Typography>
+                          <Typography
+                            variant="subtitle1"
+                            color="text.secondary"
+                          >
+                            {list.league} | {list.total}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </div>
+                );
+              })}
           </div>
         </div>
         <div className="container my-3">
           <TextField
             label="Search Members"
             className="mb-3 mb-md-0 w-md-50"
-            //onChange={e => handleChange(e.target.value)}
+            onChange={e => handleChange(e.target.value)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -134,9 +139,10 @@ export function RankingCrew() {
         </div>
         <div className="container align-items-center d-flex justify-content-center">
           <div className="col m-2">
-            {userData &&
-              userData.length > 0 &&
-              userData.map((data, index) => {
+            {userSearchData &&
+              userSearchData.length > 0 &&
+              userSearchData.map((data, index) => {
+                let ranknum = 4;
                 return (
                   <div key={index} className="row mb-2">
                     <Card elevation={2}>
@@ -148,7 +154,7 @@ export function RankingCrew() {
                               variant="h6"
                               color="text.secondary"
                             >
-                              #{data.rank}
+                              #{ranknum + index}
                             </Typography>
                           </span>
                           <Avatar
@@ -165,7 +171,7 @@ export function RankingCrew() {
                           <div style={{ width: '50%' }}>
                             <span className="d-none d-md-block ms-2">
                               <Typography component="h2" variant="h6">
-                                Raksha
+                                {data.users.firstName} {data.users.lastName}
                               </Typography>
                             </span>
                           </div>
@@ -186,7 +192,7 @@ export function RankingCrew() {
                             style={{ width: '60%' }}
                           >
                             <Typography component="h2" variant="h6">
-                              {data.score}
+                              {data.total}
                             </Typography>
                           </div>
                         </div>
