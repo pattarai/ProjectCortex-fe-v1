@@ -56,10 +56,19 @@ export default function MemberScoreCard() {
               </div>
             </ListItem>
             <ListItem>
-              <ListItemText primary="FESTX" />
-              <div className="d-flex justify-content-end">
-                <ListItemText primary="5" />
-              </div>
+              <ListItemText />
+              <ListItemText
+                primary="TOTAL"
+                className="d-flex justify-content-start"
+              />
+              <ListItemText
+                primary="42"
+                className="d-flex justify-content-end"
+              />
+              <ListItemText
+                primary="9"
+                className="d-flex justify-content-end"
+              />
             </ListItem>
           </List>
         </CardContent>
