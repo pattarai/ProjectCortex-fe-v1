@@ -10,5 +10,7 @@ export interface Events {
 }
 export interface EventsState {
   error: boolean;
+  committee: string[];
+  projects: string[];
   events: Events[];
 }
