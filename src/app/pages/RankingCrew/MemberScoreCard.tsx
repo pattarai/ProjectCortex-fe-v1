@@ -9,6 +9,18 @@ import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import { Divider } from '@mui/material';
+import axios from 'axios';
+
+type Factors = {
+  phase: number;
+  factorName: string;
+  maxScore: number;
+};
+interface ScoreData {
+  factors: Factors;
+  score: number;
+}
 
 export default function MemberScoreCard() {
   return (
