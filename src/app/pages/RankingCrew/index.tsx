@@ -34,7 +34,6 @@ interface MemberData {
 
 export function RankingCrew() {
   const [openDetails, setOpenDetails] = useState(false);
-
   const [userData, setUserData] = useState<MemberData[] | null>(null);
   const [userSearchData, setUserSearchData] = useState<MemberData[] | null>(
     null,
