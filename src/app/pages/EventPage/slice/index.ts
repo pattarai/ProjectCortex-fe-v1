@@ -7,6 +7,8 @@ import { EventsState } from './types';
 export const initialState: EventsState = {
   error: false,
   events: [],
+  projects: [],
+  committee: [],
 };
 
 const slice = createSlice({
@@ -18,7 +20,10 @@ const slice = createSlice({
     updateEvent(state, action: PayloadAction<any>) {},
     deleteEvent(state, action: PayloadAction<any>) {},
     setEvent(state, action: PayloadAction<any>) {
-      state.events.push(...action.payload);
+      const { data, projectList, committeeList } = action.payload;
+      state.events.push(...data);
+      state.projects.push(...projectList);
+      state.committee.push(...committeeList);
     },
 
     setUpdateEvent(state, action: PayloadAction<any>) {

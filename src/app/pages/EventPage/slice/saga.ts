@@ -10,7 +10,8 @@ import {
 function* handleGetEvents() {
   try {
     const res = yield call(() => axiosGet('/admin/events'));
-    const data = res.data.data;
+    const data = res.data;
+    console.log(data);
     yield put(actions.setEvent(data));
   } catch (error) {
     yield put(actions.setError(true));
