@@ -4,6 +4,7 @@ import {
   TextField,
   Radio,
   RadioGroup,
+  FormGroup,
   FormControl,
   FormHelperText,
   FormControlLabel,
@@ -12,6 +13,7 @@ import {
   Select,
   MenuItem,
   Button,
+  Checkbox,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -41,6 +43,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     // rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
+    isActive: updateUserValue ? updateUserValue.isActive : true,
     startDate: updateUserValue ? dateFormat(updateUserValue.startDate) : null,
   });
 
@@ -290,6 +293,20 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
               />
             </LocalizationProvider>
           </div>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={values.isActive}
+                  onChange={() =>
+                    setValues({ ...values, isActive: !values.isActive })
+                  }
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+              }
+              label="Active User"
+            />
+          </FormGroup>
           <div className="d-flex mt-4">
             {updateUserValue ? (
               <Button variant="contained" onClick={handleUpdate}>
