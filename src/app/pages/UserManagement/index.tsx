@@ -108,7 +108,7 @@ export function UserManagement(props: Props) {
           color="primary"
           onClick={() => {
             setDeleteUser(null);
-            setUpdateUser(params.row.uid);
+            setUpdateUser(params.row.userId);
             setOpenPopup(true);
           }}
           label="Edit"
@@ -118,7 +118,7 @@ export function UserManagement(props: Props) {
           icon={<MdDelete style={{ fontSize: '23px' }} />}
           color="secondary"
           onClick={() => {
-            setDeleteUser(params.row.uid);
+            setDeleteUser(params.row.userId);
             setOpenPopup(true);
           }}
           label="Delete"
@@ -166,7 +166,7 @@ export function UserManagement(props: Props) {
           <DataGrid
             rows={userData ? userData : []}
             columns={columns}
-            getRowId={r => r.uid}
+            getRowId={r => r.userId}
             paginationMode="server"
             hideFooterSelectedRowCount
             loading={loading}

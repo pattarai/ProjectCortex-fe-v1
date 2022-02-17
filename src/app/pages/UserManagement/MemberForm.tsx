@@ -33,7 +33,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     : null;
 
   const [values, setValues] = useState({
-    uid: updateUserValue ? updateUserValue.userId : 0,
+    userId: updateUserValue ? updateUserValue.userId : 0,
     firstName: updateUserValue ? updateUserValue.firstName : '',
     lastName: updateUserValue ? updateUserValue.lastName : '',
     email: updateUserValue ? updateUserValue.email : '',

@@ -41,7 +41,7 @@ function* handleUpdateUser(action: any) {
 function* handleDeleteUser(action: any) {
   try {
     yield call(() =>
-      axiosDelete('/admin/user-management', { uid: action.payload }),
+      axiosDelete('/admin/user-management', { userId: action.payload }),
     );
     yield put(actions.setDeleteUser(action.payload));
   } catch (error) {
