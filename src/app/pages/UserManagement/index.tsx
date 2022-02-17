@@ -77,13 +77,13 @@ export function UserManagement(props: Props) {
       flex: 0.5,
       sortable: false,
     },
-    {
-      field: 'role',
-      headerName: 'Role',
-      minWidth: 100,
-      flex: 0.5,
-      sortable: false,
-    },
+    // {
+    //   field: 'role',
+    //   headerName: 'Role',
+    //   minWidth: 100,
+    //   flex: 0.5,
+    //   sortable: false,
+    // },
     {
       field: 'project',
       headerName: 'Project',
