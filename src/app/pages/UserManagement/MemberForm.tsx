@@ -37,8 +37,8 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     firstName: updateUserValue ? updateUserValue.firstName : '',
     lastName: updateUserValue ? updateUserValue.lastName : '',
     email: updateUserValue ? updateUserValue.email : '',
-    role: updateUserValue ? updateUserValue.role : '',
-    rank: updateUserValue ? updateUserValue.rank : '',
+    // role: updateUserValue ? updateUserValue.role : '',
+    // rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
     startDate: updateUserValue ? dateFormat(updateUserValue.startDate) : null,
@@ -178,7 +178,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             onChange={e => setValues({ ...values, email: e.target.value })}
           />
           <br />
-          <TextField
+          {/* <TextField
             value={values.role}
             error={errors.isError && (values.role.trim() === '' ? true : false)}
             helperText={
@@ -206,7 +206,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             variant="outlined"
             onChange={e => setValues({ ...values, rank: e.target.value })}
           />
-          <br />
+          <br /> */}
         </div>
         <div className="ms-md-3">
           <div className="mb-2">
