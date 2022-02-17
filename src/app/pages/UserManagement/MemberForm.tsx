@@ -224,7 +224,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
               >
                 {committeeList.map((com, index) => (
                   <FormControlLabel
-                    key={index}
+                    key={`${com}-${index}`}
                     value={com}
                     control={<Radio />}
                     label={com}
@@ -251,7 +251,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                 onChange={handleProjectsChange}
               >
                 {projectsList.map((proj, index) => (
-                  <MenuItem key={index} value={proj}>
+                  <MenuItem key={`${proj}-${index}`} value={proj}>
                     {proj}
                   </MenuItem>
                 ))}
