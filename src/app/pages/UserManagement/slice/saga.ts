@@ -9,8 +9,8 @@ import {
 
 function* handleGetUser() {
   try {
-    const res = yield call(() => axiosGet('/usermanagement'));
-    const data = res.data.data;
+    const res = yield call(() => axiosGet('/admin/user-management'));
+    const data = res.data.user;
     yield put(actions.setUser(data));
   } catch (error) {
     yield put(actions.setError(true));
@@ -19,7 +19,9 @@ function* handleGetUser() {
 
 function* handleAddUser(action: any) {
   try {
-    const res = yield call(() => axiosPost('/usermanagement', action.payload));
+    const res = yield call(() =>
+      axiosPost('/admin/user-management', action.payload),
+    );
     const data = res.data.data;
     yield put(actions.setUser(data));
   } catch (error) {
@@ -29,7 +31,7 @@ function* handleAddUser(action: any) {
 
 function* handleUpdateUser(action: any) {
   try {
-    yield call(() => axiosPatch('/usermanagement', action.payload));
+    yield call(() => axiosPatch('/admin/user-management', action.payload));
     yield put(actions.setUpdateUser(action.payload));
   } catch (error) {
     yield put(actions.setError(true));
@@ -38,7 +40,9 @@ function* handleUpdateUser(action: any) {
 
 function* handleDeleteUser(action: any) {
   try {
-    yield call(() => axiosDelete('/usermanagement', { uid: action.payload }));
+    yield call(() =>
+      axiosDelete('/admin/user-management', { uid: action.payload }),
+    );
     yield put(actions.setDeleteUser(action.payload));
   } catch (error) {
     yield put(actions.setError(true));
