@@ -23,6 +23,8 @@ export function Routes(props: Props) {
       <Route exact path="/dashboard/contact" component={Contact} />
       <Route exact path="/dashboard/attendance" component={Attendance} />
       <Route path="/dashboard/rank" component={RankingCrew} />
+      <Route path="/dashboard/profilecv" component={ProfileCommonView} />
+      <Route path="/dashboard/profile" component={Profileview} />
     </Switch>
   );
 }

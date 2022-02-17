@@ -90,7 +90,7 @@ export default function Dashboard({ children }: { children: ReactNode }) {
         <AppBar
           position="absolute"
           sx={{
-            bgcolor: '#a11cf9',
+            bgcolor: '#1A1A83',
           }}
           open={open}
         >

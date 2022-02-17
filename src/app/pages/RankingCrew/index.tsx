@@ -93,7 +93,16 @@ export function RankingCrew() {
               top3.map((list, index) => {
                 return (
                   <div key={index} className="col-12 col-md-4 mb-4">
-                    <Card elevation={2} sx={{ textAlign: 'center' }}>
+                    <Card
+                      elevation={2}
+                      sx={{
+                        textAlign: 'center',
+                        // width: '30vw',
+                        height: '100%',
+                        maxWidth: 345,
+                        maxHeight: 345,
+                      }}
+                    >
                       <CardActionArea>
                         <CardContent>
                           <Avatar
