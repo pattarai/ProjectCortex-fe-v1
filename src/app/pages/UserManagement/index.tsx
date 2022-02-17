@@ -57,14 +57,14 @@ export function UserManagement(props: Props) {
 
   const columns: GridColumns = [
     {
-      field: 'uid',
+      field: 'userId',
       headerName: 'S.No.',
       minWidth: 50,
       flex: 0.5,
       filterable: false,
     },
     {
-      field: 'first_name',
+      field: 'firstName',
       headerName: 'Name',
       minWidth: 100,
       flex: 0.5,

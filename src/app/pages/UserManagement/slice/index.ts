@@ -23,7 +23,7 @@ const slice = createSlice({
 
     setUpdateUser(state, action: PayloadAction<any>) {
       const newArray = state.users.findIndex(
-        st => st.uid === action.payload.uid,
+        st => st.userId === action.payload.userId,
       );
       state.users[newArray] = { ...action.payload };
     },
@@ -31,7 +31,7 @@ const slice = createSlice({
     setDeleteUser(state, action: PayloadAction<any>) {
       state.users.forEach(
         st =>
-          st.uid === action.payload &&
+          st.userId === action.payload &&
           state.users.splice(state.users.indexOf(st), 1),
       );
     },

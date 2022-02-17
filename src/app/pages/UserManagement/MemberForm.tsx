@@ -29,30 +29,30 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { users } = useSelector(selectUserManagement);
 
   const updateUserValue = updateUser
-    ? users.find(u => u.uid === updateUser)
+    ? users.find(u => u.userId === updateUser)
     : null;
 
   const [values, setValues] = useState({
-    uid: updateUserValue ? updateUserValue.uid : 0,
-    first_name: updateUserValue ? updateUserValue.first_name : '',
-    last_name: updateUserValue ? updateUserValue.last_name : '',
+    uid: updateUserValue ? updateUserValue.userId : 0,
+    firstName: updateUserValue ? updateUserValue.firstName : '',
+    lastName: updateUserValue ? updateUserValue.lastName : '',
     email: updateUserValue ? updateUserValue.email : '',
     role: updateUserValue ? updateUserValue.role : '',
-    // rank: updateUserValue ? updateUserValue.rank : '',
+    rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
-    start_date: updateUserValue ? dateFormat(updateUserValue.start_date) : null,
+    startDate: updateUserValue ? dateFormat(updateUserValue.startDate) : null,
   });
 
   const [errors, setErrors] = useState({
-    first_nameError: '',
-    last_nameError: '',
+    firstNameError: '',
+    lastNameError: '',
     emailError: '',
     roleError: '',
-    // rankError: '',
+    rankError: '',
     projectError: '',
     committeeError: '',
-    start_dateError: '',
+    startDateError: '',
     isError: false,
   });
 
@@ -126,37 +126,37 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
       <div className="d-md-flex mt-2">
         <div className="me-3">
           <TextField
-            value={values.first_name}
+            value={values.firstName}
             error={
-              errors.isError && (values.first_name.trim() === '' ? true : false)
+              errors.isError && (values.firstName.trim() === '' ? true : false)
             }
             helperText={
               errors.isError &&
-              (errors.first_nameError !== '' ? errors.first_nameError : '')
+              (errors.firstNameError !== '' ? errors.firstNameError : '')
             }
             id="outlined-basic"
             className="mb-3"
             label="First Name"
             variant="outlined"
             inputProps={{ maxLength: 15 }}
-            onChange={e => setValues({ ...values, first_name: e.target.value })}
+            onChange={e => setValues({ ...values, firstName: e.target.value })}
           />
           <br />
           <TextField
-            value={values.last_name}
+            value={values.lastName}
             error={
-              errors.isError && (values.last_name.trim() === '' ? true : false)
+              errors.isError && (values.lastName.trim() === '' ? true : false)
             }
             helperText={
               errors.isError &&
-              (errors.last_nameError !== '' ? errors.last_nameError : '')
+              (errors.lastNameError !== '' ? errors.lastNameError : '')
             }
             className="mb-3"
             id="outlined-basic"
             label="Last Name"
             variant="outlined"
             inputProps={{ maxLength: 15 }}
-            onChange={e => setValues({ ...values, last_name: e.target.value })}
+            onChange={e => setValues({ ...values, lastName: e.target.value })}
           />
           <br />
           <TextField
@@ -193,7 +193,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             onChange={e => setValues({ ...values, role: e.target.value })}
           />
           <br />
-          {/* <TextField
+          <TextField
             value={values.rank}
             error={errors.isError && (values.rank.trim() === '' ? true : false)}
             helperText={
@@ -205,7 +205,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             label="Rank"
             variant="outlined"
             onChange={e => setValues({ ...values, rank: e.target.value })}
-          /> */}
+          />
           <br />
         </div>
         <div className="ms-md-3">
@@ -266,22 +266,22 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date"
-                value={values.start_date}
+                value={values.startDate}
                 onChange={newValue => {
                   const newDate = dateFormat(newValue);
-                  setValues({ ...values, start_date: newDate });
+                  setValues({ ...values, startDate: newDate });
                 }}
                 renderInput={params => (
                   <TextField
                     {...params}
                     error={
                       errors.isError &&
-                      (values.start_date === null ? true : false)
+                      (values.startDate === null ? true : false)
                     }
                     helperText={
                       errors.isError &&
-                      (errors.start_dateError !== ''
-                        ? errors.start_dateError
+                      (errors.startDateError !== ''
+                        ? errors.startDateError
                         : '')
                     }
                     sx={{ width: '100%' }}
