@@ -103,20 +103,16 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     }
   }
 
-  function handleSubmit() {
-    if (checkError()) {
-      setOpenModal(false);
-      setLoading(true);
-      dispatch(actions.addUser(values));
-    }
-  }
-
-  function handleUpdate() {
+  function handleUpdateOrSubmit() {
     if (checkError()) {
       setOpenModal(false);
       if (JSON.stringify(values) !== JSON.stringify(updateUserValue)) {
         setLoading(true);
-        dispatch(actions.updateUser(values));
+        if (updateUser) {
+          dispatch(actions.updateUser(values));
+        } else {
+          dispatch(actions.addUser(values));
+        }
       }
     }
   }
@@ -308,15 +304,9 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             />
           </FormGroup>
           <div className="d-flex mt-4">
-            {updateUserValue ? (
-              <Button variant="contained" onClick={handleUpdate}>
-                Update
-              </Button>
-            ) : (
-              <Button variant="contained" onClick={handleSubmit}>
-                Submit
-              </Button>
-            )}
+            <Button variant="contained" onClick={handleUpdateOrSubmit}>
+              {updateUser ? 'Update' : 'Submit'}
+            </Button>
           </div>
         </div>
       </div>
