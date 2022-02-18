@@ -33,12 +33,21 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     ? users.find(u => u.userId === updateUser)
     : null;
 
+  function findRole(val: any) {
+    console.log(val);
+    if (val.roles) {
+      return val.roles.role;
+    } else {
+      return val.role;
+    }
+  }
+
   const [values, setValues] = useState({
     userId: updateUserValue ? updateUserValue.userId : 0,
     firstName: updateUserValue ? updateUserValue.firstName : '',
     lastName: updateUserValue ? updateUserValue.lastName : '',
     email: updateUserValue ? updateUserValue.email : '',
-    role: updateUserValue ? updateUserValue.roles.role : '',
+    role: updateUserValue ? findRole(updateUserValue) : '',
     // rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
