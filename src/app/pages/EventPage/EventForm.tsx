@@ -4,10 +4,9 @@ import { TextField, Button } from '@mui/material';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
-import InputLabel from '@mui/material/InputLabel';
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import { InputLabel, FormHelperText } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
-import ListSubheader from '@mui/material/ListSubheader';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
@@ -15,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEventsSlice } from './slice';
 import { selectEvents } from './slice/selectors';
 import { Events } from './slice/types';
+import { dateTimeFormat } from '../../components/dateFormat';
 
 export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useEventsSlice();
@@ -29,7 +29,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     eventId: updateUserValue ? updateUserValue.eventId : 0,
     eventName: updateUserValue ? updateUserValue.eventName : '',
     phase: updateUserValue ? updateUserValue.phase : 0,
-    eventDate: updateUserValue ? updateUserValue.eventDate : '',
+    eventDate: updateUserValue ? dateTimeFormat(updateUserValue.eventDate) : '',
     eventType: updateUserValue ? updateUserValue.eventType : '',
     conductedBy: updateUserValue ? updateUserValue.conductedBy : '',
     speaker: updateUserValue ? updateUserValue.speaker : '',
@@ -49,20 +49,87 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     let noofErrors = 0;
     let err = { ...errors };
 
-    Object.entries(values).forEach(([key, value]) => {
-      if (
-        value === null ||
-        (typeof value === 'string' && value.trim() === '')
-      ) {
-        err[`${key}Error`] = 'This field is required';
+    // Object.entries(values).forEach(([key, value]) => {
+    //   if (key === 'evenType' && value !== 'crew') {
+    //     if (key === 'conductedBy' && value !== '') {
+    //       err[`${key}Error`] = 'This field is required';
+    //       noofErrors++;
+    //     }
+    //   }
+    // });
+
+    if (values.eventType !== 'crew') {
+      if (values.eventName === '') {
+        err.eventNameError = 'This field is required';
         noofErrors++;
       }
-    });
+      if (values.phase === 0) {
+        err.phaseError = 'This field is required';
+        noofErrors++;
+      }
+      if (values.eventDate === '') {
+        err.eventDateError = 'This field is required';
+        noofErrors++;
+      }
+      if (values.eventType === '') {
+        err.eventTypeError = 'This field is required';
+        noofErrors++;
+      }
+
+      if (values.conductedBy === '' || values.conductedBy === null) {
+        err.conductedByError = 'This field is required';
+        noofErrors++;
+      } else {
+        err.conductedByError = '';
+        if (values.conductedBy === 'individual') {
+          if (values.speaker === '' || values.speaker === null) {
+            err.speakerError = 'This field is required';
+            noofErrors++;
+          } else {
+            err.speakerError = '';
+          }
+        }
+      }
+    } else {
+      err.conductedByError = '';
+      err.speakerError = '';
+      if (values.eventName === '') {
+        err.eventNameError = 'This field is required';
+        noofErrors++;
+      }
+      if (values.phase === 0) {
+        err.phaseError = 'This field is required';
+        noofErrors++;
+      }
+      if (values.eventDate === '') {
+        err.eventDateError = 'This field is required';
+        noofErrors++;
+      }
+    }
+
+    // if (
+    //   value === null ||
+    //   (typeof value === 'string' && value.trim() === '')
+    // ) {
+    //   console.log('1');
+    //   err[`${key}Error`] = 'This field is required';
+    //   noofErrors++;
+    // } else if (key === 'eventType' && value !== 'crew') {
+    //   console.log('2');
+    //   err[`${key}Error`] = 'This field is required';
+    //   noofErrors++;
+    //   if (value === 'individual') {
+    //     console.log('3');
+    //     err[`${key}Error`] = 'This field is required';
+    //     noofErrors++;
+    //   }
+    // }
 
     if (noofErrors === 0) {
       return true;
     } else {
       err.isError = true;
+      console.log(err);
       setErrors(err);
       return false;
     }
@@ -107,7 +174,10 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
           <TextField
             type="number"
             value={values.phase}
-            error={errors.isError && (values.phase === null ? true : false)}
+            error={
+              errors.isError &&
+              (values.phase === null || values.phase === 0 ? true : false)
+            }
             helperText={
               errors.isError &&
               (errors.phaseError !== '' ? errors.phaseError : '')
@@ -121,19 +191,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             }
           />
           <br />
-          {/* <TextField
-            value={values.eventType}
-            error={errors.isError && (values.eventType === '' ? true : false)}
-            helperText={
-              errors.isError &&
-              (errors.eventTypeError !== '' ? errors.eventTypeError : '')
-            }
-            className="mb-3"
-            id="outlined-basic"
-            label="Event Type"
-            variant="outlined"
-            onChange={e => setValues({ ...values, eventType: e.target.value })}
-          /> */}
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Event Type</InputLabel>
             <Select
@@ -155,9 +212,10 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
         <div className="ms-md-3">
           <div>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <DateTimePicker
                 label="Event Date"
                 value={values.eventDate}
+                ampm={false}
                 onChange={newValue => {
                   setValues({ ...values, eventDate: newValue });
                 }}
@@ -179,7 +237,10 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                 )}
               />
             </LocalizationProvider>
-            <FormControl sx={{ m: 1, minWidth: 180 }}>
+            <FormControl
+              sx={{ m: 1, minWidth: 180 }}
+              error={errors.isError && values.conductedBy === '' ? true : false}
+            >
               <InputLabel htmlFor="grouped-native-select">
                 Conducted By
               </InputLabel>
@@ -203,7 +264,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                 <optgroup label="Projects">
                   {projects &&
                     projects.map((project, key) => (
-                      <option key={key} value={project}>
+                      <option key={`${project}-${key}`} value={project}>
                         {project}
                       </option>
                     ))}
@@ -211,7 +272,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                 <optgroup label="Committee">
                   {committee &&
                     committee.map((com, key) => (
-                      <option key={key} value={com}>
+                      <option key={`${com}-${key}`} value={com}>
                         {com}
                       </option>
                     ))}
@@ -219,21 +280,23 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                 <optgroup label="Individual">
                   <option value={'individual'}>Individual</option>
                 </optgroup>
-                error=
-                {errors.isError &&
-                  (values.conductedBy.trim() === '' ? true : false)}
-                helperText=
+              </Select>
+              <FormHelperText>
                 {errors.isError &&
                   (errors.conductedByError !== ''
                     ? errors.conductedByError
                     : '')}
-              </Select>
+              </FormHelperText>
             </FormControl>
             <br />
             <TextField
               value={values.speaker}
               error={
-                errors.isError && (values.speaker.trim() === '' ? true : false)
+                errors.isError &&
+                (values.conductedBy === 'individual' &&
+                (values.speaker === null || values.speaker === '')
+                  ? true
+                  : false)
               }
               helperText={
                 errors.isError &&

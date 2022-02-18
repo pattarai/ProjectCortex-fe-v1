@@ -118,7 +118,7 @@ export function EventPage(props: Props) {
       <div className="my-3 d-md-flex justify-content-end">
         <Button
           disabled={loading}
-          aria-label="Add User"
+          aria-label="Add Event"
           color="primary"
           variant="outlined"
           onClick={() => {
@@ -128,7 +128,7 @@ export function EventPage(props: Props) {
           }}
         >
           <RiAddFill />
-          Add User
+          Add Event
         </Button>
       </div>
     );
