@@ -34,7 +34,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     : null;
 
   function findRole(val: any) {
-    console.log(val);
     if (val.roles) {
       return val.roles.role;
     } else {
