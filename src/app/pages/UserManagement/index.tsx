@@ -122,9 +122,8 @@ export function UserManagement(props: Props) {
       minWidth: 100,
       flex: 0.5,
       sortable: false,
-      valueGetter: (params: GridValueGetterParams) => {
-        return params.row.roles.role;
-      },
+      valueGetter: (params: GridValueGetterParams) =>
+        params.row.roles ? params.row.roles.role : params.row.role,
     },
     {
       field: 'project',
