@@ -64,10 +64,10 @@ export function UserManagement(props: Props) {
           <Chip variant="outlined" color="success" label="Active" />
         )}
         {params.value === 0 && (
-          <Chip variant="outlined" color="error" label="Inactive" />
+          <Chip variant="outlined" color="error" label="Not a Member" />
         )}
         {params.value === 2 && (
-          <Chip variant="outlined" color="warning" label="Break" />
+          <Chip variant="outlined" color="warning" label="On Break" />
         )}
         {params.value === 3 && (
           <Chip variant="outlined" color="info" label="Alumni" />
