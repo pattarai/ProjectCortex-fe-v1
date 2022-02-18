@@ -26,11 +26,18 @@ const slice = createSlice({
       state.committee.push(...committeeList);
     },
 
+    setAddEvent(state, action: PayloadAction<any>) {
+      state.events.push(action.payload);
+      // const length = state.events.length;
+      // state.events[length + 1] = action.payload;
+    },
+
     setUpdateEvent(state, action: PayloadAction<any>) {
       const newArray = state.events.findIndex(
-        st => st.eventId === action.payload.uid,
+        st => st.eventId === action.payload.eventId,
       );
       state.events[newArray] = { ...action.payload };
+      console.log(action.payload);
     },
 
     setDeleteEvent(state, action: PayloadAction<any>) {
