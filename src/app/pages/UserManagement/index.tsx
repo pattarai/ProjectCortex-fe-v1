@@ -15,13 +15,7 @@ import {
   GridValueGetterParams,
   GridRenderCellParams,
 } from '@mui/x-data-grid';
-import {
-  MdDelete,
-  MdEdit,
-  MdOutlineCheck,
-  MdNotInterested,
-  MdInfoOutline,
-} from 'react-icons/md';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import { RiAddFill } from 'react-icons/ri';
 
 import Popup from '../../components/Popup';
@@ -67,28 +61,16 @@ export function UserManagement(props: Props) {
     return (
       <>
         {params.value === 1 && (
-          <Chip
-            icon={<MdOutlineCheck />}
-            variant="outlined"
-            color="success"
-            label="Active"
-          />
+          <Chip variant="outlined" color="success" label="Active" />
         )}
         {params.value === 0 && (
-          <Chip
-            icon={<MdNotInterested />}
-            variant="outlined"
-            color="error"
-            label="Inactive"
-          />
+          <Chip variant="outlined" color="error" label="Inactive" />
         )}
         {params.value === 2 && (
-          <Chip
-            icon={<MdInfoOutline />}
-            variant="outlined"
-            color="warning"
-            label="Break"
-          />
+          <Chip variant="outlined" color="warning" label="Break" />
+        )}
+        {params.value === 3 && (
+          <Chip variant="outlined" color="info" label="Alumni" />
         )}
       </>
     );
