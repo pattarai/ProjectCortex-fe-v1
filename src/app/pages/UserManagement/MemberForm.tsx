@@ -61,14 +61,11 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const handleChange = (event: SelectChangeEvent) => {
     if (event.target.name === 'project') {
       setValues({ ...values, project: event.target.value });
-    }
-    if (event.target.name === 'committee') {
+    } else if (event.target.name === 'committee') {
       setValues({ ...values, committee: event.target.value });
-    }
-    if (event.target.name === 'role') {
+    } else if (event.target.name === 'role') {
       setValues({ ...values, role: event.target.value });
-    }
-    if (event.target.name === 'status') {
+    } else if (event.target.name === 'status') {
       setValues({ ...values, status: parseInt(event.target.value) });
     }
   };
