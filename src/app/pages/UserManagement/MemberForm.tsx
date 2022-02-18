@@ -58,26 +58,19 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     isError: false,
   });
 
-  const handleProjectsChange = (event: SelectChangeEvent) => {
-    setValues({ ...values, project: event.target.value });
-  };
-  const handleCommitteeChange = (event: SelectChangeEvent) => {
-    setValues({
-      ...values,
-      committee: (event.target as HTMLInputElement).value,
-    });
-  };
-  const handleRoleChange = (event: SelectChangeEvent) => {
-    setValues({
-      ...values,
-      role: (event.target as HTMLInputElement).value,
-    });
-  };
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    setValues({
-      ...values,
-      status: parseInt((event.target as HTMLInputElement).value),
-    });
+  const handleChange = (event: SelectChangeEvent) => {
+    if (event.target.name === 'project') {
+      setValues({ ...values, project: event.target.value });
+    }
+    if (event.target.name === 'committee') {
+      setValues({ ...values, committee: event.target.value });
+    }
+    if (event.target.name === 'role') {
+      setValues({ ...values, role: event.target.value });
+    }
+    if (event.target.name === 'status') {
+      setValues({ ...values, status: parseInt(event.target.value) });
+    }
   };
 
   function checkError() {
@@ -189,11 +182,12 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
           >
             <InputLabel id="demo-simple-select-label">Roles</InputLabel>
             <Select
+              name="role"
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={values.role}
               label="Roles"
-              onChange={handleRoleChange}
+              onChange={handleChange}
             >
               {roleList.map((rol, index) => (
                 <MenuItem key={`${rol}-${index}`} value={rol}>
@@ -232,9 +226,9 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
               <RadioGroup
                 row
                 aria-label="committee"
-                name="row-radio-buttons-group"
+                name="committee"
                 value={values.committee}
-                onChange={handleCommitteeChange}
+                onChange={handleChange}
               >
                 {committeeList.map((com, index) => (
                   <FormControlLabel
@@ -258,11 +252,12 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             >
               <InputLabel id="demo-simple-select-label">Project</InputLabel>
               <Select
+                name="project"
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={values.project}
                 label="Project"
-                onChange={handleProjectsChange}
+                onChange={handleChange}
               >
                 {projectList.map((proj, index) => (
                   <MenuItem key={`${proj}-${index}`} value={proj}>
@@ -307,11 +302,12 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Status</InputLabel>
             <Select
+              name="status"
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={values.status.toString()}
               label="Project"
-              onChange={handleStatusChange}
+              onChange={handleChange}
             >
               <MenuItem value={0}>Not a Member</MenuItem>
               <MenuItem value={1}>Active</MenuItem>
