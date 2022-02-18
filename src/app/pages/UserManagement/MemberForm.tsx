@@ -63,12 +63,16 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const handleProjectsChange = (event: SelectChangeEvent) => {
     setValues({ ...values, project: event.target.value });
   };
-  const handleCommitteeChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleCommitteeChange = (event: SelectChangeEvent) => {
     setValues({
       ...values,
       committee: (event.target as HTMLInputElement).value,
+    });
+  };
+  const handleRoleChange = (event: SelectChangeEvent) => {
+    setValues({
+      ...values,
+      role: (event.target as HTMLInputElement).value,
     });
   };
 
@@ -120,7 +124,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
 
   return (
     <>
-      {console.log(values)}
       <div className="d-md-flex mt-2">
         <div className="me-3">
           <TextField
@@ -186,7 +189,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
               id="demo-simple-select"
               value={values.role}
               label="Roles"
-              onChange={handleProjectsChange}
+              onChange={handleRoleChange}
             >
               {roleList.map((rol, index) => (
                 <MenuItem key={`${rol}-${index}`} value={rol}>
