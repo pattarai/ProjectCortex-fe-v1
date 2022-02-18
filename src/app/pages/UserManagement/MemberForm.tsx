@@ -4,7 +4,6 @@ import {
   TextField,
   Radio,
   RadioGroup,
-  FormGroup,
   FormControl,
   FormHelperText,
   FormControlLabel,
@@ -13,7 +12,6 @@ import {
   Select,
   MenuItem,
   Button,
-  Checkbox,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -44,7 +42,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     // rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
-    status: updateUserValue ? updateUserValue.status : true,
+    status: updateUserValue ? updateUserValue.status : 1,
     startDate: updateUserValue ? dateFormat(updateUserValue.startDate) : null,
   });
 
@@ -73,6 +71,12 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     setValues({
       ...values,
       role: (event.target as HTMLInputElement).value,
+    });
+  };
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    setValues({
+      ...values,
+      status: parseInt((event.target as HTMLInputElement).value),
     });
   };
 
@@ -300,20 +304,20 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
               />
             </LocalizationProvider>
           </div>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={values.status}
-                  onChange={() =>
-                    setValues({ ...values, status: !values.status })
-                  }
-                  inputProps={{ 'aria-label': 'controlled' }}
-                />
-              }
-              label="Active User"
-            />
-          </FormGroup>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={values.status.toString()}
+              label="Project"
+              onChange={handleStatusChange}
+            >
+              <MenuItem value={1}>Active</MenuItem>
+              <MenuItem value={0}>Inactive</MenuItem>
+              <MenuItem value={2}>Break</MenuItem>
+            </Select>
+          </FormControl>
           <div className="d-flex mt-4">
             <Button variant="contained" onClick={handleUpdateOrSubmit}>
               {updateUser ? 'Update' : 'Submit'}
