@@ -12,6 +12,7 @@ import {
   GridRowParams,
   GridActionsCellItem,
   GridOverlay,
+  GridValueGetterParams,
 } from '@mui/x-data-grid';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { RiAddFill } from 'react-icons/ri';
@@ -77,13 +78,16 @@ export function UserManagement(props: Props) {
       flex: 0.5,
       sortable: false,
     },
-    // {
-    //   field: 'role',
-    //   headerName: 'Role',
-    //   minWidth: 100,
-    //   flex: 0.5,
-    //   sortable: false,
-    // },
+    {
+      field: 'role',
+      headerName: 'Role',
+      minWidth: 100,
+      flex: 0.5,
+      sortable: false,
+      valueGetter: (params: GridValueGetterParams) => {
+        return params.row.roles.role;
+      },
+    },
     {
       field: 'project',
       headerName: 'Project',

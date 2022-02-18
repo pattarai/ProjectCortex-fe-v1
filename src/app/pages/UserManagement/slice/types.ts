@@ -8,8 +8,10 @@ interface UserManagement {
   project: string;
   committee: string;
   startDate: string | null;
-  isActive: boolean;
-  role: string;
+  status: boolean;
+  roles: {
+    role: string;
+  };
   rank: string;
 }
 

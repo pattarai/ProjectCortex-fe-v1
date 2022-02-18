@@ -39,11 +39,11 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     firstName: updateUserValue ? updateUserValue.firstName : '',
     lastName: updateUserValue ? updateUserValue.lastName : '',
     email: updateUserValue ? updateUserValue.email : '',
-    // role: updateUserValue ? updateUserValue.role : '',
+    role: updateUserValue ? updateUserValue.roles.role : '',
     // rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
-    isActive: updateUserValue ? updateUserValue.isActive : true,
+    status: updateUserValue ? updateUserValue.status : true,
     startDate: updateUserValue ? dateFormat(updateUserValue.startDate) : null,
   });
 
@@ -122,6 +122,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
 
   return (
     <>
+      {console.log(values)}
       <div className="d-md-flex mt-2">
         <div className="me-3">
           <TextField
@@ -177,7 +178,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             onChange={e => setValues({ ...values, email: e.target.value })}
           />
           <br />
-          {/* <TextField
+          <TextField
             value={values.role}
             error={errors.isError && (values.role.trim() === '' ? true : false)}
             helperText={
@@ -192,7 +193,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             onChange={e => setValues({ ...values, role: e.target.value })}
           />
           <br />
-          <TextField
+          {/* <TextField
             value={values.rank}
             error={errors.isError && (values.rank.trim() === '' ? true : false)}
             helperText={
@@ -293,9 +294,9 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={values.isActive}
+                  checked={values.status}
                   onChange={() =>
-                    setValues({ ...values, isActive: !values.isActive })
+                    setValues({ ...values, status: !values.status })
                   }
                   inputProps={{ 'aria-label': 'controlled' }}
                 />
