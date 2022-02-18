@@ -18,4 +18,7 @@ interface UserManagement {
 export interface UserManagementState {
   error: boolean;
   users: UserManagement[];
+  committeeList: string[];
+  projectList: string[];
+  roleList: string[];
 }

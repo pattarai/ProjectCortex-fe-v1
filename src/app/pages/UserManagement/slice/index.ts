@@ -7,6 +7,9 @@ import { UserManagementState } from './types';
 export const initialState: UserManagementState = {
   error: false,
   users: [],
+  committeeList: [],
+  projectList: [],
+  roleList: [],
 };
 
 const slice = createSlice({
@@ -17,7 +20,16 @@ const slice = createSlice({
     addUser(state, action: PayloadAction<any>) {},
     updateUser(state, action: PayloadAction<any>) {},
     deleteUser(state, action: PayloadAction<any>) {},
-    setUser(state, action: PayloadAction<any>) {
+
+    setInitialData(state, action: PayloadAction<any>) {
+      const { users, committeeList, projectList, roleList } = action.payload;
+      state.users.push(...users);
+      state.committeeList.push(...committeeList);
+      state.projectList.push(...projectList);
+      state.roleList.push(...roleList);
+    },
+
+    setAddUser(state, action: PayloadAction<any>) {
       state.users.push(...action.payload);
     },
 

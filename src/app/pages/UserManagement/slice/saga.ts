@@ -9,9 +9,8 @@ import {
 
 function* handleGetUser() {
   try {
-    const res = yield call(() => axiosGet('/admin/user-management'));
-    const data = res.data.user;
-    yield put(actions.setUser(data));
+    const { data } = yield call(() => axiosGet('/admin/user-management'));
+    yield put(actions.setInitialData(data));
   } catch (error) {
     yield put(actions.setError(true));
   }
@@ -23,7 +22,7 @@ function* handleAddUser(action: any) {
       axiosPost('/admin/user-management', action.payload),
     );
     const data = res.data.data;
-    yield put(actions.setUser(data));
+    yield put(actions.setAddUser(data));
   } catch (error) {
     yield put(actions.setError(true));
   }

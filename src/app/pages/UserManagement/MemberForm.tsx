@@ -28,7 +28,8 @@ import { selectUserManagement } from './slice/selectors';
 export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useUserManagementSlice();
   const dispatch = useDispatch();
-  const { users } = useSelector(selectUserManagement);
+  const { users, projectList, committeeList, roleList } =
+    useSelector(selectUserManagement);
 
   const updateUserValue = updateUser
     ? users.find(u => u.userId === updateUser)
@@ -117,9 +118,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     }
   }
 
-  const projectsList = ['Cortex', 'Pager', 'Opencloud'];
-  const committeeList = ['HR', 'BD', 'I&M', 'EV'];
-
   return (
     <>
       {console.log(values)}
@@ -178,20 +176,29 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             onChange={e => setValues({ ...values, email: e.target.value })}
           />
           <br />
-          <TextField
-            value={values.role}
-            error={errors.isError && (values.role.trim() === '' ? true : false)}
-            helperText={
-              errors.isError &&
-              (errors.roleError !== '' ? errors.roleError : '')
-            }
-            className="mb-3"
-            id="outlined-basic"
-            label="Role"
-            variant="outlined"
-            inputProps={{ maxLength: 30 }}
-            onChange={e => setValues({ ...values, role: e.target.value })}
-          />
+          <FormControl
+            error={errors.isError && (values.role === '' ? true : false)}
+            fullWidth
+          >
+            <InputLabel id="demo-simple-select-label">Roles</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={values.role}
+              label="Roles"
+              onChange={handleProjectsChange}
+            >
+              {roleList.map((rol, index) => (
+                <MenuItem key={`${rol}-${index}`} value={rol}>
+                  {rol}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>
+              {errors.isError &&
+                (errors.roleError !== '' ? errors.roleError : '')}
+            </FormHelperText>
+          </FormControl>
           <br />
           {/* <TextField
             value={values.rank}
@@ -250,7 +257,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                 label="Project"
                 onChange={handleProjectsChange}
               >
-                {projectsList.map((proj, index) => (
+                {projectList.map((proj, index) => (
                   <MenuItem key={`${proj}-${index}`} value={proj}>
                     {proj}
                   </MenuItem>
