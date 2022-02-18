@@ -313,8 +313,9 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
               label="Project"
               onChange={handleStatusChange}
             >
+              <MenuItem value={0}>Not a Member</MenuItem>
               <MenuItem value={1}>Active</MenuItem>
-              <MenuItem value={2}>Break</MenuItem>
+              <MenuItem value={2}>On a Break</MenuItem>
               <MenuItem value={3}>Alumni</MenuItem>
             </Select>
           </FormControl>
