@@ -21,8 +21,10 @@ function* handleAddUser(action: any) {
     const res = yield call(() =>
       axiosPost('/admin/user-management', action.payload),
     );
-    const data = res.data.data;
-    yield put(actions.setAddUser(data));
+    const newId = res.data.user.userId;
+    const { userId, ...rest } = action.payload;
+    const payload = { userId: newId, ...rest };
+    yield put(actions.setAddUser(payload));
   } catch (error) {
     yield put(actions.setError(true));
   }
