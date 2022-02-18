@@ -5,7 +5,7 @@
  */
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Button, LinearProgress } from '@mui/material';
+import { Button, LinearProgress, Chip } from '@mui/material';
 import {
   DataGrid,
   GridColumns,
@@ -13,8 +13,15 @@ import {
   GridActionsCellItem,
   GridOverlay,
   GridValueGetterParams,
+  GridRenderCellParams,
 } from '@mui/x-data-grid';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import {
+  MdDelete,
+  MdEdit,
+  MdOutlineCheck,
+  MdNotInterested,
+  MdInfoOutline,
+} from 'react-icons/md';
 import { RiAddFill } from 'react-icons/ri';
 
 import Popup from '../../components/Popup';
@@ -55,6 +62,37 @@ export function UserManagement(props: Props) {
     dispatch(actions.getUser());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function customCellRender(params: GridRenderCellParams) {
+    return (
+      <>
+        {params.value === 1 && (
+          <Chip
+            icon={<MdOutlineCheck />}
+            variant="outlined"
+            color="success"
+            label="Active"
+          />
+        )}
+        {params.value === 0 && (
+          <Chip
+            icon={<MdNotInterested />}
+            variant="outlined"
+            color="error"
+            label="Inactive"
+          />
+        )}
+        {params.value === 2 && (
+          <Chip
+            icon={<MdInfoOutline />}
+            variant="outlined"
+            color="warning"
+            label="Break"
+          />
+        )}
+      </>
+    );
+  }
 
   const columns: GridColumns = [
     {
@@ -101,6 +139,13 @@ export function UserManagement(props: Props) {
       minWidth: 70,
       flex: 0.5,
       sortable: false,
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      minWidth: 150,
+      flex: 0.5,
+      renderCell: customCellRender,
     },
     {
       field: 'actions',
