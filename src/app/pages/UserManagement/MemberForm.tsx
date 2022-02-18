@@ -314,8 +314,8 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
               onChange={handleStatusChange}
             >
               <MenuItem value={1}>Active</MenuItem>
-              <MenuItem value={0}>Inactive</MenuItem>
               <MenuItem value={2}>Break</MenuItem>
+              <MenuItem value={3}>Alumni</MenuItem>
             </Select>
           </FormControl>
           <div className="d-flex mt-4">
