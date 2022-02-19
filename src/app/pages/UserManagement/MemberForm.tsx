@@ -23,59 +23,59 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useUserManagementSlice } from './slice';
 import { selectUserManagement } from './slice/selectors';
 
-type MemberData = {
-  uid?: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  //rank: string;
-  role: string;
-  project: string;
-  committee: string;
-  start_date: string | null;
-};
-
 export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useUserManagementSlice();
   const dispatch = useDispatch();
-  const { users } = useSelector(selectUserManagement);
+  const { users, projectList, committeeList, roleList } =
+    useSelector(selectUserManagement);
 
-  const updateUserValue = users.find(u => u.uid === updateUser);
+  const updateUserValue = updateUser
+    ? users.find(u => u.userId === updateUser)
+    : null;
 
-  const [values, setValues] = useState<MemberData>({
-    uid: updateUserValue ? updateUserValue.uid : 0,
-    first_name: updateUserValue ? updateUserValue.first_name : '',
-    last_name: updateUserValue ? updateUserValue.last_name : '',
+  function findRole(val: any) {
+    if (val.roles) {
+      return val.roles.role;
+    } else {
+      return val.role;
+    }
+  }
+
+  const [values, setValues] = useState({
+    userId: updateUserValue ? updateUserValue.userId : 0,
+    firstName: updateUserValue ? updateUserValue.firstName : '',
+    lastName: updateUserValue ? updateUserValue.lastName : '',
     email: updateUserValue ? updateUserValue.email : '',
-    role: updateUserValue ? updateUserValue.role : '',
+    role: updateUserValue ? findRole(updateUserValue) : '',
     // rank: updateUserValue ? updateUserValue.rank : '',
     project: updateUserValue ? updateUserValue.project : '',
     committee: updateUserValue ? updateUserValue.committee : '',
-    start_date: updateUserValue ? dateFormat(updateUserValue.start_date) : null,
+    status: updateUserValue ? updateUserValue.status : 1,
+    startDate: updateUserValue ? dateFormat(updateUserValue.startDate) : null,
   });
 
   const [errors, setErrors] = useState({
-    first_nameError: '',
-    last_nameError: '',
+    firstNameError: '',
+    lastNameError: '',
     emailError: '',
     roleError: '',
-    // rankError: '',
+    rankError: '',
     projectError: '',
     committeeError: '',
-    dateError: '',
+    startDateError: '',
     isError: false,
   });
 
-  const handleProjectsChange = (event: SelectChangeEvent) => {
-    setValues({ ...values, project: event.target.value });
-  };
-  const handleCommitteeChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setValues({
-      ...values,
-      committee: (event.target as HTMLInputElement).value,
-    });
+  const handleChange = (event: SelectChangeEvent) => {
+    if (event.target.name === 'project') {
+      setValues({ ...values, project: event.target.value });
+    } else if (event.target.name === 'committee') {
+      setValues({ ...values, committee: event.target.value });
+    } else if (event.target.name === 'role') {
+      setValues({ ...values, role: event.target.value });
+    } else if (event.target.name === 'status') {
+      setValues({ ...values, status: parseInt(event.target.value) });
+    }
   };
 
   function checkError() {
@@ -110,68 +110,65 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     }
   }
 
-  function handleSubmit() {
+  function handleUpdateOrSubmit() {
     if (checkError()) {
       setOpenModal(false);
-      setLoading(true);
-      dispatch(actions.addUser(values));
+      if (JSON.stringify(values) !== JSON.stringify(updateUserValue)) {
+        setLoading(true);
+        if (updateUser) {
+          dispatch(actions.updateUser(values));
+        } else {
+          dispatch(actions.addUser(values));
+        }
+      }
     }
   }
-
-  function handleUpdate() {
-    if (checkError()) {
-      setOpenModal(false);
-      setLoading(true);
-      dispatch(actions.updateUser(values));
-    }
-  }
-
-  const projectsList = ['Cortex', 'Pager', 'Opencloud'];
-  const committeeList = ['HR', 'BD', 'I&M', 'EV'];
 
   return (
     <>
       <div className="d-md-flex mt-2">
         <div className="me-3">
           <TextField
-            value={values.first_name}
+            value={values.firstName}
             error={
-              errors.isError && (values.first_name.trim() === '' ? true : false)
+              errors.isError && (values.firstName.trim() === '' ? true : false)
             }
             helperText={
               errors.isError &&
-              (errors.first_nameError !== '' ? errors.first_nameError : '')
+              (errors.firstNameError !== '' ? errors.firstNameError : '')
             }
             id="outlined-basic"
             className="mb-3"
             label="First Name"
             variant="outlined"
             inputProps={{ maxLength: 15 }}
-            onChange={e => setValues({ ...values, first_name: e.target.value })}
+            onChange={e => setValues({ ...values, firstName: e.target.value })}
           />
           <br />
           <TextField
-            value={values.last_name}
+            value={values.lastName}
             error={
-              errors.isError && (values.last_name.trim() === '' ? true : false)
+              errors.isError && (values.lastName.trim() === '' ? true : false)
             }
             helperText={
               errors.isError &&
-              (errors.last_nameError !== '' ? errors.last_nameError : '')
+              (errors.lastNameError !== '' ? errors.lastNameError : '')
             }
             className="mb-3"
             id="outlined-basic"
             label="Last Name"
             variant="outlined"
             inputProps={{ maxLength: 15 }}
-            onChange={e => setValues({ ...values, last_name: e.target.value })}
+            onChange={e => setValues({ ...values, lastName: e.target.value })}
           />
           <br />
           <TextField
             value={values.email}
             error={
-              (errors.isError && (values.email.trim() === '' ? true : false)) ||
-              (errors.emailError !== '' ? true : false)
+              errors.isError &&
+              (values.email.trim() === '' || errors.emailError !== ''
+                ? true
+                : false)
             }
             helperText={
               errors.isError &&
@@ -184,20 +181,30 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             onChange={e => setValues({ ...values, email: e.target.value })}
           />
           <br />
-          <TextField
-            value={values.role}
-            error={errors.isError && (values.role.trim() === '' ? true : false)}
-            helperText={
-              errors.isError &&
-              (errors.roleError !== '' ? errors.roleError : '')
-            }
-            className="mb-3"
-            id="outlined-basic"
-            label="Role"
-            variant="outlined"
-            inputProps={{ maxLength: 30 }}
-            onChange={e => setValues({ ...values, role: e.target.value })}
-          />
+          <FormControl
+            error={errors.isError && (values.role === '' ? true : false)}
+            fullWidth
+          >
+            <InputLabel id="demo-simple-select-label">Roles</InputLabel>
+            <Select
+              name="role"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={values.role}
+              label="Roles"
+              onChange={handleChange}
+            >
+              {roleList.map((rol, index) => (
+                <MenuItem key={`${rol}-${index}`} value={rol}>
+                  {rol}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>
+              {errors.isError &&
+                (errors.roleError !== '' ? errors.roleError : '')}
+            </FormHelperText>
+          </FormControl>
           <br />
           {/* <TextField
             value={values.rank}
@@ -211,8 +218,8 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             label="Rank"
             variant="outlined"
             onChange={e => setValues({ ...values, rank: e.target.value })}
-          /> */}
-          <br />
+          />
+          <br /> */}
         </div>
         <div className="ms-md-3">
           <div className="mb-2">
@@ -224,13 +231,13 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
               <RadioGroup
                 row
                 aria-label="committee"
-                name="row-radio-buttons-group"
+                name="committee"
                 value={values.committee}
-                onChange={handleCommitteeChange}
+                onChange={handleChange}
               >
                 {committeeList.map((com, index) => (
                   <FormControlLabel
-                    key={index}
+                    key={`${com}-${index}`}
                     value={com}
                     control={<Radio />}
                     label={com}
@@ -250,14 +257,15 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             >
               <InputLabel id="demo-simple-select-label">Project</InputLabel>
               <Select
+                name="project"
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={values.project}
                 label="Project"
-                onChange={handleProjectsChange}
+                onChange={handleChange}
               >
-                {projectsList.map((proj, index) => (
-                  <MenuItem key={index} value={proj}>
+                {projectList.map((proj, index) => (
+                  <MenuItem key={`${proj}-${index}`} value={proj}>
                     {proj}
                   </MenuItem>
                 ))}
@@ -272,21 +280,23 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date"
-                value={values.start_date}
+                value={values.startDate}
                 onChange={newValue => {
                   const newDate = dateFormat(newValue);
-                  setValues({ ...values, start_date: newDate });
+                  setValues({ ...values, startDate: newDate });
                 }}
                 renderInput={params => (
                   <TextField
                     {...params}
                     error={
                       errors.isError &&
-                      (values.start_date === null ? true : false)
+                      (values.startDate === null ? true : false)
                     }
                     helperText={
                       errors.isError &&
-                      (errors.dateError !== '' ? errors.dateError : '')
+                      (errors.startDateError !== ''
+                        ? errors.startDateError
+                        : '')
                     }
                     sx={{ width: '100%' }}
                   />
@@ -294,16 +304,26 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
               />
             </LocalizationProvider>
           </div>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+            <Select
+              name="status"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={values.status.toString()}
+              label="Project"
+              onChange={handleChange}
+            >
+              <MenuItem value={0}>Not a Member</MenuItem>
+              <MenuItem value={1}>Active</MenuItem>
+              <MenuItem value={2}>On Break</MenuItem>
+              <MenuItem value={3}>Alumni</MenuItem>
+            </Select>
+          </FormControl>
           <div className="d-flex mt-4">
-            {updateUserValue ? (
-              <Button variant="contained" onClick={handleUpdate}>
-                Update
-              </Button>
-            ) : (
-              <Button variant="contained" onClick={handleSubmit}>
-                Submit
-              </Button>
-            )}
+            <Button variant="contained" onClick={handleUpdateOrSubmit}>
+              {updateUser ? 'Update' : 'Submit'}
+            </Button>
           </div>
         </div>
       </div>

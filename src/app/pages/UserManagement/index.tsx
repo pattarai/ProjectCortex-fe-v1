@@ -5,13 +5,15 @@
  */
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Button, LinearProgress } from '@mui/material';
+import { Button, LinearProgress, Chip } from '@mui/material';
 import {
   DataGrid,
   GridColumns,
   GridRowParams,
   GridActionsCellItem,
   GridOverlay,
+  GridValueGetterParams,
+  GridRenderCellParams,
 } from '@mui/x-data-grid';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { RiAddFill } from 'react-icons/ri';
@@ -55,16 +57,35 @@ export function UserManagement(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function customCellRender(params: GridRenderCellParams) {
+    return (
+      <>
+        {params.value === 1 && (
+          <Chip variant="outlined" color="success" label="Active" />
+        )}
+        {params.value === 0 && (
+          <Chip variant="outlined" color="error" label="Not a Member" />
+        )}
+        {params.value === 2 && (
+          <Chip variant="outlined" color="warning" label="On Break" />
+        )}
+        {params.value === 3 && (
+          <Chip variant="outlined" color="info" label="Alumni" />
+        )}
+      </>
+    );
+  }
+
   const columns: GridColumns = [
     {
-      field: 'uid',
+      field: 'userId',
       headerName: 'S.No.',
       minWidth: 50,
       flex: 0.5,
       filterable: false,
     },
     {
-      field: 'first_name',
+      field: 'firstName',
       headerName: 'Name',
       minWidth: 100,
       flex: 0.5,
@@ -83,6 +104,8 @@ export function UserManagement(props: Props) {
       minWidth: 100,
       flex: 0.5,
       sortable: false,
+      valueGetter: (params: GridValueGetterParams) =>
+        params.row.roles ? params.row.roles.role : params.row.role,
     },
     {
       field: 'project',
@@ -99,6 +122,13 @@ export function UserManagement(props: Props) {
       sortable: false,
     },
     {
+      field: 'status',
+      headerName: 'Status',
+      minWidth: 150,
+      flex: 0.5,
+      renderCell: customCellRender,
+    },
+    {
       field: 'actions',
       type: 'actions',
       getActions: (params: GridRowParams) => [
@@ -108,7 +138,7 @@ export function UserManagement(props: Props) {
           color="primary"
           onClick={() => {
             setDeleteUser(null);
-            setUpdateUser(params.row.uid);
+            setUpdateUser(params.row.userId);
             setOpenPopup(true);
           }}
           label="Edit"
@@ -118,7 +148,7 @@ export function UserManagement(props: Props) {
           icon={<MdDelete style={{ fontSize: '23px' }} />}
           color="secondary"
           onClick={() => {
-            setDeleteUser(params.row.uid);
+            setDeleteUser(params.row.userId);
             setOpenPopup(true);
           }}
           label="Delete"
@@ -166,7 +196,7 @@ export function UserManagement(props: Props) {
           <DataGrid
             rows={userData ? userData : []}
             columns={columns}
-            getRowId={r => r.uid}
+            getRowId={r => r.userId}
             paginationMode="server"
             hideFooterSelectedRowCount
             loading={loading}

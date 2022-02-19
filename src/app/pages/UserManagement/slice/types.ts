@@ -1,18 +1,24 @@
 /* --- STATE --- */
 
 interface UserManagement {
-  uid: number;
-  first_name: string;
-  last_name: string;
+  userId: number;
   email: string;
-  role: string;
-  rank: string;
+  firstName: string;
+  lastName: string;
   project: string;
   committee: string;
-  start_date: string | null;
+  startDate: string | null;
+  status: number;
+  roles: {
+    role: string;
+  };
+  rank: string;
 }
 
 export interface UserManagementState {
   error: boolean;
   users: UserManagement[];
+  committeeList: string[];
+  projectList: string[];
+  roleList: string[];
 }
