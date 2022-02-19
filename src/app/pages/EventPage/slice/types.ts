@@ -12,5 +12,6 @@ export interface EventsState {
   error: boolean;
   committee: string[];
   projects: string[];
+  phaseList: number[];
   events: Events[];
 }

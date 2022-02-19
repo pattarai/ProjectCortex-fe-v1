@@ -49,15 +49,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     let noofErrors = 0;
     let err = { ...errors };
 
-    // Object.entries(values).forEach(([key, value]) => {
-    //   if (key === 'evenType' && value !== 'crew') {
-    //     if (key === 'conductedBy' && value !== '') {
-    //       err[`${key}Error`] = 'This field is required';
-    //       noofErrors++;
-    //     }
-    //   }
-    // });
-
     if (values.eventType !== 'crew') {
       if (values.eventName === '') {
         err.eventNameError = 'This field is required';
@@ -106,24 +97,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
         noofErrors++;
       }
     }
-
-    // if (
-    //   value === null ||
-    //   (typeof value === 'string' && value.trim() === '')
-    // ) {
-    //   console.log('1');
-    //   err[`${key}Error`] = 'This field is required';
-    //   noofErrors++;
-    // } else if (key === 'eventType' && value !== 'crew') {
-    //   console.log('2');
-    //   err[`${key}Error`] = 'This field is required';
-    //   noofErrors++;
-    //   if (value === 'individual') {
-    //     console.log('3');
-    //     err[`${key}Error`] = 'This field is required';
-    //     noofErrors++;
-    //   }
-    // }
 
     if (noofErrors === 0) {
       return true;
@@ -246,7 +219,6 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
               </InputLabel>
               <Select
                 native
-                defaultValue=""
                 id="grouped-native-select"
                 label="Conducted By"
                 value={values.conductedBy}

@@ -1,11 +1,18 @@
 /**
  *
- * UserManagement
+ * Event Page
  *
  */
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Button, LinearProgress } from '@mui/material';
+import {
+  Button,
+  LinearProgress,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+} from '@mui/material';
 import {
   DataGrid,
   GridColumns,
@@ -29,13 +36,14 @@ interface Props {}
 
 export function EventPage(props: Props) {
   const { actions } = useEventsSlice();
-  const { events, error } = useSelector(selectEvents);
+  const { events, error, phaseList } = useSelector(selectEvents);
   const dispatch = useDispatch();
 
   const [err, setErr] = useState(false);
   const [openPopup, setOpenPopup] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const [phaseValue, setPhaseValue] = useState<string>('');
   const [userData, setUserData] = useState<typeof events | null>(null);
   const [updateUser, setUpdateUser] = useState<number | null>(null);
   const [deleteUser, setDeleteUser] = useState<number | null>(null);
@@ -115,7 +123,40 @@ export function EventPage(props: Props) {
 
   function AddUser() {
     return (
-      <div className="my-3 d-md-flex justify-content-end">
+      <div className="my-3 d-md-flex justify-content-between">
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-helper-label">
+            Select Phase
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={phaseValue}
+            label="Select Phase"
+            onChange={e => {
+              setPhaseValue(e.target.value);
+            }}
+          >
+            {phaseList.map((phase, index) => (
+              <MenuItem key={`${index}-${phase}`} value={phase}>
+                {phase}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          variant="outlined"
+          size="large"
+          onClick={() => {
+            console.log(phaseValue);
+            dispatch(actions.getEventByPhase(phaseValue));
+            setUpdateUser(null);
+            setDeleteUser(null);
+          }}
+        >
+          Search
+        </Button>
+
         <Button
           disabled={loading}
           aria-label="Add Event"

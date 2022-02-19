@@ -29,6 +29,20 @@ function* handleAddEvents(action: any) {
   }
 }
 
+function* handleGetEventByPhase(action: any) {
+  try {
+    console.log(action.payload);
+    const res = yield call(() =>
+      axiosPost('/admin/event-by-phase', { phase: action.payload }),
+    );
+    const data = res.data.data;
+    console.log(data);
+    yield put(actions.setEventByPhase(data));
+  } catch (error) {
+    yield put(actions.setError(true));
+  }
+}
+
 function* handleUpdateEvents(action: any) {
   try {
     const res = yield call(() => axiosPatch('/admin/events', action.payload));
@@ -51,6 +65,7 @@ function* handleDeleteEvents(action: any) {
 
 export function* eventsSaga() {
   yield takeLatest(actions.getEvent.type, handleGetEvents);
+  yield takeLatest(actions.getEventByPhase.type, handleGetEventByPhase);
   yield takeLatest(actions.addEvent.type, handleAddEvents);
   yield takeLatest(actions.updateEvent.type, handleUpdateEvents);
   yield takeLatest(actions.deleteEvent.type, handleDeleteEvents);

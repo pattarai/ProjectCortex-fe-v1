@@ -9,6 +9,7 @@ export const initialState: EventsState = {
   events: [],
   projects: [],
   committee: [],
+  phaseList: [],
 };
 
 const slice = createSlice({
@@ -17,13 +18,19 @@ const slice = createSlice({
   reducers: {
     getEvent() {},
     addEvent(state, action: PayloadAction<any>) {},
+    getEventByPhase(state, action: PayloadAction<any>) {},
     updateEvent(state, action: PayloadAction<any>) {},
     deleteEvent(state, action: PayloadAction<any>) {},
     setEvent(state, action: PayloadAction<any>) {
-      const { data, projectList, committeeList } = action.payload;
+      const { data, projectList, committeeList, phaseList } = action.payload;
       state.events.push(...data);
+      state.phaseList.push(...phaseList);
       state.projects.push(...projectList);
       state.committee.push(...committeeList);
+    },
+
+    setEventByPhase(state, action: PayloadAction<any>) {
+      state.events = action.payload;
     },
 
     setAddEvent(state, action: PayloadAction<any>) {
