@@ -9,8 +9,8 @@ import {
 
 function* handleGetUser() {
   try {
-    const res = yield call(() => axiosGet('/events'));
-    const data = res.data;
+    const res = yield call(() => axiosGet('/admin/events'));
+    const data = res.data.data;
     console.log(data);
     yield put(actions.setEvent(data));
   } catch (error) {

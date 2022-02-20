@@ -1,62 +1,112 @@
-/**
- *
- * AttendanceCrew
- *
- */
+// /**
+//  *
+//  * AttendanceCrew
+//  *
+//  */
 import * as React from 'react';
-import Card from '@mui/material/Card';
+import { useState, useEffect } from 'react';
 import CircularProgress, {
   CircularProgressProps,
 } from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import { Typography } from '@mui/material';
 
-interface Props {}
-
-export function AttendanceCrew(props: Props) {
+export function AttendanceCrew(props: any) {
   return (
     <>
-      <Box sx={{ minWidth: 275 }}>
-        <Card
-          sx={{
-            maxWidth: '25%',
-          }}
-        >
-          <div className=" d-flex align-justify-center">
-            <div>
-              <CircularProgress
-                variant="determinate"
-                disableShrink
-                size={100}
-                thickness={4}
-                value={33}
-                {...props}
-              />
-            </div>
-            <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-              <CircularProgress variant="determinate" {...props} />
-              <Box
-                sx={{
-                  top: 0,
-                  left: 0,
-                  bottom: 0,
-                  right: 0,
-                  position: 'absolute',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Typography
-                  variant="caption"
-                  component="div"
-                  color="text.secondary"
-                />
-              </Box>
-            </Box>
+      <div className="container my-4">
+        <div className="row">
+          <div className="d-flex align-justify-center">
+            <Card
+              elevation={2}
+              sx={{
+                marginLeft: '50px',
+                width: '200%',
+              }}
+            >
+              <div className="d-flex align-justify-center">
+                <CardContent sx={{ width: 150, alignItems: 'center' }}>
+                  <Typography component="h2" variant="h5">
+                    Present
+                  </Typography>
+                  <CircularProgress
+                    variant="determinate"
+                    disableShrink
+                    size={100}
+                    thickness={4}
+                    value={33}
+                    {...props}
+                    sx={{ marginTop: '10px' }}
+                  />
+                  <Typography component="h4" variant="h6">
+                    1 out of 6
+                  </Typography>
+                  <div className="d-flex justify-content-end"></div>
+                </CardContent>
+              </div>
+            </Card>
+
+            <Card
+              elevation={2}
+              sx={{
+                marginLeft: '50px',
+                width: '200%',
+              }}
+            >
+              <div className="d-flex align-justify-center">
+                <CardContent sx={{ width: 150, alignItems: 'center' }}>
+                  <Typography component="h2" variant="h5">
+                    Absent
+                  </Typography>
+                  <CircularProgress
+                    variant="determinate"
+                    disableShrink
+                    size={100}
+                    thickness={4}
+                    value={75}
+                    {...props}
+                    sx={{ marginTop: '10px' }}
+                  />
+                  <Typography component="h4" variant="h6">
+                    1 out of 6
+                  </Typography>
+                  <div className="d-flex justify-content-end"></div>
+                </CardContent>
+              </div>
+            </Card>
+
+            <Card
+              elevation={2}
+              sx={{
+                marginLeft: '50px',
+                width: '200%',
+              }}
+            >
+              <div className="d-flex align-justify-center">
+                <CardContent sx={{ width: 150, alignItems: 'center' }}>
+                  <Typography component="h2" variant="h5">
+                    On-leave
+                  </Typography>
+                  <CircularProgress
+                    variant="determinate"
+                    disableShrink
+                    size={100}
+                    thickness={4}
+                    value={15}
+                    {...props}
+                    sx={{ marginTop: '10px' }}
+                  />
+                  <Typography component="h4" variant="h6">
+                    1 out of 6
+                  </Typography>
+                  <div className="d-flex justify-content-end"></div>
+                </CardContent>
+              </div>
+            </Card>
           </div>
-        </Card>
-      </Box>
+        </div>
+      </div>
     </>
   );
 }

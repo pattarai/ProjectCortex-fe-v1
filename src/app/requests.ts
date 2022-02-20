@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const endpoint = 'http://127.0.0.1:5000/api';
+const endpoint = 'http://9c22-122-178-205-113.ngrok.io/api';
 
 export function axiosGet(url: string) {
   return axios.request({

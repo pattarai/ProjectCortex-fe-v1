@@ -17,7 +17,6 @@ import { useTranslation } from 'react-i18next';
 import { Index } from './pages/Index';
 import { DashboardLayout } from './pages/DashboardLayout';
 import { LoginPage } from './pages/LoginPage';
-import { EventPage } from './pages/EventPage';
 
 export function App() {
   const { i18n } = useTranslation();
