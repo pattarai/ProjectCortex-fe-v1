@@ -18,6 +18,8 @@ import Logo from '../../images/Logo.svg';
 
 import { useDispatch } from 'react-redux';
 import { useLoginSlice } from './slice';
+import { axiosPost } from '../../requests';
+import { useHistory } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -31,20 +33,63 @@ const CenterItem = styled.div`
 export function LoginPage() {
   const dispatch = useDispatch();
   const { actions } = useLoginSlice();
+  const history = useHistory();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+  const [values, setValues] = React.useState({ email: '', password: '' });
+  const [errors, setErrors] = React.useState({
+    email: '',
+    password: '',
+    isError: false,
+  });
+
+  function checkError() {
+    let noofErrors = 0;
+    let err = { ...errors };
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (
+        value === null ||
+        (typeof value === 'string' && value.trim() === '')
+      ) {
+        err[`${key}Error`] = 'This field is required';
+        noofErrors++;
+      } else if (
+        key === 'email' &&
+        typeof value === 'string' &&
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+      ) {
+        err[`${key}Error`] = 'Invalid email address';
+        noofErrors++;
+      } else {
+        err[`${key}Error`] = '';
+      }
     });
-    dispatch(
-      actions.login({
-        email: data.get('email'),
-        password: data.get('password'),
-      }),
-    );
+
+    if (noofErrors === 0) {
+      return true;
+    } else {
+      err.isError = true;
+      setErrors(err);
+      return false;
+    }
+  }
+
+  const handleSubmit = async () => {
+    if (checkError()) {
+      const response = await axiosPost('/auth/login', values);
+      if (response.data.status) {
+        localStorage.setItem('token', response.data.token);
+        history.push('/dashboard');
+      } else {
+        console.log(response.data);
+      }
+    }
+    // dispatch(
+    //   actions.login({
+    //     email: data.get('email'),
+    //     password: data.get('password'),
+    //   }),
+    // );
   };
 
   return (
@@ -106,6 +151,7 @@ export function LoginPage() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={e => setValues({ ...values, email: e.target.value })}
               />
               <TextField
                 // variant="standard"
@@ -117,6 +163,9 @@ export function LoginPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={e =>
+                  setValues({ ...values, password: e.target.value })
+                }
               />
               {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -137,11 +186,12 @@ export function LoginPage() {
               {/* <Copyright sx={{ mt: 5 }} /> */}
               <CenterItem>
                 <Button
-                  type="submit"
+                  type="button"
                   variant="contained"
                   size="medium"
                   sx={{ mt: 3, mb: 2 }}
                   color="secondary"
+                  onClick={handleSubmit}
                 >
                   Sign In
                 </Button>
