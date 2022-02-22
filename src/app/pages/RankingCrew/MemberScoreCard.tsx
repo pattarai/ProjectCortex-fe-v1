@@ -11,49 +11,52 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { Divider } from '@mui/material';
-import axios from 'axios';
+import { axiosPost } from '../../requests';
 
-type Factors = {
-  phase: number;
-  factorName: string;
-  maxScore: number;
-};
-interface ScoreData {
-  factors: Factors;
+type userDetails = {
+  factors: {
+    factorName: string;
+    maxScore: number;
+    phase: number;
+  };
   score: number;
+};
+
+interface ScoreData {
+  userDetails: userDetails[];
+  totalScoreByPhase: number[];
 }
 
 export default function MemberScoreCard() {
-  const [userData, setUserData] = useState<ScoreData[] | null>(null);
-  const [currentPhase, setCurrentPhase] = useState<null | ScoreData[]>(null);
+  const [userData, setUserData] = useState<ScoreData | null>(null);
+  const [currentPhase, setCurrentPhase] = useState<null | userDetails[]>(null);
 
   function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
   }
-  const phases = userData ? userData.map(row => row.factors.phase) : null;
+  const phases = userData
+    ? userData.userDetails.map(row => row.factors.phase)
+    : null;
   const unique = phases ? phases.filter(onlyUnique) : null;
 
   const handleChange = (event: SelectChangeEvent) => {
-    const newUserData = userData?.filter(
+    const newUserData = userData?.userDetails.filter(
       row => row.factors.phase.toString() === event.target.value.toString(),
     );
     newUserData && setCurrentPhase([...newUserData]);
   };
 
   useEffect(() => {
-    axios
-      .post('http://127.0.0.1:5000/api/users/ranks', {
-        userId: 4,
-      })
-      .then(res => {
-        const user = res.data.data;
-        setUserData(user);
-        const newUserData = user?.filter(
-          row =>
-            row.factors.phase.toString() === user[0].factors.phase.toString(),
-        );
-        newUserData && setCurrentPhase([...newUserData]);
-      });
+    axiosPost('/users/ranks', {
+      userId: 1,
+    }).then(res => {
+      const user = res.data.data;
+      const currentPhaseData = user.userDetails.filter(
+        row => row.factors.phase === user.userDetails[0].factors.phase,
+      );
+      setUserData(user);
+      setCurrentPhase(currentPhaseData);
+    });
   }, []);
 
   return (
@@ -70,7 +73,7 @@ export default function MemberScoreCard() {
             >
               <CardContent sx={{ flex: 1 }}>
                 <div className="d-flex justify-content-end">
-                  <FormControl sx={{ minWidth: 300 }}>
+                  <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
                       Select Phase
                     </InputLabel>
@@ -97,7 +100,7 @@ export default function MemberScoreCard() {
                   <ListSubheader>
                     <div className="d-flex justify-content-between">
                       <span>SNO</span>
-                      <span>CONTRIBUTION NAME</span>
+                      <span>CONTRIBUTION</span>
                       <span>MAX SCORE</span>
                       <span>SCORE</span>
                     </div>
@@ -105,7 +108,7 @@ export default function MemberScoreCard() {
                   {currentPhase &&
                     currentPhase.map((list, index) => (
                       <ListItem
-                        key={index}
+                        key={`${list}-${index}`}
                         className="d-flex align-items-center justify-content-between"
                       >
                         <ListItemText
@@ -127,24 +130,24 @@ export default function MemberScoreCard() {
                       </ListItem>
                     ))}
                 </List>
-                <Divider />
-                <List>
-                  <ListItem>
-                    <ListItemText />
-                    <ListItemText
-                      primary="TOTAL"
-                      className="d-flex justify-content-start"
-                    />
-                    <ListItemText
-                      primary="42"
-                      className="d-flex justify-content-end"
-                    />
-                    <ListItemText
-                      primary="9"
-                      className="d-flex justify-content-end"
-                    />
-                  </ListItem>
-                </List>
+                <Divider />{' '}
+                {userData &&
+                  userData.totalScoreByPhase.map((list, index) => (
+                    <List key={`${list}-${index}`}>
+                      <ListItem>
+                        <ListItemText />
+                        <ListItemText
+                          primary="TOTAL"
+                          className="d-flex justify-content-start"
+                        />
+                        <ListItemText />
+                        <ListItemText
+                          primary={list}
+                          className="d-flex justify-content-end"
+                        />
+                      </ListItem>
+                    </List>
+                  ))}
               </CardContent>
             </Card>
           </div>
