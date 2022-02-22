@@ -112,9 +112,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   }
 
   function handleUpdateOrSubmit() {
-    console.log(values);
     if (checkError()) {
-      console.log('submit');
       setOpenModal(false);
       if (JSON.stringify(values) !== JSON.stringify(updateUserValue)) {
         setLoading(true);
