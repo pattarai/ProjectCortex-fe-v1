@@ -12,6 +12,15 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Typography } from '@mui/material';
 
+// const status = data
+//     .map(dataItem => dataItem.status)
+//     .filter((status, index, array) => array.indexOf(status) === index);
+
+// const counts = status
+//   .map(status => ({
+//     count: data.filter(item => item.status === status).length
+//   }));
+
 export function AttendanceCrew(props: any) {
   return (
     <>
@@ -40,7 +49,7 @@ export function AttendanceCrew(props: any) {
                     sx={{ marginTop: '10px' }}
                   />
                   <Typography component="h4" variant="h6">
-                    1 out of 6
+                    {/* {this.state.counts[0].count} */}
                   </Typography>
                   <div className="d-flex justify-content-end"></div>
                 </CardContent>
