@@ -77,9 +77,8 @@ export function LoginPage() {
   const handleSubmit = async () => {
     if (checkError()) {
       const response = await axiosPost('/auth/login', values);
-      if (response.data.status) {
+      if (response.data.success) {
         localStorage.setItem('token', response.data.token);
-        console.log(response.data);
         history.push('/dashboard');
       } else {
         console.log(response.data);

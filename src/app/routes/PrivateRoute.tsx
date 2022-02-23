@@ -1,6 +1,6 @@
 import React, { Props } from 'react';
-import { axiosGet } from '../requests';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export function PrivateRoute(props) {
   const Component = props.component;
@@ -9,8 +9,12 @@ export function PrivateRoute(props) {
 
   useEffect(() => {
     let checkUser = async () => {
-      let response = await axiosGet('/auth');
-      console.log(response);
+      let token = localStorage.getItem('token');
+      let response = await axios.request({
+        method: 'GET',
+        url: `http://localhost:5000/api/auth`,
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (response.data.success) {
         setUser(true);
       }
