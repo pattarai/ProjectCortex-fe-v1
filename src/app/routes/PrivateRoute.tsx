@@ -1,6 +1,7 @@
 import React, { Props } from 'react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { endpoint } from '../requests';
 
 export function PrivateRoute(props) {
   const Component = props.component;
@@ -12,7 +13,7 @@ export function PrivateRoute(props) {
       let token = localStorage.getItem('token');
       let response = await axios.request({
         method: 'GET',
-        url: `http://localhost:5000/api/auth`,
+        url: `${endpoint}/auth`,
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data.success) {

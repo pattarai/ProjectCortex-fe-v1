@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const endpoint = 'http://127.0.0.1:5000/api';
+export const endpoint = 'http://127.0.0.1:5000/api';
 
 let token = localStorage.getItem('token') ?? 'empty';
 
