@@ -79,6 +79,7 @@ export function LoginPage() {
       const response = await axiosPost('/auth/login', values);
       if (response.data.status) {
         localStorage.setItem('token', response.data.token);
+        console.log(response.data);
         history.push('/dashboard');
       } else {
         console.log(response.data);

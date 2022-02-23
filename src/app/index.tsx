@@ -18,6 +18,7 @@ import { Index } from './pages/Index';
 import { DashboardLayout } from './pages/DashboardLayout';
 import { LoginPage } from './pages/LoginPage';
 import { EventPage } from './pages/EventPage';
+import { PrivateRoute } from './routes/PrivateRoute';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -34,7 +35,7 @@ export function App() {
       <Switch>
         <Route exact path="/" component={Index} />
         <Route exact path="/login" component={LoginPage} />
-        <Route path="/dashboard" component={DashboardLayout} />
+        <PrivateRoute path="/dashboard" component={DashboardLayout} />
       </Switch>
       <GlobalStyle />
     </BrowserRouter>
