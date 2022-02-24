@@ -5,117 +5,96 @@
 //  */
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import CircularProgress, {
-  CircularProgressProps,
-} from '@mui/material/CircularProgress';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { Typography } from '@mui/material';
-
-// const status = data
-//     .map(dataItem => dataItem.status)
-//     .filter((status, index, array) => array.indexOf(status) === index);
-
-// const counts = status
-//   .map(status => ({
-//     count: data.filter(item => item.status === status).length
-//   }));
+import { CircularProgress } from '@mui/material';
+import { axiosPost } from '../../requests';
 
 export function AttendanceCrew(props: any) {
-  return (
-    <>
-      <div className="container my-4">
-        <div className="row">
-          <div className="d-flex align-justify-center">
-            <Card
-              elevation={2}
-              sx={{
-                marginLeft: '50px',
-                width: '200%',
-              }}
-            >
-              <div className="d-flex align-justify-center">
-                <CardContent sx={{ width: 150, alignItems: 'center' }}>
-                  <Typography component="h2" variant="h5">
-                    Present
-                  </Typography>
-                  <CircularProgress
-                    variant="determinate"
-                    disableShrink
-                    size={100}
-                    thickness={4}
-                    value={33}
-                    {...props}
-                    sx={{ marginTop: '10px' }}
-                  />
-                  <Typography component="h4" variant="h6">
-                    {/* {this.state.counts[0].count} */}
-                  </Typography>
-                  <div className="d-flex justify-content-end"></div>
-                </CardContent>
-              </div>
-            </Card>
+  interface EventsList {
+    eventId: number;
+    status: number;
+    events: {
+      eventName: string;
+    };
+  }
 
-            <Card
-              elevation={2}
-              sx={{
-                marginLeft: '50px',
-                width: '200%',
-              }}
-            >
-              <div className="d-flex align-justify-center">
-                <CardContent sx={{ width: 150, alignItems: 'center' }}>
-                  <Typography component="h2" variant="h5">
-                    Absent
-                  </Typography>
-                  <CircularProgress
-                    variant="determinate"
-                    disableShrink
-                    size={100}
-                    thickness={4}
-                    value={75}
-                    {...props}
-                    sx={{ marginTop: '10px' }}
-                  />
-                  <Typography component="h4" variant="h6">
-                    1 out of 6
-                  </Typography>
-                  <div className="d-flex justify-content-end"></div>
-                </CardContent>
-              </div>
-            </Card>
+  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState<EventsList[]>([]);
+  const [eventsStatus, setEventsStatus] = useState<number[]>([]);
 
-            <Card
-              elevation={2}
-              sx={{
-                marginLeft: '50px',
-                width: '200%',
-              }}
+  async function fetchData() {
+    const { data } = await axiosPost('/users/attendance', {
+      userId: 1,
+      phase: 4,
+    });
+    setEvents(data.requestedPhaseEvents);
+    setEventsStatus(data.statusCount);
+    setLoading(false);
+  }
+
+  function calColor(val: number) {
+    if (val === 0) {
+      return '#FFA3A3';
+    } else if (val === 1) {
+      return ' #93ffc4';
+    } else {
+      return '#FFDBA5';
+    }
+  }
+  function calStatusText(indexVal: number) {
+    if (indexVal === 0) {
+      return 'Absent';
+    } else if (indexVal === 1) {
+      return 'Present';
+    } else {
+      return 'Informed';
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  } else if (events.length === 0) {
+    return <h1>No events to display</h1>;
+  } else {
+    return (
+      <>
+        <div className="d-flex mb-5">
+          {eventsStatus.map((status, index) => (
+            <div
+              className="card-shadow p-3 me-3 w-md-50"
+              key={`${status}-${index}`}
             >
-              <div className="d-flex align-justify-center">
-                <CardContent sx={{ width: 150, alignItems: 'center' }}>
-                  <Typography component="h2" variant="h5">
-                    On-leave
-                  </Typography>
-                  <CircularProgress
-                    variant="determinate"
-                    disableShrink
-                    size={100}
-                    thickness={4}
-                    value={15}
-                    {...props}
-                    sx={{ marginTop: '10px' }}
-                  />
-                  <Typography component="h4" variant="h6">
-                    1 out of 6
-                  </Typography>
-                  <div className="d-flex justify-content-end"></div>
-                </CardContent>
+              <div className="d-flex align-items-center justify-content-between">
+                <h3>{calStatusText(index)}</h3>
+                <CircularProgress
+                  sx={{
+                    color: calColor(index),
+                  }}
+                  variant="determinate"
+                  value={(status / events.length) * 100}
+                />
               </div>
-            </Card>
-          </div>
+            </div>
+          ))}
         </div>
-      </div>
-    </>
-  );
+        <div className="mt-5">
+          <h3 className="mt-5 mb-3">Attendance report</h3>
+          {events.map((event, index) => (
+            <div
+              className="card-shadow p-3 my-3"
+              style={{
+                backgroundColor: calColor(event.status),
+              }}
+              key={`${event.events.eventName}-${index}`}
+            >
+              <h3>{event.events.eventName}</h3>
+            </div>
+          ))}
+        </div>
+      </>
+    );
+  }
 }
