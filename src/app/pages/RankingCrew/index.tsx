@@ -23,7 +23,7 @@ import Bronze from './images/bronze.png';
 import Copper from './images/copper.png';
 import { FaSearch } from 'react-icons/fa';
 import MemberScoreCard from './MemberScoreCard';
-import axios from 'axios';
+import { axiosGet } from '../../requests';
 
 type Users = {
   firstName: string;
@@ -45,7 +45,7 @@ export function RankingCrew() {
   const [top3, setTop3] = useState<MemberData[] | null>(null);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:5001/api/users/ranks').then(res => {
+    axiosGet('/users/ranks').then(res => {
       const user = res.data.data;
       const top3List = user.slice(0, 3);
       const userList = user.slice(3);
