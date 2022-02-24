@@ -17,6 +17,10 @@ import {
 } from '@mui/material';
 import AvatarIcon from './images/raksha.png';
 import Diamond from './images/diamond.png';
+import Gold from './images/gold.png';
+import Silver from './images/silver.png';
+import Bronze from './images/bronze.png';
+import Copper from './images/copper.png';
 import { FaSearch } from 'react-icons/fa';
 import MemberScoreCard from './MemberScoreCard';
 import axios from 'axios';
@@ -41,7 +45,7 @@ export function RankingCrew() {
   const [top3, setTop3] = useState<MemberData[] | null>(null);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:5000/api/users/ranks').then(res => {
+    axios.get('http://127.0.0.1:5001/api/users/ranks').then(res => {
       const user = res.data.data;
       const top3List = user.slice(0, 3);
       const userList = user.slice(3);
@@ -184,11 +188,23 @@ export function RankingCrew() {
                               </div>
                               <Avatar
                                 alt={data.league}
-                                src={Diamond}
+                                src={
+                                  data.league === 'DIAMOND'
+                                    ? Diamond
+                                    : data.league === 'GOLD'
+                                    ? Gold
+                                    : data.league === 'SILVER'
+                                    ? Silver
+                                    : data.league === 'BRONZE'
+                                    ? Bronze
+                                    : data.league === 'COPPER'
+                                    ? Copper
+                                    : ''
+                                }
                                 variant="square"
                                 sx={{
-                                  width: 40,
-                                  height: 40,
+                                  width: 50,
+                                  height: 50,
                                   alignItems: 'center',
                                   justifyContent: 'center',
                                   margin: 'auto',
