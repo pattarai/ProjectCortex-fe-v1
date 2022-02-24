@@ -15,11 +15,15 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import Logo from '../../images/Logo.svg';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Slide, { SlideProps } from '@mui/material/Slide';
 
 import { useDispatch } from 'react-redux';
 import { useLoginSlice } from './slice';
 import { axiosPost } from '../../requests';
 import { useHistory } from 'react-router-dom';
+
+type TransitionProps = Omit<SlideProps, 'direction'>;
 
 const theme = createTheme();
 
@@ -37,10 +41,27 @@ export function LoginPage() {
 
   const [values, setValues] = React.useState({ email: '', password: '' });
   const [errors, setErrors] = React.useState({
-    email: '',
-    password: '',
+    emailError: '',
+    passwordError: '',
     isError: false,
   });
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [responseError, setResponseError] = React.useState('');
+  const [state, setState] = React.useState<SnackbarOrigin>({
+    vertical: 'bottom',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal } = state;
+  const [transition, setTransition] = React.useState<
+    React.ComponentType<TransitionProps> | undefined
+  >(undefined);
+
+  function TransitionRight(props: TransitionProps) {
+    return <Slide {...props} direction="right" />;
+  }
 
   function checkError() {
     let noofErrors = 0;
@@ -81,7 +102,8 @@ export function LoginPage() {
         localStorage.setItem('token', response.data.token);
         history.push('/dashboard');
       } else {
-        console.log(response.data);
+        setResponseError(response.data.message);
+        setOpen(true);
       }
     }
     // dispatch(
@@ -143,6 +165,14 @@ export function LoginPage() {
             >
               <TextField
                 // variant="standard"
+                value={values.email}
+                error={
+                  errors.isError && (values.email.trim() === '' ? true : false)
+                }
+                helperText={
+                  errors.isError &&
+                  (errors.emailError !== '' ? errors.emailError : '')
+                }
                 margin="normal"
                 required
                 fullWidth
@@ -155,6 +185,15 @@ export function LoginPage() {
               />
               <TextField
                 // variant="standard"
+                value={values.password}
+                error={
+                  errors.isError &&
+                  (values.password.trim() === '' ? true : false)
+                }
+                helperText={
+                  errors.isError &&
+                  (errors.passwordError !== '' ? errors.passwordError : '')
+                }
                 margin="normal"
                 required
                 fullWidth
@@ -185,6 +224,14 @@ export function LoginPage() {
                 >
                   Sign In
                 </Button>
+                <Snackbar
+                  anchorOrigin={{ vertical, horizontal }}
+                  TransitionComponent={transition}
+                  open={open}
+                  onClose={handleClose}
+                  message={responseError}
+                  key={vertical + horizontal}
+                />
               </CenterItem>
             </Box>
           </Box>

@@ -35,7 +35,7 @@ export function App() {
       <Switch>
         <Route exact path="/" component={Index} />
         <Route exact path="/login" component={LoginPage} />
-        <PrivateRoute path="/dashboard" component={DashboardLayout} />
+        <Route path="/dashboard" component={DashboardLayout} />
       </Switch>
       <GlobalStyle />
     </BrowserRouter>
