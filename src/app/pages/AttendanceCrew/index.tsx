@@ -31,7 +31,7 @@ export function AttendanceCrew(props: any) {
     setLoading(false);
   }
 
-  function calColor(val) {
+  function calColor(val: number) {
     if (val === 0) {
       return '#FFA3A3';
     } else if (val === 1) {
@@ -40,7 +40,7 @@ export function AttendanceCrew(props: any) {
       return '#FFDBA5';
     }
   }
-  function calStatusText(indexVal) {
+  function calStatusText(indexVal: number) {
     if (indexVal === 0) {
       return 'Absent';
     } else if (indexVal === 1) {
