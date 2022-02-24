@@ -2,13 +2,13 @@ import axios from 'axios';
 
 export const endpoint = 'http://127.0.0.1:5000/api';
 
-let token = localStorage.getItem('token') ?? 'empty';
-
 export function axiosGet(url: string) {
   return axios.request({
     method: 'GET',
     url: `${endpoint}${url}`,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token') ?? 'null'}`,
+    },
   });
 }
 
@@ -17,7 +17,9 @@ export function axiosPost(url: string, data: any) {
     method: 'POST',
     url: `${endpoint}${url}`,
     data: data,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token') ?? 'null'}`,
+    },
   });
 }
 
@@ -26,7 +28,9 @@ export function axiosPatch(url: string, data: any) {
     method: 'PATCH',
     url: `${endpoint}${url}`,
     data: data,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token') ?? 'null'}`,
+    },
   });
 }
 
@@ -35,6 +39,8 @@ export function axiosDelete(url: string, data: any) {
     method: 'DELETE',
     url: `${endpoint}${url}`,
     data: data,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token') ?? 'null'}`,
+    },
   });
 }
