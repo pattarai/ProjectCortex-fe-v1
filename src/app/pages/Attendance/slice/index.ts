@@ -4,86 +4,54 @@ import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { attendanceSaga } from './saga';
 import { AttendanceState } from './types';
 
-export const initialState: AttendanceState = [
-  {
-    id: 99,
-    eventName: 'React basics',
-    eventType: 'learnzeit',
-    eventDate: '12/01/2021',
-    members: [
-      {
-        id: 1,
-        name: 'Joshua',
-        status: 1,
-      },
-      {
-        id: 2,
-        name: 'Jesin',
-        status: 0,
-      },
-    ],
-  },
-  {
-    id: 100,
-    eventName: 'Elevate',
-    eventType: 'crew',
-    eventDate: '12/01/2021',
-    members: [
-      {
-        id: 1,
-        name: 'Dhivya',
-        status: 0,
-      },
-      {
-        id: 2,
-        name: 'Veroni',
-        status: 2,
-      },
-      {
-        id: 3,
-        name: 'Raksha',
-        status: 1,
-      },
-      {
-        id: 4,
-        name: 'Subi',
-        status: 0,
-      },
-    ],
-  },
-];
+export const initialState: AttendanceState = {
+  error: false,
+  crewAttendance: [],
+  externalAttendance: [],
+  eventId: 0,
+  isExist: false,
+};
 
 const slice = createSlice({
   name: 'attendance',
   initialState,
   reducers: {
-    addUser(state, action: PayloadAction<any>) {
-      const { eventId, ...rest } = action.payload;
-      const memberList = state.find(event => event.id === eventId)?.members;
-      if (memberList) {
-        const newId =
-          memberList.length > 0 ? memberList[memberList.length - 1].id + 1 : 1;
-        const newMember = { id: newId, ...rest };
-        memberList.push(newMember);
+    getAttendance(state, action: PayloadAction<any>) {},
+    updateAttendance(state, action: PayloadAction<any>) {},
+
+    addExternalMember(state, action: PayloadAction<any>) {
+      state.externalAttendance.push(action.payload);
+    },
+
+    deleteExternalMember(state, action: PayloadAction<any>) {
+      const deleteIndex = state.externalAttendance.findIndex(
+        item => item.externalId === action.payload.externalId,
+      );
+      state.externalAttendance.splice(deleteIndex, 1);
+    },
+
+    setInitialData(state, action: PayloadAction<any>) {
+      const { crewAttendance, externalAttendance, eventId, isExist } =
+        action.payload;
+      state.crewAttendance = crewAttendance;
+      if (externalAttendance) {
+        state.externalAttendance = externalAttendance;
+      }
+      state.eventId = eventId;
+      state.isExist = isExist;
+    },
+
+    setUpdateAttendance(state, action: PayloadAction<any>) {
+      const userIndex = state.crewAttendance.findIndex(
+        r => r.userId === action.payload.userId,
+      );
+      if (userIndex) {
+        state.crewAttendance[userIndex].status = action.payload.status;
       }
     },
 
-    updateUser(state, action: PayloadAction<any>) {
-      const { eventId, member } = action.payload;
-      const selectedEventId = state.findIndex(event => event.id === eventId);
-      const selectedMemberId = state[selectedEventId].members.findIndex(
-        user => user.id === member.id,
-      );
-      state[selectedEventId].members[selectedMemberId] = member;
-    },
-
-    deleteUser(state, action: PayloadAction<any>) {
-      const { eventId, deleteMembers } = action.payload;
-      const selectedEventId = state.findIndex(event => event.id === eventId);
-      const newMemberList = state[selectedEventId].members.filter(user => {
-        return !deleteMembers.includes(user.id);
-      });
-      state[selectedEventId].members = newMemberList;
+    setError(state, action: PayloadAction<any>) {
+      state.error = action.payload;
     },
   },
 });
