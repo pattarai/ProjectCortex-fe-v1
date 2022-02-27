@@ -71,6 +71,7 @@ export default function MemberForm({
         label="Name"
         variant="outlined"
         sx={{ width: '100%', mb: '1rem' }}
+        onChange={e => setMember({ ...member, memberName: e.target.value })}
       />
       {updateMember && (
         <FormControl fullWidth>
