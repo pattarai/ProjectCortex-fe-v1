@@ -19,17 +19,6 @@ const slice = createSlice({
     getAttendance(state, action: PayloadAction<any>) {},
     updateAttendance(state, action: PayloadAction<any>) {},
 
-    addExternalMember(state, action: PayloadAction<any>) {
-      state.externalAttendance.push(action.payload);
-    },
-
-    deleteExternalMember(state, action: PayloadAction<any>) {
-      const deleteIndex = state.externalAttendance.findIndex(
-        item => item.externalId === action.payload.externalId,
-      );
-      state.externalAttendance.splice(deleteIndex, 1);
-    },
-
     setInitialData(state, action: PayloadAction<any>) {
       const { crewAttendance, externalAttendance, eventId, isExist } =
         action.payload;
@@ -41,13 +30,22 @@ const slice = createSlice({
       state.isExist = isExist;
     },
 
-    setUpdateAttendance(state, action: PayloadAction<any>) {
-      const userIndex = state.crewAttendance.findIndex(
-        r => r.userId === action.payload.userId,
+    addExternalMember(state, action: PayloadAction<any>) {
+      state.externalAttendance.push(action.payload);
+    },
+
+    deleteExternalMember(state, action: PayloadAction<any>) {
+      const deleteIndex = state.externalAttendance.findIndex(
+        item => item.externalId === action.payload.externalId,
       );
-      if (userIndex) {
-        state.crewAttendance[userIndex].status = action.payload.status;
-      }
+      state.externalAttendance.splice(deleteIndex, 1);
+    },
+
+    updateCrewMember(state, action: PayloadAction<any>) {
+      const updateIndex = state.crewAttendance.findIndex(
+        item => item.userId === action.payload.userId,
+      );
+      state.crewAttendance[updateIndex].status = action.payload.status;
     },
 
     setError(state, action: PayloadAction<any>) {
