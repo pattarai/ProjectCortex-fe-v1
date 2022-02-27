@@ -58,9 +58,9 @@ export function Attendance(props: Props) {
   // const [eventMsg, setEventMsg] = useState('');
 
   const [value, setValue] = useState({
-    eventName: 'Grievance Meet',
-    eventType: 'crew',
-    eventDate: '2022-01-01T00:00:00.000Z',
+    eventName: '',
+    eventType: '',
+    eventDate: '',
   });
 
   const [rows, setRows] = useState<AttendanceType>({
@@ -234,7 +234,6 @@ export function Attendance(props: Props) {
               fullWidth
               value={value.eventName}
               // error={
-
               // }
               // helperText={
               //   errors.isError &&
@@ -338,7 +337,13 @@ export function Attendance(props: Props) {
       </div>
 
       <Popup
-        title={deleteMember ? 'Are you sure wanna delete' : 'Add Member'}
+        title={
+          deleteMember
+            ? 'Are you sure wanna delete'
+            : updateMember
+            ? 'Update Status'
+            : 'Add Member'
+        }
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
