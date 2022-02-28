@@ -365,7 +365,7 @@ export function Attendance(props: Props) {
           />
         ) : (
           <MemberForm
-            updateMember={updateOrDeleteMember.updateMemberId}
+            updateMemberId={updateOrDeleteMember.updateMemberId}
             crewAttendance={crewAttendance}
             actions={actions}
             currentEventId={eventId}
