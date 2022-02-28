@@ -53,14 +53,16 @@ export function Attendance(props: Props) {
   const [openPopup, setOpenPopup] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const [deleteMember, setDeleteMember] = useState<number | null>(null);
-  const [updateMember, setUpdateMember] = useState<number | null>(null);
+  const [updateOrDeleteMember, setUpdateOrDeleteMember] = useState({
+    updateMemberId: 0,
+    deleteMemberId: 0,
+  });
   // const [eventMsg, setEventMsg] = useState('');
 
   const [value, setValue] = useState({
-    eventName: '',
-    eventType: '',
-    eventDate: '',
+    eventName: 'Grievance Meet',
+    eventType: 'crew',
+    eventDate: '2022-01-01T00:00:00.000Z',
   });
 
   const [rows, setRows] = useState<AttendanceType>({
@@ -153,8 +155,10 @@ export function Attendance(props: Props) {
               icon={<MdDelete style={{ fontSize: '23px' }} />}
               color="secondary"
               onClick={() => {
-                setUpdateMember(null);
-                setDeleteMember(params.row.externalId);
+                setUpdateOrDeleteMember({
+                  deleteMemberId: params.row.externalId,
+                  updateMemberId: 0,
+                });
                 setOpenPopup(true);
               }}
               label="Delete"
@@ -167,8 +171,10 @@ export function Attendance(props: Props) {
               disabled={loading}
               color="primary"
               onClick={() => {
-                setDeleteMember(null);
-                setUpdateMember(params.row.userId);
+                setUpdateOrDeleteMember({
+                  deleteMemberId: 0,
+                  updateMemberId: params.row.userId,
+                });
                 setOpenPopup(true);
               }}
               label="Edit"
@@ -188,8 +194,10 @@ export function Attendance(props: Props) {
               disabled={loading}
               variant="outlined"
               onClick={() => {
-                setDeleteMember(null);
-                setUpdateMember(null);
+                setUpdateOrDeleteMember({
+                  deleteMemberId: 0,
+                  updateMemberId: 0,
+                });
                 setOpenPopup(true);
               }}
               className="me-2"
@@ -338,26 +346,26 @@ export function Attendance(props: Props) {
 
       <Popup
         title={
-          deleteMember
+          updateOrDeleteMember.deleteMemberId
             ? 'Are you sure wanna delete'
-            : updateMember
+            : updateOrDeleteMember.updateMemberId
             ? 'Update Status'
             : 'Add Member'
         }
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
-        {deleteMember ? (
+        {updateOrDeleteMember.deleteMemberId ? (
           <DeleteForm
             setLoading={setLoading}
             setOpenModal={setOpenPopup}
             action={actions.deleteExternalMember({
-              externalId: deleteMember,
+              externalId: updateOrDeleteMember.deleteMemberId,
             })}
           />
         ) : (
           <MemberForm
-            updateMember={updateMember}
+            updateMember={updateOrDeleteMember.updateMemberId}
             crewAttendance={crewAttendance}
             actions={actions}
             currentEventId={eventId}
