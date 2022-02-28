@@ -13,7 +13,7 @@ export default function MemberForm({
   currentEventId,
   setOpenModal,
   actions,
-  updateMember,
+  updateMemberId,
   crewAttendance,
 }) {
   const dispatch = useDispatch();
@@ -22,25 +22,30 @@ export default function MemberForm({
     memberName: '',
     memberStatus: 1,
   });
+
   let updateMemberName = '';
+
+  if (updateMemberId) {
+    const updateMember = crewAttendance.find(
+      mem => mem.userId === updateMemberId,
+    );
+    // setMember({
+    //   memberName: updateMember.userName,
+    //   memberStatus: updateMember.status,
+    // });
+    updateMemberName = `${updateMember.users.firstName} ${updateMember.users.lastName}`;
+  }
 
   const [errors, setErrors] = useState({
     memberNameError: '',
     isError: false,
   });
 
-  if (updateMember) {
-    const member = crewAttendance.find(
-      member => member.userId === updateMember,
-    );
-    updateMemberName = `${member.users.firstName} ${member.users.lastName}`;
-  }
-
   function handleUpdateOrSubmit() {
-    if (updateMember) {
+    if (updateMemberId) {
       dispatch(
         actions.updateCrewMember({
-          userId: updateMember,
+          userId: updateMemberId,
           status: member.memberStatus,
         }),
       );
@@ -65,15 +70,15 @@ export default function MemberForm({
   return (
     <>
       <TextField
-        disabled={updateMember ? true : false}
+        disabled={updateMemberId ? true : false}
         id="outlined-basic"
-        value={updateMember ? updateMemberName : member.memberName}
+        value={updateMemberId ? updateMemberName : member.memberName}
         label="Name"
         variant="outlined"
         sx={{ width: '100%', mb: '1rem' }}
         onChange={e => setMember({ ...member, memberName: e.target.value })}
       />
-      {updateMember && (
+      {updateMemberId ? (
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Status</InputLabel>
           <Select
@@ -92,9 +97,9 @@ export default function MemberForm({
             <MenuItem value={2}>Informed</MenuItem>
           </Select>
         </FormControl>
-      )}
+      ) : null}
       <Button onClick={handleUpdateOrSubmit} variant="outlined" className="">
-        {updateMember ? 'Update' : 'Add'}
+        {updateMemberId ? 'Update' : 'Add'}
       </Button>
     </>
   );
