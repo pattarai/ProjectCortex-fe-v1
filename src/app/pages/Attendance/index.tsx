@@ -60,9 +60,9 @@ export function Attendance(props: Props) {
   // const [eventMsg, setEventMsg] = useState('');
 
   const [value, setValue] = useState({
-    eventName: 'Grievance Meet',
-    eventType: 'crew',
-    eventDate: '2022-01-01T00:00:00.000Z',
+    eventName: '',
+    eventType: '',
+    eventDate: '',
   });
 
   const [rows, setRows] = useState<AttendanceType>({
