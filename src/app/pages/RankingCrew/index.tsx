@@ -24,6 +24,7 @@ import Copper from './images/copper.png';
 import { FaSearch } from 'react-icons/fa';
 import MemberScoreCard from './MemberScoreCard';
 import { axiosGet } from '../../requests';
+import { styled } from '@mui/material/styles';
 
 type Users = {
   firstName: string;
@@ -35,6 +36,25 @@ interface MemberData {
   total: number;
   league: string;
 }
+
+const CssTextField = styled(TextField)({
+  '& label': {
+    color: 'white',
+  },
+  '& label.Mui-focused': {
+    color: 'white',
+  },
+  '& .MuiInput-underline': {
+    borderBottomColor: 'white',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': { borderColor: 'white' },
+    '&:hover fieldset': { borderColor: 'white' },
+    '&.Mui-focused fieldset': {
+      borderColor: 'white',
+    },
+  },
+});
 
 export function RankingCrew() {
   const [openDetails, setOpenDetails] = useState(false);
@@ -135,13 +155,15 @@ export function RankingCrew() {
               </div>
             </div>
             <div className="container my-3">
-              <TextField
+              <CssTextField
                 label="Search Members"
-                className="mb-3 mb-md-0 w-md-50"
+                variant="outlined"
+                className="mb-3 mb-md-0 w-md-50 w-100 text-white"
+                sx={{ borderColor: '#fff', color: '#fff' }}
                 onChange={e => handleChange(e.target.value)}
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">
+                    <InputAdornment position="start" color="white">
                       <FaSearch />
                     </InputAdornment>
                   ),
