@@ -57,21 +57,21 @@ export function EventPage(props: Props) {
 
   const columns: GridColumns = [
     {
-      field: 'event_id',
+      field: 'eventId',
       headerName: 'S.No.',
       minWidth: 50,
       flex: 0.5,
       filterable: false,
     },
     {
-      field: 'event_name',
+      field: 'eventName',
       headerName: 'Name',
       minWidth: 100,
       flex: 0.5,
       sortable: false,
     },
     {
-      field: 'event_date',
+      field: 'eventDate',
       headerName: 'Date',
       minWidth: 150,
       flex: 0.5,
@@ -94,7 +94,7 @@ export function EventPage(props: Props) {
           color="primary"
           onClick={() => {
             setDeleteUser(null);
-            setUpdateUser(params.row.event_id);
+            setUpdateUser(params.row.eventId);
             setOpenPopup(true);
           }}
           label="Edit"
@@ -104,7 +104,7 @@ export function EventPage(props: Props) {
           icon={<MdDelete style={{ fontSize: '23px' }} />}
           color="secondary"
           onClick={() => {
-            setDeleteUser(params.row.event_id);
+            setDeleteUser(params.row.eventId);
             setOpenPopup(true);
           }}
           label="Delete"
@@ -152,7 +152,7 @@ export function EventPage(props: Props) {
           <DataGrid
             rows={userData ? userData : []}
             columns={columns}
-            getRowId={r => r.event_id}
+            getRowId={r => r.eventId}
             paginationMode="server"
             hideFooterSelectedRowCount
             loading={loading}
