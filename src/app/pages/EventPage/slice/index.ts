@@ -49,15 +49,3 @@ export const useEventsSlice = () => {
   useInjectSaga({ key: slice.name, saga: eventsSaga });
   return { actions: slice.actions };
 };
-
-/**
- * Example Usage:
- *
- * export function MyComponentNeedingThisSlice() {
- *  const { actions } = useEventsSlice();
- *
- *  const onButtonClick = (evt) => {
- *    dispatch(actions.someAction());
- *   };
- * }
- */

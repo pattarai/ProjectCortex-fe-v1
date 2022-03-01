@@ -10,53 +10,37 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEventsSlice } from './slice';
 import { selectEvents } from './slice/selectors';
 
-type MemberData = {
+type EventData = {
   id?: number;
   name: string;
   phase: number | null;
   dateTime: string | null;
 };
 
-export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
+export default function EventForm({ setOpenModal, updateEvent, setLoading }) {
   const { actions } = useEventsSlice();
   const dispatch = useDispatch();
   const { events } = useSelector(selectEvents);
 
-  let updateUserValue = updateUser
-    ? events.find(u => u.event_id === updateUser)
+  let updateEventValue = updateEvent
+    ? events.find(u => u.event_id === updateEvent)
     : null;
 
-  console.log(updateUserValue);
+  console.log(updateEventValue);
 
-  const [values, setValues] = useState<MemberData>({
-    id: updateUserValue ? updateUserValue.event_id : 0,
-    name: updateUserValue ? updateUserValue.event_name : '',
-    phase: updateUserValue ? updateUserValue.phase : null,
-    dateTime: updateUserValue ? updateUserValue.event_date : '',
+  const [values, setValues] = useState<EventData>({
+    id: updateEventValue ? updateEventValue.event_id : 0,
+    name: updateEventValue ? updateEventValue.event_name : '',
+    phase: updateEventValue ? updateEventValue.phase : null,
+    dateTime: updateEventValue ? updateEventValue.event_date : '',
   });
 
   const [errors, setErrors] = useState({
     nameError: '',
-    emailError: '',
-    roleError: '',
-    rankError: '',
-    projectError: '',
-    committeeError: '',
+    phaseError: '',
     dateError: '',
     isError: false,
   });
-
-  // const handleProjectsChange = (event: SelectChangeEvent) => {
-  //   setValues({ ...values, project: event.target.value });
-  // };
-  // const handleCommitteeChange = (
-  //   event: React.ChangeEvent<HTMLInputElement>,
-  // ) => {
-  //   setValues({
-  //     ...values,
-  //     committee: (event.target as HTMLInputElement).value,
-  //   });
-  // };
 
   function checkError() {
     let noofErrors = 0;
@@ -122,7 +106,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             error={errors.isError && (values.phase === null ? true : false)}
             helperText={
               errors.isError &&
-              (errors.emailError !== '' ? errors.emailError : '')
+              (errors.phaseError !== '' ? errors.phaseError : '')
             }
             className="mb-3"
             id="outlined-basic"
@@ -133,19 +117,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             }
           />
           <br />
-          <TextField
-            value={values.dateTime}
-            error={errors.isError && (values.dateTime === '' ? true : false)}
-            helperText={
-              errors.isError &&
-              (errors.roleError !== '' ? errors.roleError : '')
-            }
-            className="mb-3"
-            id="outlined-basic"
-            label="Role"
-            variant="outlined"
-            onChange={e => setValues({ ...values, dateTime: e.target.value })}
-          />
+
           <br />
         </div>
         <div className="ms-md-3">
@@ -175,7 +147,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
             </LocalizationProvider>
           </div>
           <div className="d-flex mt-4">
-            {updateUserValue ? (
+            {updateEventValue ? (
               <Button variant="contained" onClick={handleUpdate}>
                 Update
               </Button>

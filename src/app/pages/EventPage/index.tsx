@@ -1,6 +1,6 @@
 /**
  *
- * UserManagement
+ * Event
  *
  */
 import * as React from 'react';
@@ -19,7 +19,7 @@ import { RiAddFill } from 'react-icons/ri';
 import Popup from '../../components/Popup';
 import Problem from '../../components/Problem';
 import DeleteForm from '../../components/DeleteForm';
-import MemberForm from './EventForm';
+import EventForm from './EventForm';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useEventsSlice } from './slice';
@@ -36,23 +36,21 @@ export function EventPage(props: Props) {
   const [openPopup, setOpenPopup] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const [userData, setUserData] = useState<typeof events | null>(null);
-  const [updateUser, setUpdateUser] = useState<number | null>(null);
-  const [deleteUser, setDeleteUser] = useState<number | null>(null);
+  const [EventData, setEventData] = useState<typeof events | null>(null);
+  const [updateEvent, setUpdateEvent] = useState<number | null>(null);
+  const [deleteEvent, setDeleteEvent] = useState<number | null>(null);
 
   useEffect(() => {
     if (error) {
       setErr(true);
     } else {
-      setUserData(events);
-      userData && setLoading(false);
+      setEventData(events);
+      EventData && setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events, error]);
 
   useEffect(() => {
     dispatch(actions.getEvent());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns: GridColumns = [
@@ -93,8 +91,8 @@ export function EventPage(props: Props) {
           disabled={loading}
           color="primary"
           onClick={() => {
-            setDeleteUser(null);
-            setUpdateUser(params.row.eventId);
+            setDeleteEvent(null);
+            setUpdateEvent(params.row.eventId);
             setOpenPopup(true);
           }}
           label="Edit"
@@ -104,7 +102,7 @@ export function EventPage(props: Props) {
           icon={<MdDelete style={{ fontSize: '23px' }} />}
           color="secondary"
           onClick={() => {
-            setDeleteUser(params.row.eventId);
+            setDeleteEvent(params.row.eventId);
             setOpenPopup(true);
           }}
           label="Delete"
@@ -113,22 +111,22 @@ export function EventPage(props: Props) {
     },
   ];
 
-  function AddUser() {
+  function AddEvent() {
     return (
       <div className="my-3 d-md-flex justify-content-end">
         <Button
           disabled={loading}
-          aria-label="Add User"
+          aria-label="Add Event"
           color="primary"
           variant="outlined"
           onClick={() => {
-            setUpdateUser(null);
-            setDeleteUser(null);
+            setUpdateEvent(null);
+            setDeleteEvent(null);
             setOpenPopup(true);
           }}
         >
           <RiAddFill />
-          Add User
+          Add Event
         </Button>
       </div>
     );
@@ -150,7 +148,7 @@ export function EventPage(props: Props) {
       <div className="vh-100 d-flex align-justify-center">
         <div style={{ height: 600, width: '95%' }}>
           <DataGrid
-            rows={userData ? userData : []}
+            rows={EventData ? EventData : []}
             columns={columns}
             getRowId={r => r.eventId}
             paginationMode="server"
@@ -158,7 +156,7 @@ export function EventPage(props: Props) {
             loading={loading}
             components={{
               LoadingOverlay: CustomLoadingOverlay,
-              Toolbar: AddUser,
+              Toolbar: AddEvent,
             }}
             sx={{
               boxShadow: 2,
@@ -174,20 +172,20 @@ export function EventPage(props: Props) {
         </div>
       </div>
       <Popup
-        title={deleteUser ? 'Are you sure wanna delete?' : 'Member Form'}
+        title={deleteEvent ? 'Are you sure wanna delete?' : 'Event Form'}
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
-        {deleteUser ? (
+        {deleteEvent ? (
           <DeleteForm
             setOpenModal={setOpenPopup}
-            action={actions.deleteEvent(deleteUser)}
+            action={actions.deleteEvent(deleteEvent)}
             setLoading={setLoading}
           />
         ) : (
-          <MemberForm
+          <EventForm
             setOpenModal={setOpenPopup}
-            updateUser={updateUser}
+            updateEvent={updateEvent}
             setLoading={setLoading}
           />
         )}
