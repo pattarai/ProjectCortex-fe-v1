@@ -15,7 +15,7 @@ import {
   TextField,
   InputAdornment,
 } from '@mui/material';
-import AvatarIcon from './images/raksha.png';
+import AvatarIcon from './images/noAvatar.png';
 import Diamond from './images/diamond.png';
 import Gold from './images/gold.png';
 import Silver from './images/silver.png';
@@ -131,7 +131,11 @@ export function RankingCrew() {
                             <CardContent>
                               <Avatar
                                 alt={list.users.firstName}
-                                src={`${imgurl}/images/${list.userId}`}
+                                src={
+                                  list.userId
+                                    ? `${imgurl}/bitmoji/${list.userId}`
+                                    : AvatarIcon
+                                }
                                 sx={{
                                   width: 70,
                                   height: 70,
@@ -195,8 +199,12 @@ export function RankingCrew() {
                                 </Typography>
                               </span>
                               <Avatar
-                                alt="hi"
-                                src={AvatarIcon}
+                                alt={data.users.firstName}
+                                src={
+                                  data.userId
+                                    ? `${imgurl}/bitmoji/${data.userId}`
+                                    : AvatarIcon
+                                }
                                 sx={{
                                   width: 40,
                                   height: 40,
