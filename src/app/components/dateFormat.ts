@@ -27,8 +27,16 @@ export function dateTimeFormat(dat: string | null) {
   if (currentMonth < 10) {
     currentMonth = `0${currentMonth}`;
   }
-  console.log(
-    `${currentMonth}/${currentDate}/${currentYear} ${currentHour}:${currentMinute}:${currentSecond}`,
-  );
   return `${currentMonth}/${currentDate}/${currentYear} ${currentHour}:${currentMinute}:${currentSecond}`;
+}
+
+export function randomString() {
+  let characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  let charactersLength = characters.length;
+  for (let i = 0; i < 8; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }

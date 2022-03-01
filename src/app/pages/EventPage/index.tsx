@@ -123,39 +123,40 @@ export function EventPage(props: Props) {
 
   function AddUser() {
     return (
-      <div className="my-3 d-md-flex justify-content-between">
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel id="demo-simple-select-helper-label">
-            Select Phase
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-helper-label"
-            id="demo-simple-select-helper"
-            value={phaseValue}
-            label="Select Phase"
-            onChange={e => {
-              setPhaseValue(e.target.value);
+      <div className="my-3 d-md-flex justify-content-between ">
+        <div className="d-flex flex-column flex-md-row align-items-md-center mb-2 mb-md-0">
+          <FormControl sx={{ m: 1, minWidth: 150 }}>
+            <InputLabel id="demo-simple-select-helper-label">Phase</InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={phaseValue}
+              label="Select Phase"
+              onChange={e => {
+                setPhaseValue(e.target.value);
+              }}
+            >
+              {phaseList.map((phase, index) => (
+                <MenuItem key={`${index}-${phase}`} value={phase}>
+                  {phase}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button
+            variant="outlined"
+            size="large"
+            sx={{ minHeight: '55px' }}
+            onClick={() => {
+              console.log(phaseValue);
+              dispatch(actions.getEventByPhase(phaseValue));
+              setUpdateUser(null);
+              setDeleteUser(null);
             }}
           >
-            {phaseList.map((phase, index) => (
-              <MenuItem key={`${index}-${phase}`} value={phase}>
-                {phase}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Button
-          variant="outlined"
-          size="large"
-          onClick={() => {
-            console.log(phaseValue);
-            dispatch(actions.getEventByPhase(phaseValue));
-            setUpdateUser(null);
-            setDeleteUser(null);
-          }}
-        >
-          Search
-        </Button>
+            Search
+          </Button>
+        </div>
 
         <Button
           disabled={loading}

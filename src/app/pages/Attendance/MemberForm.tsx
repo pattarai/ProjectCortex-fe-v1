@@ -1,79 +1,106 @@
 import { useState } from 'react';
 import {
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
+  Button,
   TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { useDispatch } from 'react-redux';
 
-export default function MemberForm({ currentEventId, setOpenModal, actions }) {
-  const [loading, setLoading] = useState(false);
+export default function MemberForm({
+  currentEventId,
+  setOpenModal,
+  actions,
+  updateMemberId,
+  crewAttendance,
+}) {
   const dispatch = useDispatch();
 
   const [member, setMember] = useState({
-    eventId: currentEventId,
-    name: '',
-    status: 0,
+    memberName: '',
+    memberStatus: 1,
   });
 
+  let updateMemberName = '';
+
+  if (updateMemberId) {
+    const updateMember = crewAttendance.find(
+      mem => mem.userId === updateMemberId,
+    );
+    // setMember({
+    //   memberName: updateMember.userName,
+    //   memberStatus: updateMember.status,
+    // });
+    updateMemberName = `${updateMember.users.firstName} ${updateMember.users.lastName}`;
+  }
+
   const [errors, setErrors] = useState({
-    nameError: '',
+    memberNameError: '',
     isError: false,
   });
 
-  async function handleSubmit() {
-    let err = { ...errors };
-    if (member.name.trim() === '') {
-      err.nameError = 'Name is required';
-      err.isError = true;
-      setErrors(err);
+  function handleUpdateOrSubmit() {
+    if (updateMemberId) {
+      dispatch(
+        actions.updateCrewMember({
+          userId: updateMemberId,
+          status: member.memberStatus,
+        }),
+      );
     } else {
-      setLoading(true);
-      await dispatch(actions.addUser(member));
-      setOpenModal(false);
+      let err = { ...errors };
+      if (member.memberName.trim() === '') {
+        err.memberNameError = 'Name is required';
+        err.isError = true;
+        setErrors(err);
+      } else {
+        dispatch(
+          actions.addExternalMember({
+            eventId: currentEventId,
+            name: member.memberName,
+          }),
+        );
+      }
     }
+    setOpenModal(false);
   }
 
   return (
-    <div>
+    <>
       <TextField
+        disabled={updateMemberId ? true : false}
         id="outlined-basic"
-        error={errors.isError && (member.name.trim() === '' ? true : false)}
-        helperText={
-          errors.isError && (errors.nameError !== '' ? errors.nameError : '')
-        }
+        value={updateMemberId ? updateMemberName : member.memberName}
         label="Name"
         variant="outlined"
-        sx={{ width: '100%' }}
-        onChange={e => setMember({ ...member, name: e.target.value })}
+        sx={{ width: '100%', mb: '1rem' }}
+        onChange={e => setMember({ ...member, memberName: e.target.value })}
       />
-      <FormControl fullWidth sx={{ my: '20px' }}>
-        <InputLabel id="demo-simple-select-label">Status</InputLabel>
-        <Select
-          value={member.status.toString()}
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          label="Status"
-          onChange={e =>
-            setMember({ ...member, status: parseInt(e.target.value) })
-          }
-        >
-          <MenuItem value={1}>Present</MenuItem>
-          <MenuItem value={0}>Absent</MenuItem>
-          <MenuItem value={2}>Informed</MenuItem>
-        </Select>
-      </FormControl>
-      <LoadingButton
-        loading={loading}
-        variant="outlined"
-        sx={{ width: '100%' }}
-        onClick={handleSubmit}
-      >
-        Add Member
-      </LoadingButton>
-    </div>
+      {updateMemberId ? (
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Status</InputLabel>
+          <Select
+            name="role"
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={member.memberStatus.toString()}
+            label="Roles"
+            onChange={e =>
+              setMember({ ...member, memberStatus: parseInt(e.target.value) })
+            }
+            className="mb-3"
+          >
+            <MenuItem value={0}>Absent</MenuItem>
+            <MenuItem value={1}>Present</MenuItem>
+            <MenuItem value={2}>Informed</MenuItem>
+          </Select>
+        </FormControl>
+      ) : null}
+      <Button onClick={handleUpdateOrSubmit} variant="outlined" className="">
+        {updateMemberId ? 'Update' : 'Add'}
+      </Button>
+    </>
   );
 }
