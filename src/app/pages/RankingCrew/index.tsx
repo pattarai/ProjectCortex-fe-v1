@@ -23,7 +23,7 @@ import Bronze from './images/bronze.png';
 import Copper from './images/copper.png';
 import { FaSearch } from 'react-icons/fa';
 import MemberScoreCard from './MemberScoreCard';
-import { axiosGet } from '../../requests';
+import { axiosGet, imgurl } from '../../requests';
 import { styled } from '@mui/material/styles';
 
 type Users = {
@@ -35,6 +35,7 @@ interface MemberData {
   rank: string;
   total: number;
   league: string;
+  userId: number;
 }
 
 const CssTextField = styled(TextField)({
@@ -121,13 +122,16 @@ export function RankingCrew() {
                 {top3 &&
                   top3.map((list, index) => {
                     return (
-                      <div key={index} className="col-12 col-md-4 mb-4">
+                      <div
+                        key={`${list}-${index}`}
+                        className="col-12 col-md-4 mb-4"
+                      >
                         <Card elevation={2} sx={{ textAlign: 'center' }}>
                           <CardActionArea>
                             <CardContent>
                               <Avatar
                                 alt={list.users.firstName}
-                                src={AvatarIcon}
+                                src={`${imgurl}/images/${list.userId}`}
                                 sx={{
                                   width: 70,
                                   height: 70,
