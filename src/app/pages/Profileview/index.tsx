@@ -4,207 +4,263 @@
  *
  */
 import * as React from 'react';
-// import  Dashboard from './dashboard';
 import Img from '../DashboardLayout/subhiksha1.jpg';
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardActionArea, CardMedia } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Slider from '@mui/material/Slider';
 import Divider from '@mui/material/Divider';
-import { useState } from 'react';
+import linkedinIcon from '../../components/logos/linkedin.png';
+import githubIcon from '../../components/logos/github.png';
+import instagramIcon from '../../components/logos/instagram.png';
+import gmailIcon from '../../components/logos/gmail.png';
+import { axiosGet, imgurl } from '../../requests';
 
 interface Props {}
-const marks = [
-  {
-    value: 0,
-    label: '1',
-  },
-  {
-    value: 20,
-    label: '5',
-  },
-  {
-    value: 40,
-    label: '10',
-  },
-  {
-    value: 60,
-    label: '20',
-  },
-  {
-    value: 100,
-    label: '35',
-  },
-];
 
-function valuetext(value) {
-  return `${value}°C`;
-}
 export function Profileview(props: Props) {
-  const data = [
-    {
-      dp: 'https://fiverr-res.cloudinary.com/images/t_smartwm/t_main1,q_auto,f_auto,q_auto,f_auto/attachments/delivery/asset/cf3851a824eee5981be13591f44bbd5f-1592046164/hitoridraws-prettyportrait-color/draw-your-dp-avatar-profile-pic-and-make-it-simple-and-cute.png',
-      name: 'Subhiksha',
-      project: 'Cortex',
-      committee: 'Events',
-      description: 'I love  Coding with Veroni',
-      position: '02',
-      positionst: 'Dr Of Activities',
-      expert: 'Software Engineer',
-      github: 'https://github.com/Subhiksha18vic/',
-      linkedin: 'https://www.linkedin.com/in/elizabeth-subhiksha-victoria-/',
-      email: 'subi@gmail.com',
-      address: 'XYZ Nagar, Chennai',
-      phone: '8889999777',
-      rollno: '311119205013',
-      year: 'III',
-      college: 'LICET',
-      department: 'Mech',
-      topskills: 'IoT, Desinging',
-      passion: 'Dancing',
-    },
-  ];
-  const [userData, setUserData] = useState(data);
-  function handleChange(searchedVal: string | null) {
-    if (searchedVal === '' || searchedVal === null) {
-      setUserData(data);
-    } else {
-      const filteredUser = data.filter(data =>
-        data.name.toLowerCase().includes(searchedVal.toLowerCase()),
-      );
-      setUserData(filteredUser);
-    }
+  const [userData, setUserData] = useState<any | null>(null);
+  async function getProfile() {
+    const res = await axiosGet('/users/profile');
+    const users = res.data.users;
+    setUserData(users);
   }
+  useEffect(() => {
+    getProfile();
+  }, []);
+
   return (
     <>
-      <section id="profile" className="d-md-flex w-100">
-        <div>
-          <img src={Img} height="500px" width="auto" alt="" />
-          <Box
-            component="h1"
-            sx={{ letterSpacing: 15, m: 1, color: '#8E54E9' }}
-          >
-            TOP SKILLS
-          </Box>
-          {/* <Typography sx={{ m: 1 }} component="h6" variant="h5">
-            {data.topskills}
-          </Typography> */}
-          <Box
-            component="h1"
-            sx={{ letterSpacing: 15, m: 1, color: '#8E54E9' }}
-          >
-            PASSION
-          </Box>
-          {/* <Typography sx={{ m: 1 }} component="h6" variant="h5">
-            {data.passion}
-          </Typography> */}
-        </div>
-        {userData.map((data, index) => (
-          <div className="px-4 w-100">
-            <Box
-              component="h1"
-              sx={{ letterSpacing: 15, m: 2, color: '#8E54E9' }}
-            >
-              {data.name}
-            </Box>
-            <Typography sx={{ m: 4 }} component="h6" variant="h5">
-              {data.expert}
-            </Typography>
-            <Typography sx={{ m: 4 }} component="h2" variant="h5">
-              Position: {data.position}
-            </Typography>
-            <Divider variant="middle" />
-            <Box
-              component="h1"
-              sx={{ letterSpacing: 7, m: 5, color: '#8E54E9' }}
-            >
-              RANK
-            </Box>
-            <Box sx={{ width: 300, m: 4 }}>
-              <Slider
-                aria-label="Custom marks"
-                defaultValue={20}
-                getAriaValueText={valuetext}
-                step={10}
-                valueLabelDisplay="auto"
-                marks={marks}
-                color="secondary"
-              />
-            </Box>
-            <Box
-              component="h1"
-              sx={{ letterSpacing: 15, m: 4, color: '#8E54E9' }}
-            >
-              PERSONAL INFORMATION
-            </Box>
-            <Divider variant="middle" />
-            <div className="m-4">
-              <Typography component="h2" variant="h5">
-                College:{' '}
-                <span style={{ color: '#4776E6' }}> {data.college} </span>
-              </Typography>
-              <Typography component="h2" variant="h5">
-                Department:{' '}
-                <span style={{ color: '#4776E6' }}> {data.department} </span>
-              </Typography>
-              <Typography component="h2" variant="h5">
-                Year: <span style={{ color: '#4776E6' }}> {data.year} </span>
-              </Typography>
-              <Typography component="h2" variant="h5">
-                Roll No:{' '}
-                <span style={{ color: '#4776E6' }}> {data.rollno} </span>
-              </Typography>
-            </div>
-            <Box
-              component="h1"
-              sx={{ letterSpacing: 15, m: 4, color: '#8E54E9' }}
-            >
-              STATUS INFORMATION
-            </Box>
-            <Divider variant="middle" />
-            <div className="m-4">
-              <Typography component="h2" variant="h5">
-                Position:{' '}
-                <span style={{ color: '#4776E6' }}> {data.positionst} </span>
-              </Typography>
-              <Typography component="h2" variant="h5">
-                Committee:{' '}
-                <span style={{ color: '#4776E6' }}> {data.committee} </span>
-              </Typography>
-              <Typography component="h2" variant="h5">
-                Project:{' '}
-                <span style={{ color: '#4776E6' }}> {data.project} </span>
-              </Typography>
-            </div>
-            <Box
-              component="h1"
-              sx={{ letterSpacing: 15, m: 4, color: '#8E54E9' }}
-            >
-              CONTACT INFORMATION
-            </Box>
-            <Divider variant="middle" />
-            <div className="m-4">
-              <Typography component="h2" variant="h5">
-                Phone: <span style={{ color: '#4776E6' }}> {data.phone} </span>
-              </Typography>
-              <Typography component="h2" variant="h5">
-                Address:{' '}
-                <span style={{ color: '#4776E6' }}> {data.address} </span>
-              </Typography>
-              <Typography component="h2" variant="h5">
-                Email: <span style={{ color: '#4776E6' }}> {data.email} </span>
-              </Typography>
-              <Typography component="h2" variant="h5">
-                LinkedIN:{' '}
-                <span style={{ color: '#4776E6' }}> {data.linkedin} </span>
-              </Typography>
-              <Typography component="h2" variant="h5">
-                Github:{' '}
-                <span style={{ color: '#4776E6' }}> {data.github} </span>
-              </Typography>
-            </div>
-          </div>
-        ))}
-      </section>
+      <div className="white-box d-flex bg-body flex-column mr-3 p-3 rounded-4">
+        <Card
+          elevation={2}
+          sx={{
+            textAlign: 'left',
+            boxShadow:
+              'rgba(0, 0, 255, 0.5) 0px 1px 6px, rgba(255, 0, 0, 0.117647) 0px 1px 4px',
+          }}
+        >
+          <CardActionArea>
+            <CardContent>
+              <div className="">
+                <Box
+                  component="h1"
+                  sx={{ letterSpacing: 15, m: 4, color: '#002984' }}
+                >
+                  PATTARAI
+                </Box>
+              </div>
+              <section
+                id="profile"
+                className="d-md-flex w-100 align-items-center justfiy-content-between"
+              >
+                {userData &&
+                  userData.map((data, index) => (
+                    <div className="px-4 w-100 align-items-center justfiy-content-between">
+                      <CardMedia
+                        component="img"
+                        src={`${imgurl}/images/${data.userId}`}
+                        sx={{ m: 4, width: 200 }}
+                        image={Img}
+                        alt="Live from space album cover"
+                      />
+                      <Typography sx={{ m: 4 }} component="h6" variant="h5">
+                        {data.firstName} {data.lastName}
+                      </Typography>
+                      <Typography sx={{ m: 4 }} component="h6" variant="h5">
+                        {data.description}
+                      </Typography>
+                      <Box
+                        component="h1"
+                        sx={{ letterSpacing: 15, m: 4, color: '#002984' }}
+                      >
+                        PERSONAL INFORMATION
+                      </Box>
+                      <Divider variant="middle" />
+                      <div className="m-4">
+                        <Typography
+                          style={{ fontWeight: 'bold' }}
+                          component="h2"
+                          variant="h5"
+                        >
+                          Date Of Birth:{' '}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {' '}
+                            {data.dateOfBirth}{' '}
+                          </span>
+                        </Typography>
+                        <Typography
+                          style={{ fontWeight: 'bold' }}
+                          component="h2"
+                          variant="h5"
+                        >
+                          College Name:{' '}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {' '}
+                            {data.collegeName}{' '}
+                          </span>
+                        </Typography>
+                        <Typography
+                          style={{ fontWeight: 'bold' }}
+                          component="h2"
+                          variant="h5"
+                        >
+                          Department:{' '}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {' '}
+                            {data.department}{' '}
+                          </span>
+                        </Typography>
+                        <Typography
+                          style={{ fontWeight: 'bold' }}
+                          component="h2"
+                          variant="h5"
+                        >
+                          Year:{' '}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {' '}
+                            {data.year}{' '}
+                          </span>
+                        </Typography>
+                        <Typography
+                          style={{ fontWeight: 'bold' }}
+                          component="h2"
+                          variant="h5"
+                        >
+                          Roll No:{' '}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {' '}
+                            {data.rollNumber}{' '}
+                          </span>
+                        </Typography>
+                        <Typography
+                          style={{ fontWeight: 'bold' }}
+                          component="h2"
+                          variant="h5"
+                        >
+                          Register No:{' '}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {' '}
+                            {data.registerNumber}{' '}
+                          </span>
+                        </Typography>
+                        <Typography
+                          style={{ fontWeight: 'bold' }}
+                          component="h2"
+                          variant="h5"
+                        >
+                          Phone:{' '}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {' '}
+                            {data.whatsappNumber}{' '}
+                          </span>
+                        </Typography>
+                      </div>
+                      <Box
+                        component="h1"
+                        sx={{ letterSpacing: 15, m: 4, color: '#002984' }}
+                      >
+                        STATUS INFORMATION
+                      </Box>
+                      <Divider variant="middle" />
+                      <div className="m-4 align-items-start justfiy-content-start">
+                        <Typography
+                          style={{ fontWeight: 'bold' }}
+                          component="h2"
+                          variant="h5"
+                        >
+                          Role:{' '}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {' '}
+                            {data.office_bearers.officeBearersId}{' '}
+                          </span>
+                        </Typography>
+                        <Typography
+                          style={{ fontWeight: 'bold' }}
+                          component="h2"
+                          variant="h5"
+                        >
+                          Committee:{' '}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {' '}
+                            {data.committee}{' '}
+                          </span>
+                        </Typography>
+                        <Typography
+                          style={{ fontWeight: 'bold' }}
+                          component="h2"
+                          variant="h5"
+                        >
+                          Project:{' '}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {' '}
+                            {data.project}{' '}
+                          </span>
+                        </Typography>
+                      </div>
+                      <Box
+                        component="h1"
+                        sx={{ letterSpacing: 15, m: 4, color: '#002984' }}
+                      >
+                        CONTACT INFORMATION
+                      </Box>
+                      <Divider variant="middle" />
+                      <div className="social-media my-5 mx-1">
+                        <a
+                          href={data.linkedin}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img
+                            src={linkedinIcon}
+                            width="50"
+                            height="50"
+                            alt="Linkedin"
+                          />
+                        </a>
+
+                        <a href={data.email} target="_blank" rel="noreferrer">
+                          <img
+                            src={gmailIcon}
+                            width="50"
+                            height="50"
+                            alt="Gmail"
+                          />
+                        </a>
+
+                        <a
+                          href={data.githubUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img
+                            src={githubIcon}
+                            width="50"
+                            height="50"
+                            alt="GitHub"
+                          />
+                        </a>
+
+                        <a
+                          href={data.instagramUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img
+                            src={instagramIcon}
+                            width="50"
+                            height="50"
+                            alt="Instagram"
+                          />
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+              </section>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </div>
     </>
   );
 }

@@ -1,6 +1,6 @@
 /**
  *
- * RankingCrew
+ * ProfileCommonView
  *
  */
 import * as React from 'react';
@@ -14,37 +14,17 @@ import {
   TextField,
 } from '@mui/material';
 import { BiSearch as SearchIcon } from 'react-icons/bi';
-
 import { Box } from '@mui/system';
-// import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useProfileCommonViewSlice } from './slice';
 import { axiosGet, imgurl } from '../../requests';
 
 interface Props {}
 
 export function ProfileCommonView(props: Props) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  // const data = [
-  //   {
-  //     firstName: 'Vero',
-  //     lastName: 'Shwe',
-  //     project: 'Helix',
-  //     committee: 'HR',
-  //     description: 'I love  Coding with Subhiksha',
-  //   },
-  // ];
   const [userData, setUserData] = useState<any | null>(null);
   async function getCommonView() {
     const res = await axiosGet('/users/common-view');
     const users = res.data.users;
-
     setUserData(users);
-    console.log('hello');
-    console.log(users);
   }
   useEffect(() => {
     getCommonView();
