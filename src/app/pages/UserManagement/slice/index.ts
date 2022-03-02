@@ -7,6 +7,9 @@ import { UserManagementState } from './types';
 export const initialState: UserManagementState = {
   error: false,
   users: [],
+  committeeList: [],
+  projectList: [],
+  roleList: [],
 };
 
 const slice = createSlice({
@@ -17,13 +20,22 @@ const slice = createSlice({
     addUser(state, action: PayloadAction<any>) {},
     updateUser(state, action: PayloadAction<any>) {},
     deleteUser(state, action: PayloadAction<any>) {},
-    setUser(state, action: PayloadAction<any>) {
-      state.users.push(...action.payload);
+
+    setInitialData(state, action: PayloadAction<any>) {
+      const { users, committeeList, projectList, roleList } = action.payload;
+      state.users.push(...users);
+      state.committeeList.push(...committeeList);
+      state.projectList.push(...projectList);
+      state.roleList.push(...roleList);
+    },
+
+    setAddUser(state, action: PayloadAction<any>) {
+      state.users.push(action.payload);
     },
 
     setUpdateUser(state, action: PayloadAction<any>) {
       const newArray = state.users.findIndex(
-        st => st.uid === action.payload.uid,
+        st => st.userId === action.payload.userId,
       );
       state.users[newArray] = { ...action.payload };
     },
@@ -31,7 +43,7 @@ const slice = createSlice({
     setDeleteUser(state, action: PayloadAction<any>) {
       state.users.forEach(
         st =>
-          st.uid === action.payload &&
+          st.userId === action.payload &&
           state.users.splice(state.users.indexOf(st), 1),
       );
     },
