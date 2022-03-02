@@ -17,7 +17,6 @@ import { useTranslation } from 'react-i18next';
 import { Index } from './pages/Index';
 import { DashboardLayout } from './pages/DashboardLayout';
 import { LoginPage } from './pages/LoginPage';
-import { EventPage } from './pages/EventPage';
 import { PrivateRoute } from './routes/PrivateRoute';
 
 export function App() {
