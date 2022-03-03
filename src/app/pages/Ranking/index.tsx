@@ -39,24 +39,24 @@ interface MemberData {
   userId: number;
 }
 
-const CssTextField = styled(TextField)({
-  '& label': {
-    color: 'white',
-  },
-  '& label.Mui-focused': {
-    color: 'white',
-  },
-  '& .MuiInput-underline': {
-    borderBottomColor: 'white',
-  },
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': { borderColor: 'white' },
-    '&:hover fieldset': { borderColor: 'white' },
-    '&.Mui-focused fieldset': {
-      borderColor: 'white',
-    },
-  },
-});
+// const CssTextField = styled(TextField)({
+//   '& label': {
+//     color: 'white',
+//   },
+//   '& label.Mui-focused': {
+//     color: 'white',
+//   },
+//   '& .MuiInput-underline': {
+//     borderBottomColor: 'white',
+//   },
+//   '& .MuiOutlinedInput-root': {
+//     '& fieldset': { borderColor: 'white' },
+//     '&:hover fieldset': { borderColor: 'white' },
+//     '&.Mui-focused fieldset': {
+//       borderColor: 'white',
+//     },
+//   },
+// });
 
 export function Ranking() {
   const [openDetails, setOpenDetails] = useState(false);
@@ -97,18 +97,18 @@ export function Ranking() {
       <section className="vh-100">
         <div className="d-flex justify-content-end p-4">
           <Button
-            sx={{ color: '#dee2fc' }}
+            sx={{ color: 'grey.900' }}
             onClick={() => {
               setOpenDetails(false);
             }}
           >
             Crew
           </Button>
-          <Typography component="h2" variant="h5" sx={{ color: '#dee2fc' }}>
+          <Typography component="h2" variant="h5" sx={{ color: 'grey.900' }}>
             |
           </Typography>
           <Button
-            sx={{ color: '#dee2fc' }}
+            sx={{ color: 'grey.900' }}
             onClick={() => {
               setOpenDetails(true);
             }}
@@ -170,7 +170,7 @@ export function Ranking() {
                   </div>
                 </div>
                 <div className="container my-3">
-                  <CssTextField
+                  <TextField
                     label="Search Members"
                     variant="outlined"
                     className="mb-3 mb-md-0 w-md-50 w-100 text-white"

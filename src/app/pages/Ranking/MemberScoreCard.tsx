@@ -65,7 +65,7 @@ export default function MemberScoreCard() {
       <div className="container my-4">
         {loading ? (
           <>
-            <Skeleton variant="text" sx={{ height: 100 }} />
+            <Skeleton variant="text" animation="wave" sx={{ height: 100 }} />
             <Skeleton
               sx={{ height: 400 }}
               animation="wave"
