@@ -290,6 +290,7 @@ export function Attendance(props: Props) {
               variant="contained"
               sx={{
                 width: { xs: '100%', md: '50%' },
+                height: '58px',
                 mt: { xs: '20px', md: '0px' },
                 mx: { xs: '0px', md: '20px' },
               }}
