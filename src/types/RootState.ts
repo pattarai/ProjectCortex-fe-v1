@@ -1,5 +1,7 @@
-import { SliceState } from 'app/pages/EventPage/slice/types';
-import { SliceState } from 'app/pages/LoginPage/slice/types';
+import { LoginState } from '../app/pages/LoginPage/slice/types';
+import { EventsState } from 'app/pages/EventPage/slice/types';
+import { UserManagementState } from '../app/pages/UserManagement/slice/types';
+import { AttendanceState } from 'app/pages/Attendance/slice/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -7,7 +9,9 @@ import { SliceState } from 'app/pages/LoginPage/slice/types';
   You have to declare them here manually
 */
 export interface RootState {
-  slice?: SliceState;
-  slice?: SliceState;
+  login?: LoginState;
+  events?: EventsState;
+  userManagement?: UserManagementState;
+  attendance?: AttendanceState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
