@@ -5,7 +5,6 @@
  */
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-// import { createTheme } from '@mui/material/styles';
 import {
   Card,
   CardContent,
@@ -20,40 +19,37 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { Box } from '@mui/system';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import InputBase from '@mui/material/InputBase';
-import { useRef } from 'react';
-import Img from './Circle_logo_White.svg';
 import { styled } from '@mui/material/styles';
 import { BsCamera } from 'react-icons/bs';
-import { AiFillEdit } from 'react-icons/ai';
 import { axiosGet, axiosPatch, imgurl } from '../../requests';
 import { useState, useEffect } from 'react';
-
-const ariaLabel = { 'aria-label': 'description' };
+import { dateFormat } from '../../components/dateFormat';
+import axios from 'axios';
 
 interface Props {}
 
 export function CompleteProfile(props: Props) {
   const [userData, setUserData] = useState<any | null>(null);
+  const formdata = new FormData();
+
   async function completeProfileGet() {
     const res = await axiosGet('/users/complete-profile');
     const user = res.data.user;
-    console.log(res.data.user);
     setUserData(user);
-    console.log('hello');
   }
+
   async function completeProfilePatch() {
-    const data = { value };
-    const res = await axiosPatch('/users/complete-profile', data);
-    console.log(res);
+    let data = values;
+    // const res = await axiosPatch('/users/complete-profile', data);
+    // console.log(res);
     console.log(data);
   }
+
   const [values, setValues] = useState({
-    dateOfBirth: '',
+    dateOfBirth: '2000-01-01',
     collegeName: '',
     department: '',
     year: '',
@@ -65,31 +61,17 @@ export function CompleteProfile(props: Props) {
     linkedInUrl: '',
     description: '',
   });
+
   useEffect(() => {
     completeProfileGet();
-    completeProfilePatch();
   }, []);
 
-  const [value, setValue] = React.useState<Date | null>(
-    new Date('2014-08-18T21:11:54'),
-  );
+  const [profilePic, setProfilePic] = useState<any>();
+  const [bitmojiPic, setBitmojiPic] = useState<any>();
 
-  const handleChange = (newValue: Date | null) => {
-    setValue(newValue);
-  };
-
-  const [dept, setDept] = React.useState('');
-  const [year, setYear] = React.useState('');
-
-  const handleThis = (event: SelectChangeEvent) => {
-    setDept(event.target.value as string);
-    setYear(event.target.value as string);
-  };
-
-  const [fileSelected, setFileSelected] = React.useState('');
-
-  const handleImageChange = function (event: any) {
-    setFileSelected(URL.createObjectURL(event.target.files[0]));
+  const handleSubmit = () => {
+    console.log(profilePic);
+    console.log(bitmojiPic);
   };
 
   const Input = styled('input')({
@@ -122,8 +104,11 @@ export function CompleteProfile(props: Props) {
                       <div className="justify-content-center p-2">
                         <Avatar
                           alt="uploaded"
-                          // src={fileSelected ? fileSelected : undefined}
-                          src={`${imgurl}/images/${userData.userId}`}
+                          src={
+                            profilePic
+                              ? URL.createObjectURL(profilePic)
+                              : `${imgurl}/profile/${userData.userId}.jpg`
+                          }
                           sx={{ width: 85, height: 85 }}
                         />
                         <label htmlFor="contained-button-file">
@@ -132,7 +117,10 @@ export function CompleteProfile(props: Props) {
                             id="contained-button-file"
                             multiple
                             type="file"
-                            onChange={e => handleImageChange(e)}
+                            required={true}
+                            onChange={(e: any) => {
+                              setProfilePic(e.target.files[0]);
+                            }}
                             className="my-2 p-2"
                           />
                           <Button
@@ -202,9 +190,11 @@ export function CompleteProfile(props: Props) {
                           <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DesktopDatePicker
                               label="Date Of Birth"
-                              inputFormat="MM/dd/yyyy"
-                              value={value}
-                              onChange={handleChange}
+                              value={values.dateOfBirth}
+                              onChange={newValue => {
+                                const newDate = dateFormat(newValue);
+                                setValues({ ...values, dateOfBirth: newDate });
+                              }}
                               renderInput={params => <TextField {...params} />}
                             />
                           </LocalizationProvider>
@@ -213,6 +203,12 @@ export function CompleteProfile(props: Props) {
                             label="College Name*"
                             variant="outlined"
                             sx={{ width: '34ch' }}
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                collegeName: e.target.value,
+                              })
+                            }
                           />
                         </Box>
                       </div>
@@ -226,17 +222,23 @@ export function CompleteProfile(props: Props) {
                             <Select
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={dept}
+                              value={values.department}
                               label="Dept"
                               sx={{ width: '28.7ch' }}
-                              onChange={handleThis}
+                              // onChange={handleThis}
+                              onChange={e =>
+                                setValues({
+                                  ...values,
+                                  department: e.target.value as string,
+                                })
+                              }
                             >
-                              <MenuItem value={10}>ECE</MenuItem>
-                              <MenuItem value={20}>EEE</MenuItem>
-                              <MenuItem value={30}>MECH A</MenuItem>
-                              <MenuItem value={30}>MECH B</MenuItem>
-                              <MenuItem value={30}>CSC</MenuItem>
-                              <MenuItem value={30}>IT</MenuItem>
+                              <MenuItem value="ECE">ECE</MenuItem>
+                              <MenuItem value="EEE">EEE</MenuItem>
+                              <MenuItem value="MECH A">MECH A</MenuItem>
+                              <MenuItem value="MECH B">MECH B</MenuItem>
+                              <MenuItem value="CSC">CSC</MenuItem>
+                              <MenuItem value="IT">IT</MenuItem>
                             </Select>
                           </FormControl>
                           <FormControl>
@@ -246,15 +248,21 @@ export function CompleteProfile(props: Props) {
                             <Select
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={year}
+                              value={values.year}
                               label="Year"
                               sx={{ width: '28.7ch' }}
-                              onChange={handleThis}
+                              // onChange={handleThis}
+                              onChange={e =>
+                                setValues({
+                                  ...values,
+                                  year: e.target.value as string,
+                                })
+                              }
                             >
-                              <MenuItem value={10}>1st Year</MenuItem>
-                              <MenuItem value={20}>2nd Year</MenuItem>
-                              <MenuItem value={20}>3rd Year</MenuItem>
-                              <MenuItem value={20}>4th Year</MenuItem>
+                              <MenuItem value="1">1st Year</MenuItem>
+                              <MenuItem value="2">2nd Year</MenuItem>
+                              <MenuItem value="3">3rd Year</MenuItem>
+                              <MenuItem value="4">4th Year</MenuItem>
                             </Select>
                           </FormControl>
                         </Box>
@@ -266,12 +274,24 @@ export function CompleteProfile(props: Props) {
                             label="Roll Number*"
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                rollNumber: e.target.value,
+                              })
+                            }
                           />
                           <TextField
                             id="outlined-basic"
                             label="Register Number*"
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                registerNumber: e.target.value,
+                              })
+                            }
                           />
                         </Box>
                       </div>
@@ -281,16 +301,34 @@ export function CompleteProfile(props: Props) {
                             id="outlined-basic"
                             label="Instagram Link"
                             variant="outlined"
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                instagramUrl: e.target.value,
+                              })
+                            }
                           />
                           <TextField
                             id="outlined-basic"
                             label="Linkedin Link*"
                             variant="outlined"
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                linkedInUrl: e.target.value,
+                              })
+                            }
                           />
                           <TextField
                             id="outlined-basic"
                             label="Github Link*"
                             variant="outlined"
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                githubUrl: e.target.value,
+                              })
+                            }
                           />
                         </Box>
                       </div>
@@ -301,12 +339,24 @@ export function CompleteProfile(props: Props) {
                             label="Description*"
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                description: e.target.value,
+                              })
+                            }
                           />
                           <TextField
                             id="outlined-basic"
                             label="WhatsApp Number*"
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                whatsappNumber: e.target.value,
+                              })
+                            }
                           />
                         </Box>
                       </div>
@@ -321,14 +371,13 @@ export function CompleteProfile(props: Props) {
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
                               defaultValue={userData.project}
-                              label="Dept"
+                              label="Project"
                               sx={{ width: '28.7ch' }}
-                              onChange={handleThis}
                             >
-                              <MenuItem value={10}>Pager</MenuItem>
-                              <MenuItem value={20}>Cortex</MenuItem>
-                              <MenuItem value={30}>Helix</MenuItem>
-                              <MenuItem value={30}>Open Cloud</MenuItem>
+                              <MenuItem value="Pager">Pager</MenuItem>
+                              <MenuItem value="Cortex">Cortex</MenuItem>
+                              <MenuItem value="Helix">Helix</MenuItem>
+                              <MenuItem value="Opencloud">Open Cloud</MenuItem>
                             </Select>
                           </FormControl>
                           <FormControl>
@@ -340,16 +389,15 @@ export function CompleteProfile(props: Props) {
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
                               defaultValue={userData.committee}
-                              label="Dept"
+                              label="Committee"
                               sx={{ width: '28.7ch' }}
-                              onChange={handleThis}
                             >
-                              <MenuItem value={10}>Events</MenuItem>
-                              <MenuItem value={20}>
+                              <MenuItem value="EV">Events</MenuItem>
+                              <MenuItem value="I&M">
                                 Innovation and Media
                               </MenuItem>
-                              <MenuItem value={20}>Human Resource</MenuItem>
-                              <MenuItem value={20}>
+                              <MenuItem value="HR">Human Resource</MenuItem>
+                              <MenuItem value="BD">
                                 Business Development
                               </MenuItem>
                             </Select>
@@ -357,30 +405,40 @@ export function CompleteProfile(props: Props) {
                         </Box>
                       </div>
                     </div>
-                    <div className="d-flex justify-content-center p-2">
-                      {/* <Avatar
-                  alt="uploaded"
-                  src={fileSelected ? fileSelected : undefined}
-                  sx={{ width: 75, height: 75 }}
-                /> */}
-                      <label htmlFor="contained-button-file">
-                        <Input
-                          accept="image/*"
-                          id="contained-button-file"
-                          multiple
-                          type="file"
-                          onChange={e => handleImageChange(e)}
+                    <div className="d-flex align-items-center justify-content-center mt-2 p-2">
+                      <div className="justify-content-center p-2">
+                        <Avatar
+                          alt="uploaded"
+                          src={
+                            bitmojiPic
+                              ? URL.createObjectURL(bitmojiPic)
+                              : `${imgurl}/bitmoji/${userData.userId}.jpg`
+                          }
+                          sx={{ width: 85, height: 85 }}
                         />
-                        <Button
-                          className="mt-3"
-                          variant="contained"
-                          component="span"
-                        >
-                          Upload your bitmoji here
-                          <BsCamera className="mx-2"></BsCamera>
-                        </Button>
-                      </label>
+                        <label htmlFor="contained-button-file">
+                          <Input
+                            accept="image/*"
+                            id="contained-button-file"
+                            multiple
+                            type="file"
+                            onChange={(e: any) => {
+                              setBitmojiPic(e.target.files[0]);
+                            }}
+                            className="my-2 p-2"
+                          />
+                          <Button
+                            className="mt-3"
+                            variant="contained"
+                            component="span"
+                          >
+                            Upload your bitmoji here
+                            <BsCamera className="mx-2"></BsCamera>
+                          </Button>
+                        </label>
+                      </div>
                     </div>
+
                     <div className="text-start">
                       <Button
                         type="button"
@@ -388,7 +446,7 @@ export function CompleteProfile(props: Props) {
                         size="medium"
                         sx={{ mt: 3, mb: 2 }}
                         color="primary"
-                        // onClick={handleSubmit}
+                        onClick={handleSubmit}
                       >
                         Submit
                       </Button>
