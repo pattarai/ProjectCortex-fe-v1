@@ -9,6 +9,7 @@ import { EventPage } from '../EventPage';
 import { UserManagement } from '../UserManagement';
 import { Attendance } from '../Attendance';
 import { AttendanceCrew } from '../AttendanceCrew';
+import { Ranking } from '../Ranking';
 
 interface Props {}
 
@@ -23,6 +24,7 @@ export function Routes(props: Props) {
         path="/dashboard/users/attendance"
         component={AttendanceCrew}
       />
+      <Route exact path="/dashboard/users/ranking" component={Ranking} />
     </Switch>
   );
 }
