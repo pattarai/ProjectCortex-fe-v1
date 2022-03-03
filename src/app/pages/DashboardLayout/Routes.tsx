@@ -8,7 +8,7 @@ import { Route, Switch } from 'react-router';
 import { About } from '../About/Loadable';
 import { Contact } from '../Contact/Loadable';
 import { Profileview } from '../Profileview';
-import { ProfileCommonView } from '../ProfileCommonView';
+import { ProfileCommonView } from '../Profilecommonview';
 import { UserManagement } from '../UserManagement';
 import { Attendance } from '../Attendance';
 import { RankingCrew } from '../RankingCrew';
