@@ -24,7 +24,6 @@ import Copper from './images/copper.png';
 import { FaSearch } from 'react-icons/fa';
 import MemberScoreCard from './MemberScoreCard';
 import { axiosGet, imgurl } from '../../requests';
-import { styled } from '@mui/material/styles';
 import LinearProgress from '@mui/material/LinearProgress';
 
 type Users = {
@@ -38,25 +37,6 @@ interface MemberData {
   league: string;
   userId: number;
 }
-
-// const CssTextField = styled(TextField)({
-//   '& label': {
-//     color: 'white',
-//   },
-//   '& label.Mui-focused': {
-//     color: 'white',
-//   },
-//   '& .MuiInput-underline': {
-//     borderBottomColor: 'white',
-//   },
-//   '& .MuiOutlinedInput-root': {
-//     '& fieldset': { borderColor: 'white' },
-//     '&:hover fieldset': { borderColor: 'white' },
-//     '&.Mui-focused fieldset': {
-//       borderColor: 'white',
-//     },
-//   },
-// });
 
 export function Ranking() {
   const [openDetails, setOpenDetails] = useState(false);
@@ -75,7 +55,6 @@ export function Ranking() {
       setTop3(top3List);
       setUserData(userList);
       setUserSearchData(userList);
-      console.log(user);
       setLoading(false);
     });
   }, []);
@@ -138,11 +117,7 @@ export function Ranking() {
                                 <CardContent>
                                   <Avatar
                                     alt={list.users.firstName}
-                                    src={
-                                      list.userId
-                                        ? `${imgurl}/bitmoji/${list.userId}`
-                                        : AvatarIcon
-                                    }
+                                    src={`${imgurl}/bitmoji/${list.userId}`}
                                     sx={{
                                       width: 70,
                                       height: 70,
@@ -171,10 +146,10 @@ export function Ranking() {
                 </div>
                 <div className="container my-3">
                   <TextField
+                    fullWidth
                     label="Search Members"
                     variant="outlined"
-                    className="mb-3 mb-md-0 w-md-50 w-100 text-white"
-                    sx={{ borderColor: '#fff', color: '#fff' }}
+                    className="mb-3 mb-md-0"
                     onChange={e => handleChange(e.target.value)}
                     InputProps={{
                       startAdornment: (
@@ -207,11 +182,7 @@ export function Ranking() {
                                   </span>
                                   <Avatar
                                     alt={data.users.firstName}
-                                    src={
-                                      data.userId
-                                        ? `${imgurl}/bitmoji/${data.userId}`
-                                        : AvatarIcon
-                                    }
+                                    src={`${imgurl}/bitmoji/${data.userId}`}
                                     sx={{
                                       width: 40,
                                       height: 40,
@@ -223,7 +194,7 @@ export function Ranking() {
                                   <div style={{ width: '50%' }}>
                                     <span className="d-none d-md-block ms-2">
                                       <Typography component="h2" variant="h6">
-                                        {data.users.firstName}{' '}
+                                        {data.users.firstName}
                                         {data.users.lastName}
                                       </Typography>
                                     </span>
