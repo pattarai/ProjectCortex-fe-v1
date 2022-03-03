@@ -14,9 +14,11 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
-import Logo from '../../images/Logo.svg';
+import Logo from './images/Logo.svg';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import Slide, { SlideProps } from '@mui/material/Slide';
+import IconButton from '@mui/material/IconButton';
+import { AiOutlineClose } from 'react-icons/ai';
 
 import { useDispatch } from 'react-redux';
 import { useLoginSlice } from './slice';
@@ -227,10 +229,30 @@ export function LoginPage() {
                 <Snackbar
                   anchorOrigin={{ vertical, horizontal }}
                   TransitionComponent={transition}
+                  autoHideDuration={6000}
                   open={open}
                   onClose={handleClose}
                   message={responseError}
                   key={vertical + horizontal}
+                  action={
+                    <React.Fragment>
+                      <Button
+                        color="primary"
+                        size="small"
+                        onClick={handleClose}
+                      >
+                        UNDO
+                      </Button>
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        sx={{ p: 0.5 }}
+                        onClick={handleClose}
+                      >
+                        <AiOutlineClose />
+                      </IconButton>
+                    </React.Fragment>
+                  }
                 />
               </CenterItem>
             </Box>
