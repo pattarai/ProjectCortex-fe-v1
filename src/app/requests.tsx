@@ -10,7 +10,7 @@ export function axiosGet(url: string) {
   });
 }
 
-export function axiosPost(url: string, data: any) {
+export function axiosPost(url: string, data: {}) {
   return axios.request({
     method: 'POST',
     url: `${endpoint}${url}`,

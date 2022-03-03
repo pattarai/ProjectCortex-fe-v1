@@ -12,6 +12,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { axiosPost } from '../../requests';
+import Skeleton from '@mui/material/Skeleton';
 
 type userDetails = {
   factors: {
@@ -30,6 +31,7 @@ interface ScoreData {
 export default function MemberScoreCard() {
   const [userData, setUserData] = useState<ScoreData | null>(null);
   const [currentPhase, setCurrentPhase] = useState<null | userDetails[]>(null);
+  const [loading, setLoading] = useState(true);
 
   function onlyUnique(value: any, index: any, self: any) {
     return self.indexOf(value) === index;
@@ -47,97 +49,107 @@ export default function MemberScoreCard() {
   };
 
   useEffect(() => {
-    axiosPost('/users/ranks', {
-      userId: 1,
-    }).then(res => {
+    axiosPost('/users/ranks', {}).then(res => {
       const user = res.data.data;
       const currentPhaseData = user.userDetails.filter(
         row => row.factors.phase === user.userDetails[0].factors.phase,
       );
       setUserData(user);
       setCurrentPhase(currentPhaseData);
+      setLoading(false);
     });
   }, []);
 
   return (
     <>
       <div className="container my-4">
-        <div className="row">
-          <div className="col-12">
-            <Card elevation={2}>
-              <CardContent>
-                <FormControl fullWidth>
-                  <InputLabel>Select Phase</InputLabel>
-                  <Select
-                    value={
-                      currentPhase
-                        ? currentPhase[0].factors.phase.toString()
-                        : ''
-                    }
-                    label="Select Phase"
-                    onChange={handleChange}
-                  >
-                    {unique?.map((data, keyy) => (
-                      <MenuItem key={keyy} value={data}>
-                        {`Phase  ${data}`}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <Table className="mt-2">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>SNO</TableCell>
-                      <TableCell align="left">CONTRIBUTION</TableCell>
-                      <TableCell align="right">MAXSCORE</TableCell>
-                      <TableCell align="right">SCORE</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {currentPhase &&
-                      currentPhase.map((list, index) => (
-                        <TableRow
-                          key={`${list}-${index}`}
-                          sx={{
-                            '&:last-child td, &:last-child th': {
-                              border: 0,
-                            },
-                          }}
-                        >
-                          <TableCell component="th" scope="row">
-                            {`#${index + 1}`}
-                          </TableCell>
-                          <TableCell align="left">
-                            {list.factors.factorName}
-                          </TableCell>
-                          <TableCell align="right">
-                            {list.factors.maxScore}
-                          </TableCell>
-                          <TableCell align="right">{list.score}</TableCell>
-                        </TableRow>
+        {loading ? (
+          <>
+            <Skeleton variant="text" sx={{ height: 100 }} />
+            <Skeleton
+              sx={{ height: 400 }}
+              animation="wave"
+              variant="rectangular"
+            />
+          </>
+        ) : (
+          <div className="row">
+            <div className="col-12">
+              <Card elevation={2}>
+                <CardContent>
+                  <FormControl fullWidth>
+                    <InputLabel>Select Phase</InputLabel>
+                    <Select
+                      value={
+                        currentPhase
+                          ? currentPhase[0].factors.phase.toString()
+                          : ''
+                      }
+                      label="Select Phase"
+                      onChange={handleChange}
+                    >
+                      {unique?.map((data, keyy) => (
+                        <MenuItem key={keyy} value={data}>
+                          {`Phase  ${data}`}
+                        </MenuItem>
                       ))}
-                    {userData &&
-                      userData.totalScoreByPhase.map((list, index) => (
-                        <TableRow
-                          key={`${list}-${index}`}
-                          sx={{
-                            '&:last-child td, &:last-child th': {
-                              border: 0,
-                            },
-                          }}
-                        >
-                          <TableCell />
-                          <TableCell />
-                          <TableCell />
-                          <TableCell align="right">{list}</TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+                    </Select>
+                  </FormControl>
+                  <Table className="mt-2">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>SNO</TableCell>
+                        <TableCell align="left">CONTRIBUTION</TableCell>
+                        <TableCell align="right">MAXSCORE</TableCell>
+                        <TableCell align="right">SCORE</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {currentPhase &&
+                        currentPhase.map((list, index) => (
+                          <TableRow
+                            key={`${list}-${index}`}
+                            sx={{
+                              '&:last-child td, &:last-child th': {
+                                border: 0,
+                              },
+                            }}
+                          >
+                            <TableCell component="th" scope="row">
+                              {`#${index + 1}`}
+                            </TableCell>
+                            <TableCell align="left">
+                              {list.factors.factorName}
+                            </TableCell>
+                            <TableCell align="right">
+                              {list.factors.maxScore}
+                            </TableCell>
+                            <TableCell align="right">{list.score}</TableCell>
+                          </TableRow>
+                        ))}
+                      {userData &&
+                        userData.totalScoreByPhase.map((list, index) => (
+                          <TableRow
+                            key={`${list}-${index}`}
+                            sx={{
+                              '&:last-child td, &:last-child th': {
+                                border: 0,
+                              },
+                            }}
+                          >
+                            <TableCell />
+                            <TableCell />
+                            <TableCell />
+                            <TableCell align="right">{list}</TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
