@@ -14,7 +14,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
-import Logo from './images/logo.svg';
+import Logo from './images/Logo.svg';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import Slide, { SlideProps } from '@mui/material/Slide';
 
