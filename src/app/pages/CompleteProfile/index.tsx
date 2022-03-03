@@ -24,10 +24,9 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { styled } from '@mui/material/styles';
 import { BsCamera } from 'react-icons/bs';
-import { axiosGet, axiosPatch, imgurl } from '../../requests';
+import { axiosGet, axiosPatch } from '../../requests';
 import { useState, useEffect } from 'react';
 import { dateFormat } from '../../components/dateFormat';
-import axios from 'axios';
 
 interface Props {}
 
@@ -42,9 +41,9 @@ export function CompleteProfile(props: Props) {
   }
 
   async function completeProfilePatch() {
-    let data = values;
-    // const res = await axiosPatch('/users/complete-profile', data);
-    // console.log(res);
+    let data = formdata;
+    const res = await axiosPatch('/users/complete-profile', data);
+    console.log(res);
     console.log(data);
   }
 
@@ -66,12 +65,16 @@ export function CompleteProfile(props: Props) {
     completeProfileGet();
   }, []);
 
-  const [profilePic, setProfilePic] = useState<any>();
-  const [bitmojiPic, setBitmojiPic] = useState<any>();
+  const [profilePic, setProfilePic] = useState<any | null>(null);
+  const [bitmojiPic, setBitmojiPic] = useState<any | null>(null);
 
   const handleSubmit = () => {
-    console.log(profilePic);
-    console.log(bitmojiPic);
+    formdata.append('profilePic', profilePic);
+    formdata.append('bitmojiPic', bitmojiPic);
+    Object.entries(values).forEach(([key, value]) => {
+      formdata.append(key, value);
+    });
+    completeProfilePatch();
   };
 
   const Input = styled('input')({
@@ -104,18 +107,13 @@ export function CompleteProfile(props: Props) {
                       <div className="justify-content-center p-2">
                         <Avatar
                           alt="uploaded"
-                          src={
-                            profilePic
-                              ? URL.createObjectURL(profilePic)
-                              : `${imgurl}/profile/${userData.userId}.jpg`
-                          }
+                          src={profilePic && URL.createObjectURL(profilePic)}
                           sx={{ width: 85, height: 85 }}
                         />
                         <label htmlFor="contained-button-file">
                           <Input
                             accept="image/*"
                             id="contained-button-file"
-                            multiple
                             type="file"
                             required={true}
                             onChange={(e: any) => {
@@ -225,7 +223,6 @@ export function CompleteProfile(props: Props) {
                               value={values.department}
                               label="Dept"
                               sx={{ width: '28.7ch' }}
-                              // onChange={handleThis}
                               onChange={e =>
                                 setValues({
                                   ...values,
@@ -251,7 +248,6 @@ export function CompleteProfile(props: Props) {
                               value={values.year}
                               label="Year"
                               sx={{ width: '28.7ch' }}
-                              // onChange={handleThis}
                               onChange={e =>
                                 setValues({
                                   ...values,
@@ -409,18 +405,13 @@ export function CompleteProfile(props: Props) {
                       <div className="justify-content-center p-2">
                         <Avatar
                           alt="uploaded"
-                          src={
-                            bitmojiPic
-                              ? URL.createObjectURL(bitmojiPic)
-                              : `${imgurl}/bitmoji/${userData.userId}.jpg`
-                          }
+                          src={bitmojiPic && URL.createObjectURL(bitmojiPic)}
                           sx={{ width: 85, height: 85 }}
                         />
-                        <label htmlFor="contained-button-file">
+                        <label htmlFor="contained-button-file-2">
                           <Input
                             accept="image/*"
-                            id="contained-button-file"
-                            multiple
+                            id="contained-button-file-2"
                             type="file"
                             onChange={(e: any) => {
                               setBitmojiPic(e.target.files[0]);
