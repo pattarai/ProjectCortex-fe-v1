@@ -80,9 +80,8 @@ export default function EditForm({
 
   async function handleUpdateOrSubmit() {
     if (checkError()) {
-      setUserData({ ...updateUser, ...values });
-      console.log({ ...updateUser, ...values });
       await axiosPatch('/users/profile', values);
+      setUserData({ ...updateUser, ...values });
       setOpenModal(false);
       setLoading(false);
     }
@@ -283,7 +282,7 @@ export default function EditForm({
                 setValues({ ...values, githubUrl: e.target.value })
               }
             />
-            {/* <br />
+            <br />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date of Birth"
@@ -309,7 +308,7 @@ export default function EditForm({
                   />
                 )}
               />
-            </LocalizationProvider> */}
+            </LocalizationProvider>
           </div>
           <div className="d-flex mt-4">
             <Button variant="contained" onClick={handleUpdateOrSubmit}>
