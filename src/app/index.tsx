@@ -14,7 +14,6 @@ import { GlobalStyle } from 'styles/global-styles';
 import { useTranslation } from 'react-i18next';
 
 // Importing pages
-import { Index } from './pages/Index';
 import { DashboardLayout } from './pages/DashboardLayout';
 
 export function App() {
@@ -30,7 +29,6 @@ export function App() {
       </Helmet>
 
       <Switch>
-        <Route exact path="/" component={Index} />
         <Route path="/dashboard" component={DashboardLayout} />
       </Switch>
       <GlobalStyle />
