@@ -25,6 +25,7 @@ import { FaSearch } from 'react-icons/fa';
 import MemberScoreCard from './MemberScoreCard';
 import { axiosGet, imgurl } from '../../requests';
 import { styled } from '@mui/material/styles';
+import LinearProgress from '@mui/material/LinearProgress';
 
 type Users = {
   firstName: string;
@@ -64,6 +65,7 @@ export function RankingCrew() {
     null,
   );
   const [top3, setTop3] = useState<MemberData[] | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axiosGet('/users/ranks').then(res => {
@@ -74,6 +76,7 @@ export function RankingCrew() {
       setUserData(userList);
       setUserSearchData(userList);
       console.log(user);
+      setLoading(false);
     });
   }, []);
 
@@ -117,149 +120,156 @@ export function RankingCrew() {
           <MemberScoreCard />
         ) : (
           <>
-            <div className="container my-4">
-              <div className="row">
-                {top3 &&
-                  top3.map((list, index) => {
-                    return (
-                      <div
-                        key={`${list}-${index}`}
-                        className="col-12 col-md-4 mb-4"
-                      >
-                        <Card elevation={2} sx={{ textAlign: 'center' }}>
-                          <CardActionArea>
-                            <CardContent>
-                              <Avatar
-                                alt={list.users.firstName}
-                                src={
-                                  list.userId
-                                    ? `${imgurl}/bitmoji/${list.userId}`
-                                    : AvatarIcon
-                                }
-                                sx={{
-                                  width: 70,
-                                  height: 70,
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  margin: 'auto',
-                                  marginBottom: '5%',
-                                }}
-                              />
-                              <Typography component="h2" variant="h5">
-                                {list.users.firstName} {list.users.lastName}
-                              </Typography>
-                              <Typography
-                                variant="subtitle1"
-                                color="text.secondary"
-                              >
-                                {list.league} | {list.total}
-                              </Typography>
-                            </CardContent>
-                          </CardActionArea>
-                        </Card>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
-            <div className="container my-3">
-              <CssTextField
-                label="Search Members"
-                variant="outlined"
-                className="mb-3 mb-md-0 w-md-50 w-100 text-white"
-                sx={{ borderColor: '#fff', color: '#fff' }}
-                onChange={e => handleChange(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start" color="white">
-                      <FaSearch />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </div>
-            <div className="container align-items-center d-flex justify-content-center">
-              <div className="col m-2">
-                {userSearchData &&
-                  userSearchData.length > 0 &&
-                  userSearchData.map((data, index) => {
-                    let ranknum = 4;
-                    return (
-                      <div key={index} className="row mb-2">
-                        <Card elevation={2}>
-                          <CardContent>
-                            <div className="align-items-center d-flex justify-content-center">
-                              <span className="me-3">
-                                <Typography
-                                  component="h1"
-                                  variant="h6"
-                                  color="text.secondary"
-                                >
-                                  #{ranknum + index}
-                                </Typography>
-                              </span>
-                              <Avatar
-                                alt={data.users.firstName}
-                                src={
-                                  data.userId
-                                    ? `${imgurl}/bitmoji/${data.userId}`
-                                    : AvatarIcon
-                                }
-                                sx={{
-                                  width: 40,
-                                  height: 40,
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  margin: 'auto',
-                                }}
-                              />
-                              <div style={{ width: '50%' }}>
-                                <span className="d-none d-md-block ms-2">
-                                  <Typography component="h2" variant="h6">
-                                    {data.users.firstName} {data.users.lastName}
+            {loading ? (
+              <LinearProgress className="container" />
+            ) : (
+              <>
+                <div className="container my-4">
+                  <div className="row">
+                    {top3 &&
+                      top3.map((list, index) => {
+                        return (
+                          <div
+                            key={`${list}-${index}`}
+                            className="col-12 col-md-4 mb-4"
+                          >
+                            <Card elevation={2} sx={{ textAlign: 'center' }}>
+                              <CardActionArea>
+                                <CardContent>
+                                  <Avatar
+                                    alt={list.users.firstName}
+                                    src={
+                                      list.userId
+                                        ? `${imgurl}/bitmoji/${list.userId}`
+                                        : AvatarIcon
+                                    }
+                                    sx={{
+                                      width: 70,
+                                      height: 70,
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      margin: 'auto',
+                                      marginBottom: '5%',
+                                    }}
+                                  />
+                                  <Typography component="h2" variant="h5">
+                                    {list.users.firstName} {list.users.lastName}
                                   </Typography>
-                                </span>
-                              </div>
-                              <Avatar
-                                alt={data.league}
-                                src={
-                                  data.league === 'DIAMOND'
-                                    ? Diamond
-                                    : data.league === 'GOLD'
-                                    ? Gold
-                                    : data.league === 'SILVER'
-                                    ? Silver
-                                    : data.league === 'BRONZE'
-                                    ? Bronze
-                                    : data.league === 'COPPER'
-                                    ? Copper
-                                    : ''
-                                }
-                                variant="square"
-                                sx={{
-                                  width: 50,
-                                  height: 50,
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  margin: 'auto',
-                                }}
-                              />
-                              <div
-                                className="d-flex flex-column justify-content-end align-items-end"
-                                style={{ width: '60%' }}
-                              >
-                                <Typography component="h2" variant="h6">
-                                  {data.total}
-                                </Typography>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
+                                  <Typography
+                                    variant="subtitle1"
+                                    color="text.secondary"
+                                  >
+                                    {list.league} | {list.total}
+                                  </Typography>
+                                </CardContent>
+                              </CardActionArea>
+                            </Card>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+                <div className="container my-3">
+                  <CssTextField
+                    label="Search Members"
+                    variant="outlined"
+                    className="mb-3 mb-md-0 w-md-50 w-100 text-white"
+                    sx={{ borderColor: '#fff', color: '#fff' }}
+                    onChange={e => handleChange(e.target.value)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start" color="white">
+                          <FaSearch />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+                <div className="container align-items-center d-flex justify-content-center">
+                  <div className="col m-2">
+                    {userSearchData &&
+                      userSearchData.length > 0 &&
+                      userSearchData.map((data, index) => {
+                        let ranknum = 4;
+                        return (
+                          <div key={index} className="row mb-2">
+                            <Card elevation={2}>
+                              <CardContent>
+                                <div className="align-items-center d-flex justify-content-center">
+                                  <span className="me-3">
+                                    <Typography
+                                      component="h1"
+                                      variant="h6"
+                                      color="text.secondary"
+                                    >
+                                      #{ranknum + index}
+                                    </Typography>
+                                  </span>
+                                  <Avatar
+                                    alt={data.users.firstName}
+                                    src={
+                                      data.userId
+                                        ? `${imgurl}/bitmoji/${data.userId}`
+                                        : AvatarIcon
+                                    }
+                                    sx={{
+                                      width: 40,
+                                      height: 40,
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      margin: 'auto',
+                                    }}
+                                  />
+                                  <div style={{ width: '50%' }}>
+                                    <span className="d-none d-md-block ms-2">
+                                      <Typography component="h2" variant="h6">
+                                        {data.users.firstName}{' '}
+                                        {data.users.lastName}
+                                      </Typography>
+                                    </span>
+                                  </div>
+                                  <Avatar
+                                    alt={data.league}
+                                    src={
+                                      data.league === 'DIAMOND'
+                                        ? Diamond
+                                        : data.league === 'GOLD'
+                                        ? Gold
+                                        : data.league === 'SILVER'
+                                        ? Silver
+                                        : data.league === 'BRONZE'
+                                        ? Bronze
+                                        : data.league === 'COPPER'
+                                        ? Copper
+                                        : ''
+                                    }
+                                    variant="square"
+                                    sx={{
+                                      width: 50,
+                                      height: 50,
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      margin: 'auto',
+                                    }}
+                                  />
+                                  <div
+                                    className="d-flex flex-column justify-content-end align-items-end"
+                                    style={{ width: '60%' }}
+                                  >
+                                    <Typography component="h2" variant="h6">
+                                      {data.total}
+                                    </Typography>
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              </>
+            )}
           </>
         )}
       </section>
