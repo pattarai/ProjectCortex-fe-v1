@@ -5,14 +5,12 @@
  */
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-// import { createTheme } from '@mui/material/styles';
 import {
   Card,
   CardContent,
   Typography,
   Avatar,
   CardActionArea,
-  // TextField,
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
@@ -20,65 +18,37 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { Box } from '@mui/system';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import InputBase from '@mui/material/InputBase';
-import { useRef } from 'react';
-import Img from './Circle_logo_White.svg';
-import { dateFormat } from '../../components/dateFormat';
 import { styled } from '@mui/material/styles';
 import { BsCamera } from 'react-icons/bs';
-import { AiFillEdit } from 'react-icons/ai';
-import { axiosGet, axiosPatch, imgurl } from '../../requests';
+import { axiosGet, axiosPatch } from '../../requests';
 import { useState, useEffect } from 'react';
-
-const ariaLabel = { 'aria-label': 'description' };
-
-interface Props {}
+import { dateFormat } from '../../components/dateFormat';
 
 export function CompleteProfile({ updateUser }) {
   const [userData, setUserData] = useState<any | null>(null);
+  const formdata = new FormData();
+
   async function completeProfileGet() {
     const res = await axiosGet('/users/complete-profile');
     const user = res.data.user;
-    console.log(res.data.user);
     setUserData(user);
-    console.log('hello');
-  }
-  // async function completeProfilePatch() {
-  //   const data = { value };
-  //   const res = await axiosPatch('/users/complete-profile', data);
-  //   console.log(res);
-  //   console.log(data);
-  // }
-  async function handleUpdateOrSubmit() {
-    setUserData({ ...updateUser, ...values });
-    console.log({ ...updateUser, ...values });
-    await axiosPatch('/users/complete-profile', values);
   }
 
-  useEffect(() => {
-    completeProfileGet();
-    // completeProfilePatch();
-  }, []);
+  async function completeProfilePatch() {
+    let data = formdata;
+    const res = await axiosPatch('/users/complete-profile', data);
+    console.log(res);
+    console.log(data);
+  }
 
-  const [value, setValue] = React.useState<Date | null>(
-    new Date('2014-08-18T21:11:54'),
-  );
-
-  const handleChange = (newValue: Date | null) => {
-    setValue(newValue);
-  };
-
-  const [dept, setDept] = React.useState('');
-  const [year, setYear] = React.useState('');
   const [values, setValues] = useState({
-    dateOfBirth: new Date('2014-08-18T21:11:54'),
+    dateOfBirth: '2000-01-01',
     collegeName: '',
-    department: dept,
-    year: year,
+    department: '',
+    year: '',
     rollNumber: '',
     registerNumber: '',
     whatsappNumber: '',
@@ -88,15 +58,20 @@ export function CompleteProfile({ updateUser }) {
     description: '',
   });
 
-  const handleThis = (event: SelectChangeEvent) => {
-    setDept(event.target.value as string);
-    setYear(event.target.value as string);
-  };
+  useEffect(() => {
+    completeProfileGet();
+  }, []);
 
-  const [fileSelected, setFileSelected] = React.useState('');
+  const [profilePic, setProfilePic] = useState<any | null>(null);
+  const [bitmojiPic, setBitmojiPic] = useState<any | null>(null);
 
-  const handleImageChange = function (event: any) {
-    setFileSelected(URL.createObjectURL(event.target.files[0]));
+  const handleSubmit = () => {
+    formdata.append('profilePic', profilePic);
+    formdata.append('bitmojiPic', bitmojiPic);
+    Object.entries(values).forEach(([key, value]) => {
+      formdata.append(key, value);
+    });
+    completeProfilePatch();
   };
 
   const Input = styled('input')({
@@ -128,21 +103,19 @@ export function CompleteProfile({ updateUser }) {
                     <div className="d-flex align-items-center justify-content-center mt-2 p-2">
                       <div className="justify-content-center p-2">
                         <Avatar
-                          alt="Avatar"
-                          src={
-                            fileSelected
-                              ? fileSelected
-                              : `${imgurl}/images/${userData.userId}`
-                          }
+                          alt="uploaded"
+                          src={profilePic && URL.createObjectURL(profilePic)}
                           sx={{ width: 85, height: 85 }}
                         />
                         <label htmlFor="contained-button-file">
                           <Input
                             accept="image/*"
                             id="contained-button-file"
-                            multiple
                             type="file"
-                            onChange={e => handleImageChange(e)}
+                            required={true}
+                            onChange={(e: any) => {
+                              setProfilePic(e.target.files[0]);
+                            }}
                             className="my-2 p-2"
                           />
                           <Button
@@ -212,13 +185,11 @@ export function CompleteProfile({ updateUser }) {
                           <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DesktopDatePicker
                               label="Date Of Birth"
-                              inputFormat="MM/dd/yyyy"
-                              value={value}
-                              onChange={handleChange}
-                              // onChange={newValue => {
-                              //   const newDate = dateFormat(newValue);
-                              //   setValues({ ...values, dateOfBirth: newDate });
-                              // }}
+                              value={values.dateOfBirth}
+                              onChange={newValue => {
+                                const newDate = dateFormat(newValue);
+                                setValues({ ...values, dateOfBirth: newDate });
+                              }}
                               renderInput={params => <TextField {...params} />}
                             />
                           </LocalizationProvider>
@@ -246,23 +217,22 @@ export function CompleteProfile({ updateUser }) {
                             <Select
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={dept}
+                              value={values.department}
                               label="Dept"
                               sx={{ width: '28.7ch' }}
-                              onChange={handleThis}
-                              // onChange={e =>
-                              //   setValues({
-                              //     ...values,
-                              //     department: e.target.value,
-                              //   })
-                              // }
+                              onChange={e =>
+                                setValues({
+                                  ...values,
+                                  department: e.target.value as string,
+                                })
+                              }
                             >
-                              <MenuItem value={10}>ECE</MenuItem>
-                              <MenuItem value={20}>EEE</MenuItem>
-                              <MenuItem value={30}>MECH A</MenuItem>
-                              <MenuItem value={30}>MECH B</MenuItem>
-                              <MenuItem value={30}>CSC</MenuItem>
-                              <MenuItem value={30}>IT</MenuItem>
+                              <MenuItem value="ECE">ECE</MenuItem>
+                              <MenuItem value="EEE">EEE</MenuItem>
+                              <MenuItem value="MECH A">MECH A</MenuItem>
+                              <MenuItem value="MECH B">MECH B</MenuItem>
+                              <MenuItem value="CSC">CSC</MenuItem>
+                              <MenuItem value="IT">IT</MenuItem>
                             </Select>
                           </FormControl>
                           <FormControl>
@@ -272,16 +242,20 @@ export function CompleteProfile({ updateUser }) {
                             <Select
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={year}
+                              value={values.year}
                               label="Year"
                               sx={{ width: '28.7ch' }}
-                              // onChange={handleThis}
-                              onChange={e => handleThis(e)}
+                              onChange={e =>
+                                setValues({
+                                  ...values,
+                                  year: e.target.value as string,
+                                })
+                              }
                             >
-                              <MenuItem value="1">1</MenuItem>
-                              <MenuItem value="2">2</MenuItem>
-                              <MenuItem value="3">3</MenuItem>
-                              <MenuItem value="4">4</MenuItem>
+                              <MenuItem value="1">1st Year</MenuItem>
+                              <MenuItem value="2">2nd Year</MenuItem>
+                              <MenuItem value="3">3rd Year</MenuItem>
+                              <MenuItem value="4">4th Year</MenuItem>
                             </Select>
                           </FormControl>
                         </Box>
@@ -390,14 +364,13 @@ export function CompleteProfile({ updateUser }) {
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
                               defaultValue={userData.project}
-                              label="Dept"
+                              label="Project"
                               sx={{ width: '28.7ch' }}
-                              onChange={handleThis}
                             >
-                              <MenuItem value={10}>Pager</MenuItem>
-                              <MenuItem value={20}>Cortex</MenuItem>
-                              <MenuItem value={30}>Helix</MenuItem>
-                              <MenuItem value={30}>Open Cloud</MenuItem>
+                              <MenuItem value="Pager">Pager</MenuItem>
+                              <MenuItem value="Cortex">Cortex</MenuItem>
+                              <MenuItem value="Helix">Helix</MenuItem>
+                              <MenuItem value="Opencloud">Open Cloud</MenuItem>
                             </Select>
                           </FormControl>
                           <FormControl>
@@ -409,16 +382,15 @@ export function CompleteProfile({ updateUser }) {
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
                               defaultValue={userData.committee}
-                              label="Dept"
+                              label="Committee"
                               sx={{ width: '28.7ch' }}
-                              onChange={handleThis}
                             >
-                              <MenuItem value={10}>Events</MenuItem>
-                              <MenuItem value={20}>
+                              <MenuItem value="EV">Events</MenuItem>
+                              <MenuItem value="I&M">
                                 Innovation and Media
                               </MenuItem>
-                              <MenuItem value={20}>Human Resource</MenuItem>
-                              <MenuItem value={20}>
+                              <MenuItem value="HR">Human Resource</MenuItem>
+                              <MenuItem value="BD">
                                 Business Development
                               </MenuItem>
                             </Select>
@@ -426,29 +398,33 @@ export function CompleteProfile({ updateUser }) {
                         </Box>
                       </div>
                     </div>
-                    <div className="d-flex justify-content-center p-2">
-                      {/* <Avatar
-                  alt="uploaded"
-                  src={fileSelected ? fileSelected : undefined}
-                  sx={{ width: 75, height: 75 }}
-                /> */}
-                      <label htmlFor="contained-button-file">
-                        <Input
-                          accept="image/*"
-                          id="contained-button-file"
-                          multiple
-                          type="file"
-                          onChange={e => handleImageChange(e)}
+                    <div className="d-flex align-items-center justify-content-center mt-2 p-2">
+                      <div className="d-flex justify-content-center p-2">
+                        <Avatar
+                          alt="uploaded"
+                          src={bitmojiPic && URL.createObjectURL(bitmojiPic)}
+                          sx={{ width: 75, height: 75 }}
                         />
-                        <Button
-                          className="mt-3"
-                          variant="contained"
-                          component="span"
-                        >
-                          Upload your bitmoji here
-                          <BsCamera className="mx-2"></BsCamera>
-                        </Button>
-                      </label>
+                        <label htmlFor="contained-button-file-2">
+                          <Input
+                            accept="image/*"
+                            id="contained-button-file-2"
+                            type="file"
+                            onChange={(e: any) => {
+                              setBitmojiPic(e.target.files[0]);
+                            }}
+                            className="my-2 p-2"
+                          />
+                          <Button
+                            className="mt-3 mx-4 my-3"
+                            variant="contained"
+                            component="span"
+                          >
+                            Upload your bitmoji here
+                            <BsCamera className="mx-2"></BsCamera>
+                          </Button>
+                        </label>
+                      </div>
                     </div>
                     <div className="text-start">
                       <Button
@@ -457,7 +433,7 @@ export function CompleteProfile({ updateUser }) {
                         size="medium"
                         sx={{ mt: 3, mb: 2 }}
                         color="primary"
-                        onClick={handleUpdateOrSubmit}
+                        onClick={handleSubmit}
                       >
                         Submit
                       </Button>
