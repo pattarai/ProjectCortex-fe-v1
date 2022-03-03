@@ -1,14 +1,18 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { TextField, Button } from '@mui/material';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import { InputLabel, FormHelperText } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import {
+  TextField,
+  Button,
+  InputLabel,
+  FormHelperText,
+  MenuItem,
+  FormControl,
+  Select,
+} from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useEventsSlice } from './slice';

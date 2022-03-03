@@ -35,8 +35,6 @@ const slice = createSlice({
 
     setAddEvent(state, action: PayloadAction<any>) {
       state.events.push(action.payload);
-      // const length = state.events.length;
-      // state.events[length + 1] = action.payload;
     },
 
     setUpdateEvent(state, action: PayloadAction<any>) {
@@ -68,15 +66,3 @@ export const useEventsSlice = () => {
   useInjectSaga({ key: slice.name, saga: eventsSaga });
   return { actions: slice.actions };
 };
-
-/**
- * Example Usage:
- *
- * export function MyComponentNeedingThisSlice() {
- *  const { actions } = useEventsSlice();
- *
- *  const onButtonClick = (evt) => {
- *    dispatch(actions.someAction());
- *   };
- * }
- */
