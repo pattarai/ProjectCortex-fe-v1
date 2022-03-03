@@ -27,6 +27,7 @@ import FormControl from '@mui/material/FormControl';
 import InputBase from '@mui/material/InputBase';
 import { useRef } from 'react';
 import Img from './Circle_logo_White.svg';
+import { dateFormat } from '../../components/dateFormat';
 import { styled } from '@mui/material/styles';
 import { BsCamera } from 'react-icons/bs';
 import { AiFillEdit } from 'react-icons/ai';
@@ -37,7 +38,7 @@ const ariaLabel = { 'aria-label': 'description' };
 
 interface Props {}
 
-export function CompleteProfile(props: Props) {
+export function CompleteProfile({ updateUser }) {
   const [userData, setUserData] = useState<any | null>(null);
   async function completeProfileGet() {
     const res = await axiosGet('/users/complete-profile');
@@ -46,28 +47,21 @@ export function CompleteProfile(props: Props) {
     setUserData(user);
     console.log('hello');
   }
-  async function completeProfilePatch() {
-    const data = { value };
-    const res = await axiosPatch('/users/complete-profile', data);
-    console.log(res);
-    console.log(data);
+  // async function completeProfilePatch() {
+  //   const data = { value };
+  //   const res = await axiosPatch('/users/complete-profile', data);
+  //   console.log(res);
+  //   console.log(data);
+  // }
+  async function handleUpdateOrSubmit() {
+    setUserData({ ...updateUser, ...values });
+    console.log({ ...updateUser, ...values });
+    await axiosPatch('/users/complete-profile', values);
   }
-  const [values, setValues] = useState({
-    dateOfBirth: '',
-    collegeName: '',
-    department: '',
-    year: '',
-    rollNumber: '',
-    registerNumber: '',
-    whatsappNumber: '',
-    instagramUrl: '',
-    githubUrl: '',
-    linkedInUrl: '',
-    description: '',
-  });
+
   useEffect(() => {
     completeProfileGet();
-    completeProfilePatch();
+    // completeProfilePatch();
   }, []);
 
   const [value, setValue] = React.useState<Date | null>(
@@ -80,6 +74,19 @@ export function CompleteProfile(props: Props) {
 
   const [dept, setDept] = React.useState('');
   const [year, setYear] = React.useState('');
+  const [values, setValues] = useState({
+    dateOfBirth: new Date('2014-08-18T21:11:54'),
+    collegeName: '',
+    department: dept,
+    year: year,
+    rollNumber: '',
+    registerNumber: '',
+    whatsappNumber: '',
+    instagramUrl: '',
+    githubUrl: '',
+    linkedInUrl: '',
+    description: '',
+  });
 
   const handleThis = (event: SelectChangeEvent) => {
     setDept(event.target.value as string);
@@ -121,9 +128,12 @@ export function CompleteProfile(props: Props) {
                     <div className="d-flex align-items-center justify-content-center mt-2 p-2">
                       <div className="justify-content-center p-2">
                         <Avatar
-                          alt="uploaded"
-                          // src={fileSelected ? fileSelected : undefined}
-                          src={`${imgurl}/images/${userData.userId}`}
+                          alt="Avatar"
+                          src={
+                            fileSelected
+                              ? fileSelected
+                              : `${imgurl}/images/${userData.userId}`
+                          }
                           sx={{ width: 85, height: 85 }}
                         />
                         <label htmlFor="contained-button-file">
@@ -205,6 +215,10 @@ export function CompleteProfile(props: Props) {
                               inputFormat="MM/dd/yyyy"
                               value={value}
                               onChange={handleChange}
+                              // onChange={newValue => {
+                              //   const newDate = dateFormat(newValue);
+                              //   setValues({ ...values, dateOfBirth: newDate });
+                              // }}
                               renderInput={params => <TextField {...params} />}
                             />
                           </LocalizationProvider>
@@ -213,6 +227,12 @@ export function CompleteProfile(props: Props) {
                             label="College Name*"
                             variant="outlined"
                             sx={{ width: '34ch' }}
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                collegeName: e.target.value,
+                              })
+                            }
                           />
                         </Box>
                       </div>
@@ -230,6 +250,12 @@ export function CompleteProfile(props: Props) {
                               label="Dept"
                               sx={{ width: '28.7ch' }}
                               onChange={handleThis}
+                              // onChange={e =>
+                              //   setValues({
+                              //     ...values,
+                              //     department: e.target.value,
+                              //   })
+                              // }
                             >
                               <MenuItem value={10}>ECE</MenuItem>
                               <MenuItem value={20}>EEE</MenuItem>
@@ -249,12 +275,13 @@ export function CompleteProfile(props: Props) {
                               value={year}
                               label="Year"
                               sx={{ width: '28.7ch' }}
-                              onChange={handleThis}
+                              // onChange={handleThis}
+                              onChange={e => handleThis(e)}
                             >
-                              <MenuItem value={10}>1st Year</MenuItem>
-                              <MenuItem value={20}>2nd Year</MenuItem>
-                              <MenuItem value={20}>3rd Year</MenuItem>
-                              <MenuItem value={20}>4th Year</MenuItem>
+                              <MenuItem value="1">1</MenuItem>
+                              <MenuItem value="2">2</MenuItem>
+                              <MenuItem value="3">3</MenuItem>
+                              <MenuItem value="4">4</MenuItem>
                             </Select>
                           </FormControl>
                         </Box>
@@ -266,12 +293,24 @@ export function CompleteProfile(props: Props) {
                             label="Roll Number*"
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                rollNumber: e.target.value,
+                              })
+                            }
                           />
                           <TextField
                             id="outlined-basic"
                             label="Register Number*"
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                registerNumber: e.target.value,
+                              })
+                            }
                           />
                         </Box>
                       </div>
@@ -281,16 +320,34 @@ export function CompleteProfile(props: Props) {
                             id="outlined-basic"
                             label="Instagram Link"
                             variant="outlined"
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                instagramUrl: e.target.value,
+                              })
+                            }
                           />
                           <TextField
                             id="outlined-basic"
                             label="Linkedin Link*"
                             variant="outlined"
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                linkedInUrl: e.target.value,
+                              })
+                            }
                           />
                           <TextField
                             id="outlined-basic"
                             label="Github Link*"
                             variant="outlined"
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                githubUrl: e.target.value,
+                              })
+                            }
                           />
                         </Box>
                       </div>
@@ -301,12 +358,24 @@ export function CompleteProfile(props: Props) {
                             label="Description*"
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                description: e.target.value,
+                              })
+                            }
                           />
                           <TextField
                             id="outlined-basic"
                             label="WhatsApp Number*"
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
+                            onChange={e =>
+                              setValues({
+                                ...values,
+                                whatsappNumber: e.target.value,
+                              })
+                            }
                           />
                         </Box>
                       </div>
@@ -388,7 +457,7 @@ export function CompleteProfile(props: Props) {
                         size="medium"
                         sx={{ mt: 3, mb: 2 }}
                         color="primary"
-                        // onClick={handleSubmit}
+                        onClick={handleUpdateOrSubmit}
                       >
                         Submit
                       </Button>
