@@ -1,6 +1,8 @@
 import React, { Props } from 'react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { endpoint, axiosGet } from '../requests';
+import { Loader } from '../components/Loader';
 
 export function PrivateRoute(props) {
   const Component = props.component;
@@ -9,12 +11,7 @@ export function PrivateRoute(props) {
 
   useEffect(() => {
     let checkUser = async () => {
-      let token = localStorage.getItem('token');
-      let response = await axios.request({
-        method: 'GET',
-        url: `http://localhost:5000/api/auth`,
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      let response = await axiosGet(`/auth`);
       if (response.data.success) {
         setUser(true);
       }
@@ -24,7 +21,7 @@ export function PrivateRoute(props) {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   } else if (!user) {
     return <div>You are not logged in</div>;
   } else {

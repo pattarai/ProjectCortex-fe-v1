@@ -18,7 +18,7 @@ const slice = createSlice({
     updateEvent(state, action: PayloadAction<any>) {},
     deleteEvent(state, action: PayloadAction<any>) {},
     setEvent(state, action: PayloadAction<any>) {
-      state.events.push(...action.payload);
+      state.events = action.payload;
     },
 
     setUpdateEvent(state, action: PayloadAction<any>) {

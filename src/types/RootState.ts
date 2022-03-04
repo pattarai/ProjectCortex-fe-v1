@@ -2,6 +2,8 @@ import { LoginState } from '../app/pages/LoginPage/slice/types';
 import { EventsState } from 'app/pages/EventPage/slice/types';
 import { UserManagementState } from '../app/pages/UserManagement/slice/types';
 import { AttendanceState } from 'app/pages/Attendance/slice/types';
+import { ProfileCommonViewState } from '../app/pages/ProfileCommonView/slice/types';
+import { ProfileViewState } from 'app/pages/ProfileView/slice/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -13,5 +15,7 @@ export interface RootState {
   events?: EventsState;
   userManagement?: UserManagementState;
   attendance?: AttendanceState;
+  profileCommonView?: ProfileCommonViewState;
+  profileView?: ProfileViewState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
