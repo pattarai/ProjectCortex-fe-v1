@@ -117,7 +117,7 @@ export function Ranking() {
                                 <CardContent>
                                   <Avatar
                                     alt={list.users.firstName}
-                                    src={`${imgurl}/bitmoji/${list.userId}`}
+                                    src={`${imgurl}/bitmoji/${list.userId}.jpg`}
                                     sx={{
                                       width: 70,
                                       height: 70,
@@ -182,7 +182,7 @@ export function Ranking() {
                                   </span>
                                   <Avatar
                                     alt={data.users.firstName}
-                                    src={`${imgurl}/bitmoji/${data.userId}`}
+                                    src={`${imgurl}/bitmoji/${data.userId}.jpg`}
                                     sx={{
                                       width: 40,
                                       height: 40,
