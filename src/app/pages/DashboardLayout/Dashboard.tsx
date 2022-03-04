@@ -22,8 +22,8 @@ import {
 } from 'react-icons/md';
 import { GoChevronLeft as ChevronLeftIcon } from 'react-icons/go';
 import { mainListItems, secondaryListItems } from './ListItems';
-import Img from '.images/subiksha.jpeg';
-import Svg from '.images/Circle_logo_White.svg';
+import Img from './images/subiksha.jpeg';
+import Svg from './images/Circle_logo_White.svg';
 
 const drawerWidth: number = 240;
 
