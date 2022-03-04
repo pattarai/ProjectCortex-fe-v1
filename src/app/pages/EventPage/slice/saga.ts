@@ -19,7 +19,6 @@ function* handleGetUser() {
   try {
     const res = yield call(() => axiosGet('/admin/events'));
     const data = res.data.data;
-    console.log(data);
     yield put(actions.setEvent(data));
   } catch (error) {
     yield put(actions.setError(true));
@@ -28,7 +27,7 @@ function* handleGetUser() {
 
 function* handleAddUser(action: any) {
   try {
-    const res = yield call(() => axiosPost('/events', action.payload));
+    const res = yield call(() => axiosPost('/admin/events', action.payload));
     const data = res.data;
     yield put(actions.setEvent(data));
   } catch (error) {
@@ -38,7 +37,7 @@ function* handleAddUser(action: any) {
 
 function* handleUpdateUser(action: any) {
   try {
-    yield call(() => axiosPatch('/events', action.payload));
+    yield call(() => axiosPatch('/admin/events', action.payload));
     yield put(actions.setUpdateEvent(action.payload));
   } catch (error) {
     yield put(actions.setError(true));
@@ -47,7 +46,9 @@ function* handleUpdateUser(action: any) {
 
 function* handleDeleteUser(action: any) {
   try {
-    yield call(() => axiosDelete('/events', { event_id: action.payload }));
+    yield call(() =>
+      axiosDelete('/admin/events', { event_id: action.payload }),
+    );
     yield put(actions.setDeleteEvent(action.payload));
   } catch (error) {
     yield put(actions.setError(true));

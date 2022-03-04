@@ -7,6 +7,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { CircularProgress } from '@mui/material';
 import { axiosPost } from '../../requests';
+import { Loader } from '../../components/Loader';
 
 export function AttendanceCrew(props: any) {
   interface EventsList {
@@ -55,7 +56,7 @@ export function AttendanceCrew(props: any) {
   }, []);
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return <Loader />;
   } else if (events.length === 0) {
     return <h1>No events to display</h1>;
   } else {

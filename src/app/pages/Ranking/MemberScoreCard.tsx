@@ -13,6 +13,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { axiosPost } from '../../requests';
 import Skeleton from '@mui/material/Skeleton';
+import { Loader } from '../../components/Loader';
 
 type userDetails = {
   factors: {
@@ -59,6 +60,8 @@ export default function MemberScoreCard() {
       setLoading(false);
     });
   }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <>

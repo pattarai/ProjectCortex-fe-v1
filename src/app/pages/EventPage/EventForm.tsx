@@ -26,8 +26,6 @@ export default function EventForm({ setOpenModal, updateEvent, setLoading }) {
     ? events.find(u => u.event_id === updateEvent)
     : null;
 
-  console.log(updateEventValue);
-
   const [values, setValues] = useState<EventData>({
     id: updateEventValue ? updateEventValue.event_id : 0,
     name: updateEventValue ? updateEventValue.event_name : '',

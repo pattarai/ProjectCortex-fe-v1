@@ -28,9 +28,6 @@ export default function EditForm({
     githubUrl: updateUserValue ? updateUserValue.githubUrl : '',
     linkedInUrl: updateUserValue ? updateUserValue.linkedInUrl : '',
     description: updateUserValue ? updateUserValue.description : '',
-    dateOfBirth: updateUserValue
-      ? dateFormat(updateUserValue.dateOfBirth)
-      : null,
   });
 
   const [errors, setErrors] = useState({
@@ -42,7 +39,6 @@ export default function EditForm({
     githubUrlError: '',
     linkedInUrlError: '',
     descriptionError: '',
-    dateOfBirthError: '',
     isError: false,
   });
 
@@ -282,7 +278,7 @@ export default function EditForm({
                 setValues({ ...values, githubUrl: e.target.value })
               }
             />
-            <br />
+            {/* <br />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date of Birth"
@@ -304,11 +300,12 @@ export default function EditForm({
                         ? errors.dateOfBirthError
                         : '')
                     }
+                    required={true}
                     sx={{ width: '100%' }}
                   />
                 )}
               />
-            </LocalizationProvider>
+            </LocalizationProvider> */}
           </div>
           <div className="d-flex mt-4">
             <Button variant="contained" onClick={handleUpdateOrSubmit}>

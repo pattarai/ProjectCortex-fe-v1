@@ -24,6 +24,7 @@ import { useDispatch } from 'react-redux';
 import { useLoginSlice } from './slice';
 import { axiosPost } from '../../requests';
 import { useHistory } from 'react-router-dom';
+import { Loader } from '../../components/Loader';
 
 type TransitionProps = Omit<SlideProps, 'direction'>;
 
@@ -40,6 +41,7 @@ export function LoginPage() {
   const dispatch = useDispatch();
   const { actions } = useLoginSlice();
   const history = useHistory();
+  const [loading, setLoading] = React.useState(false);
 
   const [values, setValues] = React.useState({ email: '', password: '' });
   const [errors, setErrors] = React.useState({
@@ -98,16 +100,18 @@ export function LoginPage() {
   }
 
   const handleSubmit = async () => {
+    setLoading(true);
     if (checkError()) {
       const response = await axiosPost('/auth/login', values);
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
-        history.push('/dashboard');
+        history.push('/dashboard/profile');
       } else {
         setResponseError(response.data.message);
         setOpen(true);
       }
     }
+    setLoading(false);
     // dispatch(
     //   actions.login({
     //     email: data.get('email'),
@@ -115,6 +119,8 @@ export function LoginPage() {
     //   }),
     // );
   };
+
+  if (loading) return <Loader />;
 
   return (
     <ThemeProvider theme={theme}>
