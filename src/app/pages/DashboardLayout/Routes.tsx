@@ -7,6 +7,9 @@ import * as React from 'react';
 import { Route, Switch } from 'react-router';
 import { EventPage } from '../EventPage';
 import { UserManagement } from '../UserManagement';
+import { ProfileView } from '../ProfileView';
+import { ProfileCommonView } from '../ProfileCommonView';
+import { CompleteProfile } from '../CompleteProfile';
 import { Attendance } from '../Attendance';
 import { AttendanceCrew } from '../AttendanceCrew';
 import { Ranking } from '../Ranking';
@@ -26,6 +29,9 @@ export function Routes(props: Props) {
         component={UserManagement}
       />
       <Route exact path="/dashboard/admin/attendance" component={Attendance} />
+      <Route path="/dashboard/profilecv" component={ProfileCommonView} />
+      <Route path="/dashboard/profile" component={ProfileView} />
+      <Route path="/dashboard/complete-profile" component={CompleteProfile} />
     </Switch>
   );
 }
