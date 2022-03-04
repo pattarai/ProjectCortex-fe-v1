@@ -12,7 +12,10 @@ import { Link } from 'react-router-dom';
 
 export const mainListItems = (
   <div>
-    <Link to={{ pathname: '/dashboard/profile' }}>
+    <Link
+      to={{ pathname: '/dashboard/profile' }}
+      style={{ textDecoration: 'none' }}
+    >
       <ListItem button>
         <ListItemIcon>
           <DashboardIcon />
@@ -20,30 +23,50 @@ export const mainListItems = (
         <ListItemText primary="Dashboard" />
       </ListItem>
     </Link>
-    <ListItem button>
-      <ListItemIcon>
-        <HomeIcon />
-      </ListItemIcon>
-      <ListItemText primary="Home" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <CalendarTodayIcon />
-      </ListItemIcon>
-      <ListItemText primary="Attendance" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <EmojiEventsIcon />
-      </ListItemIcon>
-      <ListItemText primary="Ranking" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <EventAvailableIcon />
-      </ListItemIcon>
-      <ListItemText primary="Events" />
-    </ListItem>
+    <Link
+      to={{ pathname: '/dashboard/home' }}
+      style={{ textDecoration: 'none' }}
+    >
+      <ListItem button>
+        <ListItemIcon>
+          <HomeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Home" />
+      </ListItem>
+    </Link>
+    <Link
+      to={{ pathname: '/dashboard/attendance' }}
+      style={{ textDecoration: 'none' }}
+    >
+      <ListItem button>
+        <ListItemIcon>
+          <CalendarTodayIcon />
+        </ListItemIcon>
+        <ListItemText primary="Attendance" />
+      </ListItem>
+    </Link>
+    <Link
+      to={{ pathname: '/dashboard/ranking' }}
+      style={{ textDecoration: 'none' }}
+    >
+      <ListItem button>
+        <ListItemIcon>
+          <EmojiEventsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Ranking" />
+      </ListItem>
+    </Link>
+    <Link
+      to={{ pathname: '/dashboard/events' }}
+      style={{ textDecoration: 'none' }}
+    >
+      <ListItem button>
+        <ListItemIcon>
+          <EventAvailableIcon />
+        </ListItemIcon>
+        <ListItemText primary="Events" />
+      </ListItem>
+    </Link>
   </div>
 );
 
