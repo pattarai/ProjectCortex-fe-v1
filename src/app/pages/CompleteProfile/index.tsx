@@ -26,22 +26,29 @@ import { BsCamera } from 'react-icons/bs';
 import { axiosGet, axiosPatch } from '../../requests';
 import { useState, useEffect } from 'react';
 import { dateFormat } from '../../components/dateFormat';
+import { Loader } from '../../components/Loader';
 
 export function CompleteProfile({ updateUser }) {
   const [userData, setUserData] = useState<any | null>(null);
   const formdata = new FormData();
+  const [loading, setLoading] = useState(true);
 
   async function completeProfileGet() {
     const res = await axiosGet('/users/complete-profile');
     const user = res.data.user;
     setUserData(user);
+    setLoading(false);
   }
 
   async function completeProfilePatch() {
-    let data = formdata;
-    const res = await axiosPatch('/users/complete-profile', data);
-    console.log(res);
-    console.log(data);
+    setLoading(true);
+    try {
+      let data = formdata;
+      await axiosPatch('/users/complete-profile', data);
+      setLoading(false);
+    } catch {
+      setLoading(false);
+    }
   }
 
   const [values, setValues] = useState({
@@ -77,6 +84,8 @@ export function CompleteProfile({ updateUser }) {
   const Input = styled('input')({
     display: 'none',
   });
+
+  if (loading) return <Loader />;
 
   return (
     <>

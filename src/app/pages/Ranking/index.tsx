@@ -25,6 +25,7 @@ import { FaSearch } from 'react-icons/fa';
 import MemberScoreCard from './MemberScoreCard';
 import { axiosGet, imgurl } from '../../requests';
 import LinearProgress from '@mui/material/LinearProgress';
+import { Loader } from '../../components/Loader';
 
 type Users = {
   firstName: string;
@@ -70,6 +71,8 @@ export function Ranking() {
       filteredUser && setUserSearchData(filteredUser);
     }
   }
+
+  if (loading) return <Loader />;
 
   return (
     <>

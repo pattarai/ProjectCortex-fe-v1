@@ -16,15 +16,18 @@ import {
 import { BiSearch as SearchIcon } from 'react-icons/bi';
 import { Box } from '@mui/system';
 import { axiosGet, imgurl } from '../../requests';
+import { Loader } from '../../components/Loader';
 
 interface Props {}
 
 export function ProfileCommonView(props: Props) {
   const [userData, setUserData] = useState<any | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   async function getCommonView() {
     const res = await axiosGet('/users/common-view');
     const users = res.data.users;
     setUserData(users);
+    setLoading(false);
   }
   useEffect(() => {
     getCommonView();
@@ -41,6 +44,9 @@ export function ProfileCommonView(props: Props) {
       filteredUser && setUserData(filteredUser);
     }
   }
+
+  if (loading) return <Loader />;
+
   return (
     <>
       <div className="container my-3">
