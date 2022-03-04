@@ -67,7 +67,6 @@ export function Ranking() {
       const filteredUser = userData?.filter(row =>
         row.users.firstName.toLowerCase().includes(searchedVal.toLowerCase()),
       );
-      console.log(filteredUser, searchedVal);
       filteredUser && setUserSearchData(filteredUser);
     }
   }

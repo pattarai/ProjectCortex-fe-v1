@@ -49,7 +49,13 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <div>
-    <ListItem button>
+    <ListItem
+      button
+      onClick={() => {
+        localStorage.removeItem('token');
+        window.location.href = '/';
+      }}
+    >
       <ListItemIcon>
         <ExitToAppIcon />
       </ListItemIcon>

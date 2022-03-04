@@ -40,7 +40,6 @@ export function ProfileCommonView(props: Props) {
       const filteredUser = userData?.filter(row =>
         row.users.firstName.toLowerCase().includes(searchedVal.toLowerCase()),
       );
-      console.log(filteredUser, searchedVal);
       filteredUser && setUserData(filteredUser);
     }
   }
