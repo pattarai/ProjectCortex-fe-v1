@@ -16,15 +16,16 @@ interface Props {}
 export function Routes(props: Props) {
   return (
     <Switch>
-      <Route exact path="/dashboard/usermanage" component={UserManagement} />
-      <Route exact path="/dashboard/events" component={EventPage} />
-      <Route exact path="/dashboard/admin/attendance" component={Attendance} />
+      <Route exact path="/dashboard/attendance" component={AttendanceCrew} />
+      <Route exact path="/dashboard/ranking" component={Ranking} />
+
+      <Route exact path="/dashboard/admin/events" component={EventPage} />
       <Route
         exact
-        path="/dashboard/users/attendance"
-        component={AttendanceCrew}
+        path="/dashboard/admin/user-manage"
+        component={UserManagement}
       />
-      <Route exact path="/dashboard/users/ranking" component={Ranking} />
+      <Route exact path="/dashboard/admin/attendance" component={Attendance} />
     </Switch>
   );
 }
