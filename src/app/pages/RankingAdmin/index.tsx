@@ -77,13 +77,13 @@ export function RankingAdmin(props: Props) {
     console.log(rankingData);
 
     setFactorsList(
-      rankingData !== null
-        ? rankingData.factors.filter(factor => factor.phase == phase)
+      rankingAdminData !== null
+        ? rankingAdminData.factors.filter(factor => factor.phase == phase)
         : [],
     );
 
     const tempList: number[] = [];
-    rankingData?.factors.forEach(factor => {
+    rankingAdminData?.factors.forEach(factor => {
       if (!tempList.includes(factor.phase)) tempList.push(factor.phase);
     });
     tempList.sort();
@@ -113,7 +113,6 @@ export function RankingAdmin(props: Props) {
         ? rankingData.factors.filter(factor => factor.phase == phaseNum)
         : [],
     );
-
     // Reset the factor field
     setTextFieldValue('');
     setSelectedFactor(null);
@@ -132,9 +131,16 @@ export function RankingAdmin(props: Props) {
 
   function deleteFactor() {
     setFactorAction(2);
-    // !_containInput && setTextFieldValue('');
     setOpenPopup(true);
   }
+
+  const deleteFactorAction = () => {
+    if (selectedFactor !== null) {
+      dispatch(actions.deleteFactor({ factorId: selectedFactor.factorId }));
+      setTextFieldValue('');
+      setSelectedFactor(null);
+    }
+  };
 
   return (
     <>
@@ -148,7 +154,7 @@ export function RankingAdmin(props: Props) {
           >
             <h1 className="mb-3">Ranking</h1>
             <div className="d-md-flex justify-content-between align-items-center mb-2 w-md-100">
-              <FormControl className="col-12 col-md-6 mb-2">
+              <FormControl className="col-12 col-md-6 mb-2 mx-2">
                 <InputLabel id="phase-label">Phase</InputLabel>
                 <Select
                   id="phase"
@@ -331,7 +337,7 @@ export function RankingAdmin(props: Props) {
               {factorAction === 2 ? (
                 <DeleteForm
                   setOpenModal={setOpenPopup}
-                  action={actions.deleteFactor(selectedFactor?.factorId)}
+                  action={deleteFactorAction}
                 />
               ) : (
                 <FactorForm
