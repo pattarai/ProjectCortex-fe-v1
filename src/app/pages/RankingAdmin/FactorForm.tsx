@@ -100,15 +100,19 @@ export default function FactorForm(props: Props) {
         ...error,
         phase: { error: true, errorMsg: 'Please enter a phase.' },
       });
-    if (error === resetErrorMsg) {
+
+    const isError: boolean =
+      error.factorName.error && error.maxScore.error && error.phase.error;
+    if (!isError) {
       const params = {
-        factorId: factorId,
+        factorId: factorId !== null ? Number(factorId) : factorId,
         factorName: factorName,
-        maxScore: maxScore,
-        phase: phase,
+        maxScore: Number(maxScore),
+        phase: Number(phase),
       };
       if (props.addFactor) dispatch(props.actions.addFactor(params));
       else dispatch(props.actions.updateFactor(params));
+      props.setOpenModal(false);
     }
   };
 
