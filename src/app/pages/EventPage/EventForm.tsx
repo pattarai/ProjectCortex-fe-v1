@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
+import DatePicker from '@mui/lab/DatePicker';
 import {
   TextField,
   Button,
@@ -189,10 +189,9 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
         <div className="ms-md-3">
           <div>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateTimePicker
+              <DatePicker
                 label="Event Date"
                 value={values.eventDate}
-                ampm={false}
                 onChange={newValue => {
                   setValues({ ...values, eventDate: newValue });
                 }}
@@ -214,6 +213,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
                 )}
               />
             </LocalizationProvider>
+
             <FormControl
               sx={{ m: 1, minWidth: 180 }}
               error={errors.isError && values.conductedBy === '' ? true : false}
