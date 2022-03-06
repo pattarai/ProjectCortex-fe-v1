@@ -33,3 +33,10 @@
     height: 50vh !important;
   }
 }
+
+.card-shadow {
+  background-color: #ffffff;
+  border: 1px solid #f7f8f9;
+  border-radius: 7px;
+  box-shadow: 0 0 5px 0px rgb(8 11 14 / 6%), 0 16px 16px -1px rgb(8 11 14 / 10%);
+}

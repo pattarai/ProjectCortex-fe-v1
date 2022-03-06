@@ -39,6 +39,7 @@ export function ProfileView(props: Props) {
     const res = await axiosGet('/users/profile');
     const users = res.data.users;
     setUserData(users);
+    // console.log(`${imgurl}/profile/${userData.userId}.jpg`);
   }
   useEffect(() => {
     getProfile();
@@ -74,9 +75,8 @@ export function ProfileView(props: Props) {
                     <div className="px-4 mx-1  w-100 align-items-center justfiy-content-between">
                       <CardMedia
                         component="img"
-                        src={`${imgurl}/images/${userData.userId}`}
+                        src={`${imgurl}/profile/${userData.userId}.jpg`}
                         sx={{ m: 4, width: 200 }}
-                        image={Img}
                         alt="Your image"
                         className="my-0"
                       />
