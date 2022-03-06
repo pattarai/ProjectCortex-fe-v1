@@ -18,23 +18,16 @@ export default function MemberForm({
 }) {
   const dispatch = useDispatch();
 
+  const updateMember = updateMemberId
+    ? crewAttendance.find(mem => mem.userId === updateMemberId)
+    : null;
+
   const [member, setMember] = useState({
-    memberName: '',
-    memberStatus: 1,
+    memberName: updateMember
+      ? `${updateMember.users.firstName} ${updateMember.users.lastName}`
+      : '',
+    memberStatus: updateMember ? updateMember.status : 1,
   });
-
-  let updateMemberName = '';
-
-  if (updateMemberId) {
-    const updateMember = crewAttendance.find(
-      mem => mem.userId === updateMemberId,
-    );
-    // setMember({
-    //   memberName: updateMember.userName,
-    //   memberStatus: updateMember.status,
-    // });
-    updateMemberName = `${updateMember.users.firstName} ${updateMember.users.lastName}`;
-  }
 
   const [errors, setErrors] = useState({
     memberNameError: '',
@@ -72,7 +65,7 @@ export default function MemberForm({
       <TextField
         disabled={updateMemberId ? true : false}
         id="outlined-basic"
-        value={updateMemberId ? updateMemberName : member.memberName}
+        value={member.memberName}
         label="Name"
         variant="outlined"
         sx={{ width: '100%', mb: '1rem' }}

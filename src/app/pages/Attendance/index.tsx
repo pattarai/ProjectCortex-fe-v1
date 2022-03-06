@@ -13,6 +13,7 @@ import {
   TextField,
   Card,
   Chip,
+  LinearProgress,
 } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -51,13 +52,10 @@ export function Attendance(props: Props) {
   };
 
   const [openPopup, setOpenPopup] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  const [updateOrDeleteMember, setUpdateOrDeleteMember] = useState({
-    updateMemberId: 0,
-    deleteMemberId: 0,
-  });
+  const [loading, setLoading] = useState(false);
   // const [eventMsg, setEventMsg] = useState('');
+  const [updateUser, setUpdateUser] = useState<number | null>(null);
+  const [deleteUser, setDeleteUser] = useState<number | null>(null);
 
   const [value, setValue] = useState({
     eventName: '',
@@ -148,36 +146,32 @@ export function Attendance(props: Props) {
       field: 'actions',
       type: 'actions',
       getActions: (params: GridRowParams) => {
-        if (params.row.externalId) {
-          return [
-            <GridActionsCellItem
-              disabled={loading}
-              icon={<MdDelete style={{ fontSize: '23px' }} />}
-              color="secondary"
-              onClick={() => {
-                setUpdateOrDeleteMember({
-                  deleteMemberId: params.row.externalId,
-                  updateMemberId: 0,
-                });
-                setOpenPopup(true);
-              }}
-              label="Delete"
-            />,
-          ];
-        } else {
+        if (params.row.userId) {
           return [
             <GridActionsCellItem
               icon={<MdEdit style={{ fontSize: '23px' }} />}
               disabled={loading}
               color="primary"
               onClick={() => {
-                setUpdateOrDeleteMember({
-                  deleteMemberId: 0,
-                  updateMemberId: params.row.userId,
-                });
+                setDeleteUser(null);
+                setUpdateUser(params.row.userId);
                 setOpenPopup(true);
               }}
               label="Edit"
+            />,
+          ];
+        } else {
+          return [
+            <GridActionsCellItem
+              disabled={loading}
+              icon={<MdDelete style={{ fontSize: '23px' }} />}
+              color="secondary"
+              onClick={() => {
+                setDeleteUser(params.row.externalId);
+                setUpdateUser(null);
+                setOpenPopup(true);
+              }}
+              label="Delete"
             />,
           ];
         }
@@ -194,10 +188,8 @@ export function Attendance(props: Props) {
               disabled={loading}
               variant="outlined"
               onClick={() => {
-                setUpdateOrDeleteMember({
-                  deleteMemberId: 0,
-                  updateMemberId: 0,
-                });
+                setUpdateUser(null);
+                setDeleteUser(null);
                 setOpenPopup(true);
               }}
               className="me-2"
@@ -298,6 +290,7 @@ export function Attendance(props: Props) {
               variant="contained"
               sx={{
                 width: { xs: '100%', md: '50%' },
+                height: '58px',
                 mt: { xs: '20px', md: '0px' },
                 mx: { xs: '0px', md: '20px' },
               }}
@@ -310,6 +303,11 @@ export function Attendance(props: Props) {
             </Button>
           </div>
         </Card>
+        {loading && (
+          <div style={{ width: '100%' }}>
+            <LinearProgress />
+          </div>
+        )}
         {rows.crewAttendance.length ? (
           <div className="mt-3" style={{ height: 500, width: '100%' }}>
             <DataGrid
@@ -346,26 +344,26 @@ export function Attendance(props: Props) {
 
       <Popup
         title={
-          updateOrDeleteMember.deleteMemberId
+          deleteUser
             ? 'Are you sure wanna delete'
-            : updateOrDeleteMember.updateMemberId
+            : updateUser
             ? 'Update Status'
             : 'Add Member'
         }
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
-        {updateOrDeleteMember.deleteMemberId ? (
+        {deleteUser ? (
           <DeleteForm
             setLoading={setLoading}
             setOpenModal={setOpenPopup}
             action={actions.deleteExternalMember({
-              externalId: updateOrDeleteMember.deleteMemberId,
+              externalId: deleteUser,
             })}
           />
         ) : (
           <MemberForm
-            updateMemberId={updateOrDeleteMember.updateMemberId}
+            updateMemberId={updateUser}
             crewAttendance={crewAttendance}
             actions={actions}
             currentEventId={eventId}
