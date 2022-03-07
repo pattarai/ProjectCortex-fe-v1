@@ -18,20 +18,20 @@ export const mainListItems = (
     >
       <ListItem button>
         <ListItemIcon>
-          <DashboardIcon />
+          <HomeIcon />
         </ListItemIcon>
-        <ListItemText primary="Dashboard" />
+        <ListItemText primary="Home" />
       </ListItem>
     </Link>
     <Link
-      to={{ pathname: '/dashboard/home' }}
+      to={{ pathname: '/dashboard/profilecv' }}
       style={{ textDecoration: 'none' }}
     >
       <ListItem button>
         <ListItemIcon>
-          <HomeIcon />
+          <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary="Home" />
+        <ListItemText primary="Crew" />
       </ListItem>
     </Link>
     <Link
