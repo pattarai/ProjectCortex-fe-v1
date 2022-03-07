@@ -336,6 +336,7 @@ export function RankingAdmin(props: Props) {
             >
               {factorAction === 2 ? (
                 <DeleteForm
+                  setLoading={setLoading}
                   setOpenModal={setOpenPopup}
                   action={deleteFactorAction}
                 />

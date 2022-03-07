@@ -1,16 +1,24 @@
 /* --- STATE --- */
-export interface MemberAttendanceType {
-  id: number;
-  name: string;
+export interface CrewAttendanceType {
+  userId: number;
+  eventId: number;
   status: number;
+  users: {
+    firstName: string;
+    lastName: string;
+  };
 }
 
-interface Attendance {
-  id: number;
-  eventName: string;
-  eventType: string;
-  eventDate: string | Date;
-  members: MemberAttendanceType[];
+interface ExternalAttendanceType {
+  externalId?: number;
+  eventId?: number;
+  name: string;
 }
 
-export interface AttendanceState extends Array<Attendance> {}
+export interface AttendanceState {
+  error: boolean;
+  crewAttendance: CrewAttendanceType[];
+  externalAttendance: ExternalAttendanceType[];
+  eventId: number;
+  isExist: boolean;
+}

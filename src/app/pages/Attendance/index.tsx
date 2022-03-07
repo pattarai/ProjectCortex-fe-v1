@@ -13,16 +13,18 @@ import {
   TextField,
   Card,
   Chip,
+  LinearProgress,
 } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import {
   DataGrid,
-  GridColDef,
-  GridSelectionModel,
+  GridColumns,
   GridRenderCellParams,
-  GridValueSetterParams,
+  GridValueGetterParams,
+  GridActionsCellItem,
+  GridRowParams,
 } from '@mui/x-data-grid';
 
 import Popup from '../../components/Popup';
@@ -30,118 +32,148 @@ import { dateFormat } from '../../components/dateFormat';
 import DeleteForm from '../../components/DeleteForm';
 import MemberForm from './MemberForm';
 import { RiAddFill } from 'react-icons/ri';
-import {
-  MdDelete,
-  MdOutlineCheck,
-  MdNotInterested,
-  MdInfoOutline,
-} from 'react-icons/md';
+import { MdDelete, MdOutlineCheck, MdClear, MdEdit } from 'react-icons/md';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useAttendanceSlice } from './slice';
 import { selectAttendance } from './slice/selectors';
-import { MemberAttendanceType } from './slice/types';
 
 interface Props {}
 
 export function Attendance(props: Props) {
   const { actions } = useAttendanceSlice();
   const dispatch = useDispatch();
-  const user = useSelector(selectAttendance);
+  const { crewAttendance, externalAttendance, eventId, isExist } =
+    useSelector(selectAttendance);
 
-  const eventsList = ['React basics', 'Elevate'];
+  type AttendanceType = {
+    crewAttendance: typeof crewAttendance;
+    externalAttendance: typeof externalAttendance;
+  };
+
   const [openPopup, setOpenPopup] = useState(false);
+  const [loading, setLoading] = useState(false);
+  // const [eventMsg, setEventMsg] = useState('');
+  const [updateUser, setUpdateUser] = useState<number | null>(null);
+  const [deleteUser, setDeleteUser] = useState<number | null>(null);
 
   const [value, setValue] = useState({
     eventName: '',
     eventType: '',
     eventDate: '',
   });
-  const [eventMsg, setEventMsg] = useState('');
 
-  const [rows, setRows] = useState<null | MemberAttendanceType[]>(null);
-  const [currentEventId, setCurrentEventId] = useState<null | number>(null);
-  const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
-  const [showButton, setShowButton] = useState(false);
+  const [rows, setRows] = useState<AttendanceType>({
+    crewAttendance: [],
+    externalAttendance: [],
+  });
 
   useEffect(() => {
-    if (rows) {
-      const searchedEvent = user.find(e => e.id === currentEventId)?.members;
-      searchedEvent && setRows(searchedEvent);
+    if (crewAttendance.length) {
+      setRows({
+        crewAttendance,
+        externalAttendance,
+      });
+      setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  function setStatus(params: GridValueSetterParams) {
-    const newRow = { ...params.row, status: params.value };
-    dispatch(actions.updateUser({ eventId: currentEventId, member: newRow }));
-    return newRow;
-  }
+  }, [crewAttendance, externalAttendance]);
 
   function customCellRender(params: GridRenderCellParams) {
-    return (
-      <>
-        {params.value === 1 && (
-          <Chip
-            icon={<MdOutlineCheck />}
-            variant="outlined"
-            color="success"
-            label="Present"
-          />
-        )}
-        {params.value === 0 && (
-          <Chip
-            icon={<MdNotInterested />}
-            variant="outlined"
-            color="error"
-            label="Absent"
-          />
-        )}
-        {params.value === 2 && (
-          <Chip
-            icon={<MdInfoOutline />}
-            variant="outlined"
-            color="info"
-            label="Informed"
-          />
-        )}
-      </>
-    );
+    if (params.row.status === 0) {
+      return <Chip variant="outlined" color="error" label="Absent" />;
+    } else if (params.row.status === 2) {
+      return <Chip variant="outlined" color="info" label="Informed" />;
+    } else {
+      return <Chip variant="outlined" color="success" label="Present" />;
+    }
+  }
+  function customIsCrewCellRender(params: GridRenderCellParams) {
+    if (params.row.users) {
+      return (
+        <MdOutlineCheck
+          style={{ color: '#53bd83', height: '30px', width: 'auto' }}
+        />
+      );
+    } else {
+      return (
+        <MdClear style={{ color: '#d64545', height: '30px', width: 'auto' }} />
+      );
+    }
   }
 
-  const columns: GridColDef[] = [
-    {
-      field: 'id',
-      headerName: 'S.No.',
-      minWidth: 100,
-      flex: 0.5,
-      filterable: false,
-    },
+  const columns: GridColumns = [
     {
       field: 'name',
       headerName: 'Name',
       minWidth: 150,
       flex: 0.5,
       sortable: false,
+      valueGetter: (params: GridValueGetterParams) => {
+        if (params.row.name) {
+          return params.row.name;
+        } else {
+          return `${params.row.users.firstName} ${params.row.users.lastName}`;
+        }
+      },
+    },
+    {
+      field: 'isCrew',
+      headerName: 'IsCrew',
+      minWidth: 150,
+      flex: 0.5,
+      sortable: false,
+      renderCell: customIsCrewCellRender,
     },
     {
       field: 'status',
-      type: 'singleSelect',
       headerName: 'Status',
       minWidth: 150,
       flex: 0.5,
-      editable: true,
       sortable: false,
-      valueOptions: [0, 1, 2],
-      valueSetter: setStatus,
       renderCell: customCellRender,
       valueFormatter: params => {
         if (params.value === 0) {
           return `Absent`;
-        } else if (params.value === 1) {
-          return `Present`;
         } else if (params.value === 2) {
           return `Informed`;
+        } else {
+          return `Present`;
+        }
+      },
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      getActions: (params: GridRowParams) => {
+        if (params.row.userId) {
+          return [
+            <GridActionsCellItem
+              icon={<MdEdit style={{ fontSize: '23px' }} />}
+              disabled={loading}
+              color="primary"
+              onClick={() => {
+                setDeleteUser(null);
+                setUpdateUser(params.row.userId);
+                setOpenPopup(true);
+              }}
+              label="Edit"
+            />,
+          ];
+        } else {
+          return [
+            <GridActionsCellItem
+              disabled={loading}
+              icon={<MdDelete style={{ fontSize: '23px' }} />}
+              color="secondary"
+              onClick={() => {
+                setDeleteUser(params.row.externalId);
+                setUpdateUser(null);
+                setOpenPopup(true);
+              }}
+              label="Delete"
+            />,
+          ];
         }
       },
     },
@@ -150,50 +182,41 @@ export function Attendance(props: Props) {
   function EditToolbar() {
     return (
       <>
-        {showButton && (
-          <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2 mb-3">
+        <div className="w-100 d-flex justify-content-start justify-content-md-end pt-3 px-2 mb-3">
+          {!isExist && (
             <Button
+              disabled={loading}
               variant="outlined"
               onClick={() => {
-                setSelectionModel([]);
+                setUpdateUser(null);
+                setDeleteUser(null);
                 setOpenPopup(true);
               }}
+              className="me-2"
             >
               <RiAddFill />
               Add
             </Button>
-            {selectionModel.length > 0 && (
-              <Button
-                variant="outlined"
-                color="secondary"
-                sx={{ ml: 2 }}
-                onClick={() => setOpenPopup(true)}
-              >
-                <MdDelete />
-                Delete
-              </Button>
-            )}
-          </div>
-        )}
+          )}
+          <Button
+            disabled={loading}
+            variant="outlined"
+            onClick={() => {
+              dispatch(
+                actions.updateAttendance({
+                  crewAttendance: rows.crewAttendance,
+                  externalAttendance: rows.externalAttendance,
+                  isExist,
+                }),
+              );
+              setLoading(true);
+            }}
+          >
+            Send
+          </Button>
+        </div>
       </>
     );
-  }
-
-  function handleSubmit() {
-    const rowData = user.find(
-      item =>
-        item.eventDate === value.eventDate &&
-        item.eventName === value.eventName &&
-        item.eventType === value.eventType,
-    );
-    if (typeof rowData === 'undefined') {
-      setRows(null);
-      setEventMsg('No such Event');
-    } else {
-      rowData.eventType !== 'crew' ? setShowButton(true) : setShowButton(false);
-      setCurrentEventId(rowData.id);
-      setRows(rowData.members);
-    }
   }
 
   return (
@@ -207,28 +230,22 @@ export function Attendance(props: Props) {
           }}
         >
           <div className="d-md-flex w-md-100">
-            <FormControl fullWidth sx={{ mr: '20px' }}>
-              <InputLabel id="demo-simple-select-label">Event Name</InputLabel>
-              <Select
-                name="eventName"
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={value.eventName}
-                label="Event Name"
-                onChange={event =>
-                  setValue({
-                    ...value,
-                    eventName: event.target.value,
-                  })
-                }
-              >
-                {eventsList.map(event => (
-                  <MenuItem key={event} value={event}>
-                    {event}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <TextField
+              fullWidth
+              value={value.eventName}
+              // error={
+              // }
+              // helperText={
+              //   errors.isError &&
+              //   (errors.firstNameError !== '' ? errors.firstNameError : '')
+              // }
+              id="outlined-basic"
+              className="mb-3"
+              label="First Name"
+              variant="outlined"
+              inputProps={{ maxLength: 15 }}
+              onChange={e => setValue({ ...value, eventName: e.target.value })}
+            />
             <FormControl
               fullWidth
               sx={{ mx: { md: '20px' }, my: { xs: '20px', md: '0px' } }}
@@ -269,30 +286,40 @@ export function Attendance(props: Props) {
               />
             </LocalizationProvider>
             <Button
+              disabled={crewAttendance.length > 0 && loading}
               variant="contained"
               sx={{
                 width: { xs: '100%', md: '50%' },
+                height: '58px',
                 mt: { xs: '20px', md: '0px' },
                 mx: { xs: '0px', md: '20px' },
               }}
-              onClick={handleSubmit}
+              onClick={() => {
+                dispatch(actions.getAttendance(value));
+                setLoading(true);
+              }}
             >
               Submit
             </Button>
           </div>
         </Card>
-        {rows !== null ? (
+        {loading && (
+          <div style={{ width: '100%' }}>
+            <LinearProgress />
+          </div>
+        )}
+        {rows.crewAttendance.length ? (
           <div className="mt-3" style={{ height: 500, width: '100%' }}>
             <DataGrid
-              checkboxSelection={showButton}
               disableSelectionOnClick
-              rows={rows}
+              getRowId={r =>
+                r.userId
+                  ? `${r.users.firstName}-${r.userId}`
+                  : `${r.name}-${r.externalId}`
+              }
+              rows={[...rows.crewAttendance, ...rows.externalAttendance]}
               columns={columns}
-              //loading={rows.length === 0}
-              selectionModel={selectionModel}
-              onSelectionModelChange={newSelectionModel => {
-                setSelectionModel(newSelectionModel);
-              }}
+              loading={loading}
               components={{
                 Toolbar: EditToolbar,
               }}
@@ -310,30 +337,36 @@ export function Attendance(props: Props) {
           </div>
         ) : (
           <h2 className="mt-5" style={{ color: 'white' }}>
-            {eventMsg}
+            {`No Events`}
           </h2>
         )}
       </div>
 
       <Popup
         title={
-          selectionModel.length > 0 ? 'Are you sure wanna delete' : 'Add Member'
+          deleteUser
+            ? 'Are you sure wanna delete'
+            : updateUser
+            ? 'Update Status'
+            : 'Add Member'
         }
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
-        {selectionModel.length > 0 ? (
+        {deleteUser ? (
           <DeleteForm
+            setLoading={setLoading}
             setOpenModal={setOpenPopup}
-            action={actions.deleteUser({
-              eventId: currentEventId,
-              deleteMembers: selectionModel,
+            action={actions.deleteExternalMember({
+              externalId: deleteUser,
             })}
           />
         ) : (
           <MemberForm
+            updateMemberId={updateUser}
+            crewAttendance={crewAttendance}
             actions={actions}
-            currentEventId={currentEventId}
+            currentEventId={eventId}
             setOpenModal={setOpenPopup}
           />
         )}

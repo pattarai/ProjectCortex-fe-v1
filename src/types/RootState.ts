@@ -1,5 +1,9 @@
+import { LoginState } from '../app/pages/LoginPage/slice/types';
+import { EventsState } from 'app/pages/EventPage/slice/types';
 import { UserManagementState } from '../app/pages/UserManagement/slice/types';
 import { AttendanceState } from 'app/pages/Attendance/slice/types';
+import { ProfileCommonViewState } from '../app/pages/ProfileCommonView/slice/types';
+import { ProfileViewState } from 'app/pages/ProfileView/slice/types';
 import { RankingAdminState } from 'app/pages/RankingAdmin/slice/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
@@ -8,8 +12,12 @@ import { RankingAdminState } from 'app/pages/RankingAdmin/slice/types';
   You have to declare them here manually
 */
 export interface RootState {
+  login?: LoginState;
+  events?: EventsState;
   userManagement?: UserManagementState;
   attendance?: AttendanceState;
+  profileCommonView?: ProfileCommonViewState;
+  profileView?: ProfileViewState;
   rankingAdmin?: RankingAdminState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
