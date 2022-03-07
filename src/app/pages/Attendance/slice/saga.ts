@@ -1,14 +1,6 @@
-// import { take, call, put, select, takeLatest } from 'redux-saga/effects';
-// import { sliceActions as actions } from '.';
-
-// function* doSomething() {}
-
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { attendanceActions as actions } from '.';
 import { axiosPatch, axiosPost } from '../../../requests';
-export function* sliceSaga() {
-  // yield takeLatest(actions.someAction.type, doSomething);
-}
 
 function* handleGetAttendance(action: any) {
   try {

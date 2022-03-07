@@ -1,11 +1,18 @@
 /**
  *
- * Event
+ * Event Page
  *
  */
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Button, LinearProgress } from '@mui/material';
+import {
+  Button,
+  LinearProgress,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+} from '@mui/material';
 import {
   DataGrid,
   GridColumns,
@@ -19,7 +26,7 @@ import { RiAddFill } from 'react-icons/ri';
 import Popup from '../../components/Popup';
 import Problem from '../../components/Problem';
 import DeleteForm from '../../components/DeleteForm';
-import EventForm from './EventForm';
+import MemberForm from './EventForm';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useEventsSlice } from './slice';
@@ -29,28 +36,31 @@ interface Props {}
 
 export function EventPage(props: Props) {
   const { actions } = useEventsSlice();
-  const { events, error } = useSelector(selectEvents);
+  const { events, error, phaseList } = useSelector(selectEvents);
   const dispatch = useDispatch();
 
   const [err, setErr] = useState(false);
   const [openPopup, setOpenPopup] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const [EventData, setEventData] = useState<typeof events | null>(null);
-  const [updateEvent, setUpdateEvent] = useState<number | null>(null);
-  const [deleteEvent, setDeleteEvent] = useState<number | null>(null);
+  const [phaseValue, setPhaseValue] = useState<string>('');
+  const [userData, setUserData] = useState<typeof events | null>(null);
+  const [updateUser, setUpdateUser] = useState<number | null>(null);
+  const [deleteUser, setDeleteUser] = useState<number | null>(null);
 
   useEffect(() => {
     if (error) {
       setErr(true);
     } else {
-      setEventData(events);
-      EventData && setLoading(false);
+      setUserData(events);
+      userData && setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events, error]);
 
   useEffect(() => {
     dispatch(actions.getEvent());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns: GridColumns = [
@@ -91,8 +101,8 @@ export function EventPage(props: Props) {
           disabled={loading}
           color="primary"
           onClick={() => {
-            setDeleteEvent(null);
-            setUpdateEvent(params.row.eventId);
+            setDeleteUser(null);
+            setUpdateUser(params.row.eventId);
             setOpenPopup(true);
           }}
           label="Edit"
@@ -102,7 +112,7 @@ export function EventPage(props: Props) {
           icon={<MdDelete style={{ fontSize: '23px' }} />}
           color="secondary"
           onClick={() => {
-            setDeleteEvent(params.row.eventId);
+            setDeleteUser(params.row.eventId);
             setOpenPopup(true);
           }}
           label="Delete"
@@ -111,17 +121,51 @@ export function EventPage(props: Props) {
     },
   ];
 
-  function AddEvent() {
+  function AddUser() {
     return (
-      <div className="my-3 d-md-flex justify-content-end">
+      <div className="my-3 d-md-flex justify-content-between ">
+        <div className="d-flex flex-column flex-md-row align-items-md-center mb-2 mb-md-0">
+          <FormControl sx={{ m: 1, minWidth: 150 }}>
+            <InputLabel id="demo-simple-select-helper-label">Phase</InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={phaseValue}
+              label="Select Phase"
+              onChange={e => {
+                setPhaseValue(e.target.value);
+              }}
+            >
+              {phaseList.map((phase, index) => (
+                <MenuItem key={`${index}-${phase}`} value={phase}>
+                  {phase}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button
+            variant="outlined"
+            size="large"
+            sx={{ minHeight: '55px' }}
+            onClick={() => {
+              console.log(phaseValue);
+              dispatch(actions.getEventByPhase(phaseValue));
+              setUpdateUser(null);
+              setDeleteUser(null);
+            }}
+          >
+            Search
+          </Button>
+        </div>
+
         <Button
           disabled={loading}
           aria-label="Add Event"
           color="primary"
           variant="outlined"
           onClick={() => {
-            setUpdateEvent(null);
-            setDeleteEvent(null);
+            setUpdateUser(null);
+            setDeleteUser(null);
             setOpenPopup(true);
           }}
         >
@@ -148,7 +192,7 @@ export function EventPage(props: Props) {
       <div className="vh-100 d-flex align-justify-center">
         <div style={{ height: 600, width: '95%' }}>
           <DataGrid
-            rows={EventData ? EventData : []}
+            rows={userData ? userData : []}
             columns={columns}
             getRowId={r => r.eventId}
             paginationMode="server"
@@ -156,7 +200,7 @@ export function EventPage(props: Props) {
             loading={loading}
             components={{
               LoadingOverlay: CustomLoadingOverlay,
-              Toolbar: AddEvent,
+              Toolbar: AddUser,
             }}
             sx={{
               boxShadow: 2,
@@ -172,20 +216,20 @@ export function EventPage(props: Props) {
         </div>
       </div>
       <Popup
-        title={deleteEvent ? 'Are you sure wanna delete?' : 'Event Form'}
+        title={deleteUser ? 'Are you sure wanna delete?' : 'Member Form'}
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
-        {deleteEvent ? (
+        {deleteUser ? (
           <DeleteForm
             setOpenModal={setOpenPopup}
-            action={actions.deleteEvent(deleteEvent)}
+            action={actions.deleteEvent(deleteUser)}
             setLoading={setLoading}
           />
         ) : (
-          <EventForm
+          <MemberForm
             setOpenModal={setOpenPopup}
-            updateEvent={updateEvent}
+            updateUser={updateUser}
             setLoading={setLoading}
           />
         )}

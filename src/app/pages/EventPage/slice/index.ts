@@ -7,6 +7,9 @@ import { EventsState } from './types';
 export const initialState: EventsState = {
   error: false,
   events: [],
+  projects: [],
+  committee: [],
+  phaseList: [],
 };
 
 const slice = createSlice({
@@ -15,23 +18,37 @@ const slice = createSlice({
   reducers: {
     getEvent() {},
     addEvent(state, action: PayloadAction<any>) {},
+    getEventByPhase(state, action: PayloadAction<any>) {},
     updateEvent(state, action: PayloadAction<any>) {},
     deleteEvent(state, action: PayloadAction<any>) {},
     setEvent(state, action: PayloadAction<any>) {
+      const { data, projectList, committeeList, phaseList } = action.payload;
+      state.events.push(...data);
+      state.phaseList.push(...phaseList);
+      state.projects.push(...projectList);
+      state.committee.push(...committeeList);
+    },
+
+    setEventByPhase(state, action: PayloadAction<any>) {
       state.events = action.payload;
+    },
+
+    setAddEvent(state, action: PayloadAction<any>) {
+      state.events.push(action.payload);
     },
 
     setUpdateEvent(state, action: PayloadAction<any>) {
       const newArray = state.events.findIndex(
-        st => st.event_id === action.payload.uid,
+        st => st.eventId === action.payload.eventId,
       );
       state.events[newArray] = { ...action.payload };
+      console.log(action.payload);
     },
 
     setDeleteEvent(state, action: PayloadAction<any>) {
       state.events.forEach(
         st =>
-          st.event_id === action.payload &&
+          st.eventId === action.payload &&
           state.events.splice(state.events.indexOf(st), 1),
       );
     },

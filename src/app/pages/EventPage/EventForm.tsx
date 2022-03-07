@@ -1,42 +1,51 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { TextField, Button } from '@mui/material';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import {
+  TextField,
+  Button,
+  InputLabel,
+  FormHelperText,
+  MenuItem,
+  FormControl,
+  Select,
+} from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useEventsSlice } from './slice';
 import { selectEvents } from './slice/selectors';
+import { Events } from './slice/types';
+import { dateFormat } from '../../components/dateFormat';
 
-type EventData = {
-  id?: number;
-  name: string;
-  phase: number | null;
-  dateTime: string | null;
-};
-
-export default function EventForm({ setOpenModal, updateEvent, setLoading }) {
+export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useEventsSlice();
   const dispatch = useDispatch();
-  const { events } = useSelector(selectEvents);
+  const { events, projects, committee } = useSelector(selectEvents);
 
-  let updateEventValue = updateEvent
-    ? events.find(u => u.event_id === updateEvent)
+  let updateUserValue = updateUser
+    ? events.find(u => u.eventId === updateUser)
     : null;
 
-  const [values, setValues] = useState<EventData>({
-    id: updateEventValue ? updateEventValue.event_id : 0,
-    name: updateEventValue ? updateEventValue.event_name : '',
-    phase: updateEventValue ? updateEventValue.phase : null,
-    dateTime: updateEventValue ? updateEventValue.event_date : '',
+  const [values, setValues] = useState<Events>({
+    eventId: updateUserValue ? updateUserValue.eventId : 0,
+    eventName: updateUserValue ? updateUserValue.eventName : '',
+    phase: updateUserValue ? updateUserValue.phase : 0,
+    eventDate: updateUserValue ? dateFormat(updateUserValue.eventDate) : '',
+    eventType: updateUserValue ? updateUserValue.eventType : '',
+    conductedBy: updateUserValue ? updateUserValue.conductedBy : '',
+    speaker: updateUserValue ? updateUserValue.speaker : '',
   });
 
   const [errors, setErrors] = useState({
-    nameError: '',
+    eventNameError: '',
     phaseError: '',
-    dateError: '',
+    eventDateError: '',
+    eventTypeError: '',
+    conductedByError: '',
+    speakerError: '',
     isError: false,
   });
 
@@ -44,20 +53,60 @@ export default function EventForm({ setOpenModal, updateEvent, setLoading }) {
     let noofErrors = 0;
     let err = { ...errors };
 
-    Object.entries(values).forEach(([key, value]) => {
-      if (
-        value === null ||
-        (typeof value === 'string' && value.trim() === '')
-      ) {
-        err[`${key}Error`] = 'This field is required';
+    if (values.eventType !== 'crew') {
+      if (values.eventName === '') {
+        err.eventNameError = 'This field is required';
         noofErrors++;
       }
-    });
+      if (values.phase === 0) {
+        err.phaseError = 'This field is required';
+        noofErrors++;
+      }
+      if (values.eventDate === '') {
+        err.eventDateError = 'This field is required';
+        noofErrors++;
+      }
+      if (values.eventType === '') {
+        err.eventTypeError = 'This field is required';
+        noofErrors++;
+      }
+
+      if (values.conductedBy === '' || values.conductedBy === null) {
+        err.conductedByError = 'This field is required';
+        noofErrors++;
+      } else {
+        err.conductedByError = '';
+        if (values.conductedBy === 'individual') {
+          if (values.speaker === '' || values.speaker === null) {
+            err.speakerError = 'This field is required';
+            noofErrors++;
+          } else {
+            err.speakerError = '';
+          }
+        }
+      }
+    } else {
+      err.conductedByError = '';
+      err.speakerError = '';
+      if (values.eventName === '') {
+        err.eventNameError = 'This field is required';
+        noofErrors++;
+      }
+      if (values.phase === 0) {
+        err.phaseError = 'This field is required';
+        noofErrors++;
+      }
+      if (values.eventDate === '') {
+        err.eventDateError = 'This field is required';
+        noofErrors++;
+      }
+    }
 
     if (noofErrors === 0) {
       return true;
     } else {
       err.isError = true;
+      console.log(err);
       setErrors(err);
       return false;
     }
@@ -67,7 +116,6 @@ export default function EventForm({ setOpenModal, updateEvent, setLoading }) {
     if (checkError()) {
       setOpenModal(false);
       setLoading(true);
-
       dispatch(actions.addEvent(values));
     }
   }
@@ -85,23 +133,28 @@ export default function EventForm({ setOpenModal, updateEvent, setLoading }) {
       <div className="d-md-flex">
         <div className="me-3">
           <TextField
-            value={values.name}
-            error={errors.isError && (values.name.trim() === '' ? true : false)}
+            value={values.eventName}
+            error={
+              errors.isError && (values.eventName.trim() === '' ? true : false)
+            }
             helperText={
               errors.isError &&
-              (errors.nameError !== '' ? errors.nameError : '')
+              (errors.eventNameError !== '' ? errors.eventNameError : '')
             }
             id="outlined-basic"
             className="mb-3"
             label="Event Name"
             variant="outlined"
-            onChange={e => setValues({ ...values, name: e.target.value })}
+            onChange={e => setValues({ ...values, eventName: e.target.value })}
           />
           <br />
           <TextField
             type="number"
             value={values.phase}
-            error={errors.isError && (values.phase === null ? true : false)}
+            error={
+              errors.isError &&
+              (values.phase === null || values.phase === 0 ? true : false)
+            }
             helperText={
               errors.isError &&
               (errors.phaseError !== '' ? errors.phaseError : '')
@@ -115,37 +168,127 @@ export default function EventForm({ setOpenModal, updateEvent, setLoading }) {
             }
           />
           <br />
-
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Event Type</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={values.eventType}
+              label="Event Type"
+              onChange={e =>
+                setValues({ ...values, eventType: e.target.value })
+              }
+            >
+              <MenuItem value={'crew'}>Crew</MenuItem>
+              <MenuItem value={'learnzeit'}>Learnzeit</MenuItem>
+              <MenuItem value={'external'}>External</MenuItem>
+            </Select>
+          </FormControl>
           <br />
         </div>
         <div className="ms-md-3">
-          <div className="my-3">
+          <div>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                label="Date"
-                value={values.dateTime}
+                label="Event Date"
+                value={values.eventDate}
                 onChange={newValue => {
-                  setValues({ ...values, dateTime: newValue });
+                  setValues({ ...values, eventDate: newValue });
                 }}
                 renderInput={params => (
                   <TextField
                     {...params}
                     error={
                       errors.isError &&
-                      (values.dateTime === null ? true : false)
+                      (values.eventDate === null ? true : false)
                     }
                     helperText={
                       errors.isError &&
-                      (errors.dateError !== '' ? errors.dateError : '')
+                      (errors.eventDateError !== ''
+                        ? errors.eventDateError
+                        : '')
                     }
                     sx={{ width: '100%' }}
                   />
                 )}
               />
             </LocalizationProvider>
+
+            <FormControl
+              sx={{ m: 1, minWidth: 180 }}
+              error={errors.isError && values.conductedBy === '' ? true : false}
+            >
+              <InputLabel htmlFor="grouped-native-select">
+                Conducted By
+              </InputLabel>
+              <Select
+                native
+                id="grouped-native-select"
+                label="Conducted By"
+                value={values.conductedBy}
+                disabled={
+                  values.eventType === 'external' ||
+                  values.eventType === 'learnzeit'
+                    ? false
+                    : true
+                }
+                onChange={e =>
+                  setValues({ ...values, conductedBy: e.target.value })
+                }
+              >
+                <option aria-label="None" value="" />
+                <optgroup label="Projects">
+                  {projects &&
+                    projects.map((project, key) => (
+                      <option key={`${project}-${key}`} value={project}>
+                        {project}
+                      </option>
+                    ))}
+                </optgroup>
+                <optgroup label="Committee">
+                  {committee &&
+                    committee.map((com, key) => (
+                      <option key={`${com}-${key}`} value={com}>
+                        {com}
+                      </option>
+                    ))}
+                </optgroup>
+                <optgroup label="Individual">
+                  <option value={'individual'}>Individual</option>
+                </optgroup>
+              </Select>
+              <FormHelperText>
+                {errors.isError &&
+                  (errors.conductedByError !== ''
+                    ? errors.conductedByError
+                    : '')}
+              </FormHelperText>
+            </FormControl>
+            <br />
+            <TextField
+              value={values.speaker}
+              error={
+                errors.isError &&
+                (values.conductedBy === 'individual' &&
+                (values.speaker === null || values.speaker === '')
+                  ? true
+                  : false)
+              }
+              helperText={
+                errors.isError &&
+                (errors.speakerError !== '' ? errors.speakerError : '')
+              }
+              id="outlined-basic"
+              className="mb-3"
+              label="Speaker"
+              variant="outlined"
+              disabled={values.conductedBy === 'individual' ? false : true}
+              onChange={e => setValues({ ...values, speaker: e.target.value })}
+            />
+            <br />
           </div>
           <div className="d-flex mt-4">
-            {updateEventValue ? (
+            {updateUserValue ? (
               <Button variant="contained" onClick={handleUpdate}>
                 Update
               </Button>
@@ -154,21 +297,6 @@ export default function EventForm({ setOpenModal, updateEvent, setLoading }) {
                 Submit
               </Button>
             )}
-            <Button
-              variant="outlined"
-              onClick={() =>
-                setValues({
-                  id: 0,
-                  name: '',
-                  phase: null,
-                  dateTime: '',
-                })
-              }
-              color="secondary"
-              className="ms-2"
-            >
-              Reset
-            </Button>
           </div>
         </div>
       </div>

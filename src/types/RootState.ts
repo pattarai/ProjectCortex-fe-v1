@@ -4,6 +4,7 @@ import { UserManagementState } from '../app/pages/UserManagement/slice/types';
 import { AttendanceState } from 'app/pages/Attendance/slice/types';
 import { ProfileCommonViewState } from '../app/pages/ProfileCommonView/slice/types';
 import { ProfileViewState } from 'app/pages/ProfileView/slice/types';
+import { RankingAdminState } from 'app/pages/RankingAdmin/slice/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -17,5 +18,6 @@ export interface RootState {
   attendance?: AttendanceState;
   profileCommonView?: ProfileCommonViewState;
   profileView?: ProfileViewState;
+  rankingAdmin?: RankingAdminState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
