@@ -74,6 +74,7 @@ export function RankingAdmin(props: Props) {
 
   useEffect(() => {
     setRankingData(rankingAdminData);
+    setRankingData(rankingAdminData);
     console.log(rankingData);
 
     setFactorsList(
@@ -89,7 +90,7 @@ export function RankingAdmin(props: Props) {
     tempList.sort();
     setPhaseList(tempList);
 
-    rankingAdminData !== null && setLoading(false);
+    rankingData && setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rankingAdminData]);
 
@@ -146,7 +147,9 @@ export function RankingAdmin(props: Props) {
     <>
       <div className="vh-100 d-flex flex-column align-justify-center">
         {loading ? (
-          <LinearProgress />
+          <div style={{ width: '100%' }}>
+            <LinearProgress />
+          </div>
         ) : (
           <Card
             className="d-flex flex-column align-justify-center p-3 p-md-5"
