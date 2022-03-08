@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEventsSlice } from './slice';
 import { selectEvents } from './slice/selectors';
 import { Events } from './slice/types';
-import { dateFormat } from '../../components/dateFormat';
+import { dateTimeFormat } from '../../components/dateFormat';
 
 export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useEventsSlice();
@@ -33,7 +33,7 @@ export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
     eventId: updateUserValue ? updateUserValue.eventId : 0,
     eventName: updateUserValue ? updateUserValue.eventName : '',
     phase: updateUserValue ? updateUserValue.phase : 0,
-    eventDate: updateUserValue ? dateFormat(updateUserValue.eventDate) : '',
+    eventDate: updateUserValue ? dateTimeFormat(updateUserValue.eventDate) : '',
     eventType: updateUserValue ? updateUserValue.eventType : '',
     conductedBy: updateUserValue ? updateUserValue.conductedBy : '',
     speaker: updateUserValue ? updateUserValue.speaker : '',

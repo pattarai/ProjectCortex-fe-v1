@@ -1,6 +1,6 @@
 /**
  *
- * Ranking
+ * RankingCrew
  *
  */
 import * as React from 'react';
@@ -24,8 +24,8 @@ import Copper from './images/copper.png';
 import { FaSearch } from 'react-icons/fa';
 import MemberScoreCard from './MemberScoreCard';
 import { axiosGet, imgurl } from '../../requests';
+import { styled } from '@mui/material/styles';
 import LinearProgress from '@mui/material/LinearProgress';
-import { Loader } from '../../components/Loader';
 
 type Users = {
   firstName: string;
@@ -39,7 +39,26 @@ interface MemberData {
   userId: number;
 }
 
-export function Ranking() {
+const CssTextField = styled(TextField)({
+  '& label': {
+    color: 'white',
+  },
+  '& label.Mui-focused': {
+    color: 'white',
+  },
+  '& .MuiInput-underline': {
+    borderBottomColor: 'white',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': { borderColor: 'white' },
+    '&:hover fieldset': { borderColor: 'white' },
+    '&.Mui-focused fieldset': {
+      borderColor: 'white',
+    },
+  },
+});
+
+export function RankingCrew() {
   const [openDetails, setOpenDetails] = useState(false);
   const [userData, setUserData] = useState<MemberData[] | null>(null);
   const [userSearchData, setUserSearchData] = useState<MemberData[] | null>(
@@ -56,6 +75,7 @@ export function Ranking() {
       setTop3(top3List);
       setUserData(userList);
       setUserSearchData(userList);
+      console.log(user);
       setLoading(false);
     });
   }, []);
@@ -67,29 +87,28 @@ export function Ranking() {
       const filteredUser = userData?.filter(row =>
         row.users.firstName.toLowerCase().includes(searchedVal.toLowerCase()),
       );
+      console.log(filteredUser, searchedVal);
       filteredUser && setUserSearchData(filteredUser);
     }
   }
-
-  if (loading) return <Loader />;
 
   return (
     <>
       <section className="vh-100">
         <div className="d-flex justify-content-end p-4">
           <Button
-            sx={{ color: 'grey.900' }}
+            sx={{ color: '#dee2fc' }}
             onClick={() => {
               setOpenDetails(false);
             }}
           >
             Crew
           </Button>
-          <Typography component="h2" variant="h5" sx={{ color: 'grey.900' }}>
+          <Typography component="h2" variant="h5" sx={{ color: '#dee2fc' }}>
             |
           </Typography>
           <Button
-            sx={{ color: 'grey.900' }}
+            sx={{ color: '#dee2fc' }}
             onClick={() => {
               setOpenDetails(true);
             }}
@@ -119,7 +138,11 @@ export function Ranking() {
                                 <CardContent>
                                   <Avatar
                                     alt={list.users.firstName}
-                                    src={`${imgurl}/bitmoji/${list.userId}.jpg`}
+                                    src={
+                                      list.userId
+                                        ? `${imgurl}/bitmoji/${list.userId}`
+                                        : AvatarIcon
+                                    }
                                     sx={{
                                       width: 70,
                                       height: 70,
@@ -147,11 +170,11 @@ export function Ranking() {
                   </div>
                 </div>
                 <div className="container my-3">
-                  <TextField
-                    fullWidth
+                  <CssTextField
                     label="Search Members"
                     variant="outlined"
-                    className="mb-3 mb-md-0"
+                    className="mb-3 mb-md-0 w-md-50 w-100 text-white"
+                    sx={{ borderColor: '#fff', color: '#fff' }}
                     onChange={e => handleChange(e.target.value)}
                     InputProps={{
                       startAdornment: (
@@ -184,7 +207,11 @@ export function Ranking() {
                                   </span>
                                   <Avatar
                                     alt={data.users.firstName}
-                                    src={`${imgurl}/bitmoji/${data.userId}.jpg`}
+                                    src={
+                                      data.userId
+                                        ? `${imgurl}/bitmoji/${data.userId}`
+                                        : AvatarIcon
+                                    }
                                     sx={{
                                       width: 40,
                                       height: 40,
@@ -196,7 +223,7 @@ export function Ranking() {
                                   <div style={{ width: '50%' }}>
                                     <span className="d-none d-md-block ms-2">
                                       <Typography component="h2" variant="h6">
-                                        {data.users.firstName}
+                                        {data.users.firstName}{' '}
                                         {data.users.lastName}
                                       </Typography>
                                     </span>
