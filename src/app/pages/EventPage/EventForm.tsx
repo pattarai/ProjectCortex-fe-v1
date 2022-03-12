@@ -20,7 +20,7 @@ import { selectEvents } from './slice/selectors';
 import { Events } from './slice/types';
 import { dateTimeFormat } from '../../components/dateFormat';
 
-export default function MemberForm({ setOpenModal, updateUser, setLoading }) {
+export default function EventForm({ setOpenModal, updateUser, setLoading }) {
   const { actions } = useEventsSlice();
   const dispatch = useDispatch();
   const { events, projects, committee } = useSelector(selectEvents);
