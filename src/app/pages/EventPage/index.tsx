@@ -216,7 +216,7 @@ export function EventPage(props: Props) {
         </div>
       </div>
       <Popup
-        title={deleteUser ? 'Are you sure wanna delete?' : 'Member Form'}
+        title={deleteUser ? 'Are you sure wanna delete?' : 'Event Form'}
         openModal={openPopup}
         setOpenModal={setOpenPopup}
       >
