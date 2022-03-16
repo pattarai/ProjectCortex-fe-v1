@@ -24,7 +24,6 @@ import Copper from './images/copper.png';
 import { FaSearch } from 'react-icons/fa';
 import MemberScoreCard from './MemberScoreCard';
 import { axiosGet, imgurl } from '../../requests';
-import { styled } from '@mui/material/styles';
 import LinearProgress from '@mui/material/LinearProgress';
 
 type Users = {
@@ -38,25 +37,6 @@ interface MemberData {
   league: string;
   userId: number;
 }
-
-const CssTextField = styled(TextField)({
-  '& label': {
-    color: 'white',
-  },
-  '& label.Mui-focused': {
-    color: 'white',
-  },
-  '& .MuiInput-underline': {
-    borderBottomColor: 'white',
-  },
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': { borderColor: 'white' },
-    '&:hover fieldset': { borderColor: 'white' },
-    '&.Mui-focused fieldset': {
-      borderColor: 'white',
-    },
-  },
-});
 
 export function RankingCrew() {
   const [openDetails, setOpenDetails] = useState(false);
@@ -95,20 +75,18 @@ export function RankingCrew() {
   return (
     <>
       <section className="vh-100">
-        <div className="d-flex justify-content-end p-4">
+        <div className="d-flex justify-content-end">
           <Button
-            sx={{ color: '#dee2fc' }}
             onClick={() => {
               setOpenDetails(false);
             }}
           >
             Crew
           </Button>
-          <Typography component="h2" variant="h5" sx={{ color: '#dee2fc' }}>
+          <Typography component="h2" variant="h5">
             |
           </Typography>
           <Button
-            sx={{ color: '#dee2fc' }}
             onClick={() => {
               setOpenDetails(true);
             }}
@@ -124,7 +102,7 @@ export function RankingCrew() {
               <LinearProgress className="container" />
             ) : (
               <>
-                <div className="container my-4">
+                <div className="my-4">
                   <div className="row">
                     {top3 &&
                       top3.map((list, index) => {
@@ -170,15 +148,14 @@ export function RankingCrew() {
                   </div>
                 </div>
                 <div className="container my-3">
-                  <CssTextField
+                  <TextField
                     label="Search Members"
                     variant="outlined"
-                    className="mb-3 mb-md-0 w-md-50 w-100 text-white"
-                    sx={{ borderColor: '#fff', color: '#fff' }}
+                    className="mb-3 mb-md-0 w-md-50 w-100"
                     onChange={e => handleChange(e.target.value)}
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start" color="white">
+                        <InputAdornment position="start">
                           <FaSearch />
                         </InputAdornment>
                       ),
