@@ -27,7 +27,6 @@ const slice = createSlice({
     setFactors: (state, action: PayloadAction<any>) => {
       state.factors.splice(0, state.factors.length);
       state.factors.push(...action.payload);
-      console.log(state.factors.length);
     },
     setRanking: (state, action: PayloadAction<any>) => {
       state.ranking.splice(0, state.ranking.length);

@@ -58,12 +58,12 @@ export function RankingAdmin(props: Props) {
 
   // <--------- Flags ---------->
 
-  const [phaseList, setPhaseList] = useState<number[]>([]);
+  const [phaseList, setPhaseList] = useState<number[]>([0]);
   const [factorsList, setFactorsList] = useState<Factor[]>([]);
   const [rankingData, setRankingData] = useState<
     typeof rankingAdminData | null
-  >(null);
-  const [phase, setPhase] = useState<number | null>(2);
+  >(rankingAdminData);
+  const [phase, setPhase] = useState<number>(0);
   const [selectedFactor, setSelectedFactor] = useState<Factor | null>(null);
   const [textFieldValue, setTextFieldValue] = useState<string>('');
 
@@ -74,16 +74,16 @@ export function RankingAdmin(props: Props) {
 
   useEffect(() => {
     setRankingData(rankingAdminData);
-    setRankingData(rankingAdminData);
-    console.log(rankingData);
 
     setFactorsList(
       rankingAdminData !== null
-        ? rankingAdminData.factors.filter(factor => factor.phase == phase)
+        ? phase == 0
+          ? rankingAdminData.factors
+          : rankingAdminData.factors.filter(factor => factor.phase == phase)
         : [],
     );
 
-    const tempList: number[] = [];
+    const tempList: number[] = [0];
     rankingAdminData?.factors.forEach(factor => {
       if (!tempList.includes(factor.phase)) tempList.push(factor.phase);
     });
@@ -111,7 +111,9 @@ export function RankingAdmin(props: Props) {
     setPhase(phaseNum);
     setFactorsList(
       rankingData != null
-        ? rankingData.factors.filter(factor => factor.phase == phaseNum)
+        ? phaseNum == 0
+          ? rankingData.factors
+          : rankingData.factors.filter(factor => factor.phase == phaseNum)
         : [],
     );
     // Reset the factor field
@@ -168,10 +170,12 @@ export function RankingAdmin(props: Props) {
                 >
                   {phaseList.length > 0 ? (
                     phaseList.map(p => {
-                      return <MenuItem value={p}>{p}</MenuItem>;
+                      return (
+                        <MenuItem value={p}>{p == 0 ? 'All' : p}</MenuItem>
+                      );
                     })
                   ) : (
-                    <MenuItem value={1}>1</MenuItem>
+                    <MenuItem value={0}>All</MenuItem>
                   )}
                 </Select>
               </FormControl>
@@ -259,21 +263,36 @@ export function RankingAdmin(props: Props) {
               </div>
             )}
             <TableContainer>
-              {/*<Table sx={{ minWidth: 650 }} aria-label="Ranking Table">
-              <TableHead sx={{ bgcolor: '#dee2fc' }}>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  {/* {rankingData? 
-                  rankingData.factors.map(factor => {
-                      return (
-                        <TableCell align="center">Committee</TableCell>
-
-                      )
-                  }) : <></>
-                } 
-                </TableRow>
-              </TableHead>
-              <TableBody>
+              <Table sx={{ minWidth: 650 }} aria-label="Ranking Table">
+                <TableHead sx={{ bgcolor: '#dee2fc' }}>
+                  {rankingData && (
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      {selectedFactor ? (
+                        <TableCell align="center">
+                          {selectedFactor.factorName}
+                        </TableCell>
+                      ) : factorsList ? (
+                        factorsList?.map(factor => {
+                          return (
+                            <TableCell align="center">
+                              {factor.factorName}
+                            </TableCell>
+                          );
+                        })
+                      ) : (
+                        rankingData.factors?.map(factor => {
+                          return (
+                            <TableCell align="center">
+                              {factor.factorName}
+                            </TableCell>
+                          );
+                        })
+                      )}
+                    </TableRow>
+                  )}
+                </TableHead>
+                {/*<TableBody>
                 {rankingData ? (
                   userData.ranking.map(row => (
                     <CustomTableRow
@@ -322,8 +341,8 @@ export function RankingAdmin(props: Props) {
                     <TableCell>No User</TableCell>
                   </TableRow>
                 )}
-              </TableBody>
-            </Table>*/}
+              </TableBody>*/}
+              </Table>
             </TableContainer>
 
             <Popup
