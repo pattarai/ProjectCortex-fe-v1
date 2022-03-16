@@ -11,26 +11,30 @@ export function PrivateRoute(props) {
   const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
+    console.log(isCompleted);
     let checkUser = async () => {
       let response = await axiosGet(`/auth`);
       if (response.data.success) {
         setUser(true);
-        if (response.data.user.isCompleted) {
-          setIsCompleted(true);
-        }
+        console.log(response.data.isCompleted);
+        response.data.isCompleted
+          ? setIsCompleted(true)
+          : setIsCompleted(false);
       }
       setLoading(false);
     };
     checkUser();
+    console.log(isCompleted);
   }, []);
 
   if (loading) {
     return <Loader />;
   } else if (!user) {
     return <div>You are not logged in</div>;
-  } else if (!isCompleted) {
-    return <Redirect to="/dashboard/complete-profile" />;
   } else {
-    return <Component />;
+    if (isCompleted) {
+      return <Component />;
+    }
+    return <Redirect to="/dashboard/complete-profile" />;
   }
 }
