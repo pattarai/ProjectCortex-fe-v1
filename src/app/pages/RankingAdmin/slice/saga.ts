@@ -99,9 +99,9 @@ function* handlePatchRanking(action: any) {
 
 export function* rankingAdminSaga() {
   yield takeLatest(actions.getFactors.type, handleGetFactors);
+  yield takeLatest(actions.getRanking.type, handleGetRanking);
   yield takeLatest(actions.addFactor.type, handlePostFactor);
   yield takeLatest(actions.updateFactor.type, handleUpdateFactor);
   yield takeLatest(actions.deleteFactor.type, handleDeleteFactor);
-  yield takeLatest(actions.setRanking.type, handleGetRanking);
   yield takeLatest(actions.updateRanking.type, handlePatchRanking);
 }

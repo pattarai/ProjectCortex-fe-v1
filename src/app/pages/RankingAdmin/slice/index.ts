@@ -54,7 +54,7 @@ const slice = createSlice({
 
       state.ranking.forEach(
         rank =>
-          rank.factor.factorId === deletedFactor.factorId &&
+          rank.factors.factorId === deletedFactor.factorId &&
           state.ranking.splice(state.ranking.indexOf(rank), 1),
       );
     },

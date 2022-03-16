@@ -40,6 +40,11 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 interface Props {}
+interface DisplayFactor {
+  factorId: Number;
+  factorName: String;
+  score: Number;
+}
 
 export function RankingAdmin(props: Props) {
   const { actions } = useRankingAdminSlice();
@@ -65,10 +70,14 @@ export function RankingAdmin(props: Props) {
   >(rankingAdminData);
   const [phase, setPhase] = useState<number>(0);
   const [selectedFactor, setSelectedFactor] = useState<Factor | null>(null);
+  const [displayRankingData, setDisplayRankingData] = useState<any | null>(
+    null,
+  );
   const [textFieldValue, setTextFieldValue] = useState<string>('');
 
   useEffect(() => {
     dispatch(actions.getFactors());
+    dispatch(actions.getRanking());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -90,9 +99,43 @@ export function RankingAdmin(props: Props) {
     tempList.sort();
     setPhaseList(tempList);
 
+    // Arrange ranking data
+    handleDisplayRankingData();
+
     rankingData && setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rankingAdminData]);
+
+  function handleDisplayRankingData() {
+    var tempRankingData = {};
+    rankingAdminData.ranking.forEach(rank => {
+      if (
+        (phase == 0 || phase == rank.factors.phase) &&
+        (selectedFactor == null ||
+          selectedFactor.factorId === rank.factors.factorId)
+      ) {
+        if (!tempRankingData.hasOwnProperty(rank.userId)) {
+          tempRankingData[rank.userId] = {
+            name: rank.users.firstName + ' ' + rank.users.lastName,
+            factors: [
+              {
+                factorId: rank.factors.factorId,
+                factorName: rank.factors.factorName,
+                score: rank.score,
+              },
+            ],
+          };
+        } else {
+          tempRankingData[rank.userId].factors.push({
+            factorId: rank.factors.factorId,
+            factorName: rank.factors.factorName,
+            score: rank.score,
+          });
+        }
+      }
+    });
+    setDisplayRankingData(rankingAdminData !== null ? tempRankingData : null);
+  }
 
   function handleFactorChange(_, value: string) {
     setTextFieldValue(value);
@@ -105,6 +148,8 @@ export function RankingAdmin(props: Props) {
       return null;
     };
     setSelectedFactor(val(value));
+    // Arrange ranking data
+    handleDisplayRankingData();
   }
   function handlePhaseChange(e) {
     const phaseNum: number = e.target.value;
@@ -116,6 +161,10 @@ export function RankingAdmin(props: Props) {
           : rankingData.factors.filter(factor => factor.phase == phaseNum)
         : [],
     );
+
+    // Arrange ranking data
+    handleDisplayRankingData();
+
     // Reset the factor field
     setTextFieldValue('');
     setSelectedFactor(null);
@@ -262,10 +311,10 @@ export function RankingAdmin(props: Props) {
                 </div>
               </div>
             )}
-            <TableContainer>
-              <Table sx={{ minWidth: 650 }} aria-label="Ranking Table">
-                <TableHead sx={{ bgcolor: '#dee2fc' }}>
-                  {rankingData && (
+            {rankingData ? (
+              <TableContainer>
+                <Table sx={{ minWidth: 650 }} aria-label="Ranking Table">
+                  <TableHead sx={{ bgcolor: '#dee2fc' }}>
                     <TableRow>
                       <TableCell>Name</TableCell>
                       {selectedFactor ? (
@@ -290,60 +339,56 @@ export function RankingAdmin(props: Props) {
                         })
                       )}
                     </TableRow>
-                  )}
-                </TableHead>
-                {/*<TableBody>
-                {rankingData ? (
-                  userData.ranking.map(row => (
-                    <CustomTableRow
-                      key={row.uid}
-                      sx={{
-                        '&:last-child td, &:last-child th': { border: 0 },
-                      }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.first_name}
-                      </TableCell>
-                      <TableCell>{row.email}</TableCell>
-                      <TableCell>{row.role}</TableCell>
-                      <TableCell>{row.project}</TableCell>
-                      <TableCell align="center">{row.committee}</TableCell>
-                      <TableCell align="center">
-                        <IconButton
-                          disabled={loading}
-                          aria-label="Edit"
-                          color="primary"
-                          onClick={() => {
-                            setDeleteUser(null);
-                            setUpdateUser(row.uid);
-                            setOpenPopup(true);
-                          }}
-                        >
-                          <MdEdit />
-                        </IconButton>
-                        <IconButton
-                          disabled={loading}
-                          aria-label="Delete"
-                          color="secondary"
-                          className="ms-2"
-                          onClick={() => {
-                            setDeleteUser(row.uid);
-                            setOpenPopup(true);
-                          }}
-                        >
-                          <MdDelete />
-                        </IconButton>
-                      </TableCell>
-                    </CustomTableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell>No User</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>*/}
-              </Table>
-            </TableContainer>
+                  </TableHead>
+                  <TableBody>
+                    {displayRankingData &&
+                      Object.entries<{
+                        name: String;
+                        factors: DisplayFactor[];
+                      }>(displayRankingData).map(obj => {
+                        const [userId, user] = obj;
+                        return (
+                          <CustomTableRow>
+                            <TableCell>{user.name}</TableCell>
+                            {selectedFactor ? (
+                              <TableCell align="center">
+                                {
+                                  user.factors.filter(
+                                    factor =>
+                                      factor.factorId ===
+                                      selectedFactor.factorId,
+                                  )[0]?.score
+                                }
+                              </TableCell>
+                            ) : (
+                              factorsList.map(factor => {
+                                var data: DisplayFactor = {
+                                  factorId: 1,
+                                  factorName: 'No Factor',
+                                  score: 0,
+                                };
+                                user.factors.forEach(f => {
+                                  if (factor.factorId == f.factorId) data = f;
+                                });
+
+                                return (
+                                  <TableCell align="center">
+                                    {data.score}
+                                  </TableCell>
+                                );
+                              })
+                            )}
+                          </CustomTableRow>
+                        );
+                      })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            ) : (
+              <div style={{ width: '100%' }}>
+                <LinearProgress />
+              </div>
+            )}
 
             <Popup
               title={
