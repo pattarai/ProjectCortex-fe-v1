@@ -27,11 +27,13 @@ import { axiosGet, axiosPatch } from '../../requests';
 import { useState, useEffect } from 'react';
 import { dateFormat } from '../../components/dateFormat';
 import { Loader } from '../../components/Loader';
+import { useHistory } from 'react-router-dom';
 
-export function CompleteProfile({ updateUser }) {
+export function CompleteProfile() {
   const [userData, setUserData] = useState<any | null>(null);
   const formdata = new FormData();
   const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
   async function completeProfileGet() {
     const res = await axiosGet('/users/complete-profile');
@@ -46,6 +48,7 @@ export function CompleteProfile({ updateUser }) {
       let data = formdata;
       await axiosPatch('/users/complete-profile', data);
       setLoading(false);
+      history.push('/dashboard/profile');
     } catch {
       setLoading(false);
     }

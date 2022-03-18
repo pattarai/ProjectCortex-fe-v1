@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { axiosGet } from '../requests';
 import { Loader } from '../components/Loader';
 import { Redirect } from 'react-router-dom';
+import { CompleteProfile } from 'app/pages/CompleteProfile';
 
 export function PrivateRoute(props) {
   const Component = props.component;
@@ -11,12 +12,10 @@ export function PrivateRoute(props) {
   const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
-    console.log(isCompleted);
     let checkUser = async () => {
       let response = await axiosGet(`/auth`);
       if (response.data.success) {
         setUser(true);
-        console.log(response.data.isCompleted);
         response.data.isCompleted
           ? setIsCompleted(true)
           : setIsCompleted(false);
@@ -24,7 +23,6 @@ export function PrivateRoute(props) {
       setLoading(false);
     };
     checkUser();
-    console.log(isCompleted);
   }, []);
 
   if (loading) {
@@ -34,7 +32,8 @@ export function PrivateRoute(props) {
   } else {
     if (isCompleted) {
       return <Component />;
+    } else {
+      return <CompleteProfile />;
     }
-    return <Redirect to="/dashboard/complete-profile" />;
   }
 }
