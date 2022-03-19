@@ -241,7 +241,7 @@ export function Attendance(props: Props) {
               // }
               id="outlined-basic"
               className="mb-3"
-              label="First Name"
+              label="Event Name"
               variant="outlined"
               inputProps={{ maxLength: 15 }}
               onChange={e => setValue({ ...value, eventName: e.target.value })}
