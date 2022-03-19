@@ -167,7 +167,7 @@ export function ProfileView(props: Props) {
                             alt="Linkedin"
                           />
                         </a>
-                        &nbsp;
+                        &nbsp;&nbsp;
                         <a
                           href={userData.email}
                           target="_blank"
@@ -180,7 +180,7 @@ export function ProfileView(props: Props) {
                             alt="Gmail"
                           />
                         </a>
-                        &nbsp;
+                        &nbsp;&nbsp;
                         <a
                           href={userData.githubUrl}
                           target="_blank"
@@ -193,7 +193,7 @@ export function ProfileView(props: Props) {
                             alt="GitHub"
                           />
                         </a>
-                        &nbsp;
+                        &nbsp;&nbsp;
                         <a
                           href={userData.instagramUrl}
                           target="_blank"
