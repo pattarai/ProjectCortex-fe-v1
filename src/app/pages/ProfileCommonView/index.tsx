@@ -22,11 +22,14 @@ interface Props {}
 
 export function ProfileCommonView(props: Props) {
   const [userData, setUserData] = useState<any | null>(null);
+  const [filteredUser, setFilteredUsers] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
   async function getCommonView() {
     const res = await axiosGet('/users/common-view');
     const users = res.data.users;
     setUserData(users);
+    setFilteredUsers(users);
     setLoading(false);
   }
   useEffect(() => {
@@ -35,12 +38,14 @@ export function ProfileCommonView(props: Props) {
 
   function handleChange(searchedVal: string | null) {
     if (searchedVal === '' || searchedVal === null) {
-      setUserData(userData);
+      setFilteredUsers(userData);
     } else {
-      const filteredUser = userData?.filter(row =>
-        row.users.firstName.toLowerCase().includes(searchedVal.toLowerCase()),
+      const users = userData?.filter(
+        user =>
+          user.firstName.toLowerCase().includes(searchedVal.toLowerCase()) ||
+          user.lastName.toLowerCase().includes(searchedVal.toLowerCase()),
       );
-      filteredUser && setUserData(filteredUser);
+      users && setFilteredUsers(users);
     }
   }
 
@@ -62,8 +67,8 @@ export function ProfileCommonView(props: Props) {
       <section className="vh-100">
         <div className="container my-4">
           <div className="row">
-            {userData &&
-              userData.map((data, index) => (
+            {filteredUser &&
+              filteredUser.map((data, index) => (
                 <div className="col-12 col-md-4 mb-4" key={`${data}-${index}`}>
                   <Card
                     elevation={2}
