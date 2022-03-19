@@ -113,6 +113,7 @@ export default function FactorForm(props: Props) {
       if (props.addFactor) dispatch(props.actions.addFactor(params));
       else dispatch(props.actions.updateFactor(params));
       props.setOpenModal(false);
+      props.setLoading(true);
     }
   };
 

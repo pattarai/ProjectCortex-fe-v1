@@ -8,7 +8,7 @@ export interface Factor {
 }
 
 export interface Ranking {
-  factor: Factor;
+  factors: Factor;
   userId: number;
   score: number;
   users: {

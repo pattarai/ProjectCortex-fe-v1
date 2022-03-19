@@ -154,7 +154,7 @@ export function ProfileView(props: Props) {
                         CONTACT INFORMATION
                       </Box>
                       <Divider variant="middle" />
-                      <div className="social-media my-5 mx-1">
+                      <div className="social-media my-5 mx-2 p-2">
                         <a
                           href={userData.linkedin}
                           target="_blank"
@@ -167,7 +167,7 @@ export function ProfileView(props: Props) {
                             alt="Linkedin"
                           />
                         </a>
-
+                        &nbsp;&nbsp;
                         <a
                           href={userData.email}
                           target="_blank"
@@ -180,7 +180,7 @@ export function ProfileView(props: Props) {
                             alt="Gmail"
                           />
                         </a>
-
+                        &nbsp;&nbsp;
                         <a
                           href={userData.githubUrl}
                           target="_blank"
@@ -193,7 +193,7 @@ export function ProfileView(props: Props) {
                             alt="GitHub"
                           />
                         </a>
-
+                        &nbsp;&nbsp;
                         <a
                           href={userData.instagramUrl}
                           target="_blank"
