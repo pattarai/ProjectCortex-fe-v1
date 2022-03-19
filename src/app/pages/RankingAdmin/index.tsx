@@ -40,6 +40,11 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 interface Props {}
+interface DisplayFactor {
+  factorId: Number;
+  factorName: String;
+  score: Number;
+}
 
 export function RankingAdmin(props: Props) {
   const { actions } = useRankingAdminSlice();
@@ -58,40 +63,79 @@ export function RankingAdmin(props: Props) {
 
   // <--------- Flags ---------->
 
-  const [phaseList, setPhaseList] = useState<number[]>([]);
+  const [phaseList, setPhaseList] = useState<number[]>([0]);
   const [factorsList, setFactorsList] = useState<Factor[]>([]);
   const [rankingData, setRankingData] = useState<
     typeof rankingAdminData | null
-  >(null);
-  const [phase, setPhase] = useState<number | null>(2);
+  >(rankingAdminData);
+  const [phase, setPhase] = useState<number>(0);
   const [selectedFactor, setSelectedFactor] = useState<Factor | null>(null);
+  const [displayRankingData, setDisplayRankingData] = useState<any | null>(
+    null,
+  );
   const [textFieldValue, setTextFieldValue] = useState<string>('');
 
   useEffect(() => {
     dispatch(actions.getFactors());
+    dispatch(actions.getRanking());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     setRankingData(rankingAdminData);
-    console.log(rankingData);
 
     setFactorsList(
       rankingAdminData !== null
-        ? rankingAdminData.factors.filter(factor => factor.phase == phase)
+        ? phase == 0
+          ? rankingAdminData.factors
+          : rankingAdminData.factors.filter(factor => factor.phase == phase)
         : [],
     );
 
-    const tempList: number[] = [];
+    const tempList: number[] = [0];
     rankingAdminData?.factors.forEach(factor => {
       if (!tempList.includes(factor.phase)) tempList.push(factor.phase);
     });
     tempList.sort();
     setPhaseList(tempList);
 
-    rankingAdminData !== null && setLoading(false);
+    // Arrange ranking data
+    handleDisplayRankingData();
+
+    rankingData && setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rankingAdminData]);
+
+  function handleDisplayRankingData() {
+    var tempRankingData = {};
+    rankingAdminData.ranking.forEach(rank => {
+      if (
+        (phase == 0 || phase == rank.factors.phase) &&
+        (selectedFactor == null ||
+          selectedFactor.factorId === rank.factors.factorId)
+      ) {
+        if (!tempRankingData.hasOwnProperty(rank.userId)) {
+          tempRankingData[rank.userId] = {
+            name: rank.users.firstName + ' ' + rank.users.lastName,
+            factors: [
+              {
+                factorId: rank.factors.factorId,
+                factorName: rank.factors.factorName,
+                score: rank.score,
+              },
+            ],
+          };
+        } else {
+          tempRankingData[rank.userId].factors.push({
+            factorId: rank.factors.factorId,
+            factorName: rank.factors.factorName,
+            score: rank.score,
+          });
+        }
+      }
+    });
+    setDisplayRankingData(rankingAdminData !== null ? tempRankingData : null);
+  }
 
   function handleFactorChange(_, value: string) {
     setTextFieldValue(value);
@@ -104,15 +148,23 @@ export function RankingAdmin(props: Props) {
       return null;
     };
     setSelectedFactor(val(value));
+    // Arrange ranking data
+    handleDisplayRankingData();
   }
   function handlePhaseChange(e) {
     const phaseNum: number = e.target.value;
     setPhase(phaseNum);
     setFactorsList(
       rankingData != null
-        ? rankingData.factors.filter(factor => factor.phase == phaseNum)
+        ? phaseNum == 0
+          ? rankingData.factors
+          : rankingData.factors.filter(factor => factor.phase == phaseNum)
         : [],
     );
+
+    // Arrange ranking data
+    handleDisplayRankingData();
+
     // Reset the factor field
     setTextFieldValue('');
     setSelectedFactor(null);
@@ -146,7 +198,9 @@ export function RankingAdmin(props: Props) {
     <>
       <div className="vh-100 d-flex flex-column align-justify-center">
         {loading ? (
-          <LinearProgress />
+          <div style={{ width: '100%' }}>
+            <LinearProgress />
+          </div>
         ) : (
           <Card
             className="d-flex flex-column align-justify-center p-3 p-md-5"
@@ -165,10 +219,12 @@ export function RankingAdmin(props: Props) {
                 >
                   {phaseList.length > 0 ? (
                     phaseList.map(p => {
-                      return <MenuItem value={p}>{p}</MenuItem>;
+                      return (
+                        <MenuItem value={p}>{p == 0 ? 'All' : p}</MenuItem>
+                      );
                     })
                   ) : (
-                    <MenuItem value={1}>1</MenuItem>
+                    <MenuItem value={0}>All</MenuItem>
                   )}
                 </Select>
               </FormControl>
@@ -255,73 +311,84 @@ export function RankingAdmin(props: Props) {
                 </div>
               </div>
             )}
-            <TableContainer>
-              {/*<Table sx={{ minWidth: 650 }} aria-label="Ranking Table">
-              <TableHead sx={{ bgcolor: '#dee2fc' }}>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  {/* {rankingData? 
-                  rankingData.factors.map(factor => {
-                      return (
-                        <TableCell align="center">Committee</TableCell>
+            {rankingData ? (
+              <TableContainer>
+                <Table sx={{ minWidth: 650 }} aria-label="Ranking Table">
+                  <TableHead sx={{ bgcolor: '#dee2fc' }}>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      {selectedFactor ? (
+                        <TableCell align="center">
+                          {selectedFactor.factorName}
+                        </TableCell>
+                      ) : factorsList ? (
+                        factorsList?.map(factor => {
+                          return (
+                            <TableCell align="center">
+                              {factor.factorName}
+                            </TableCell>
+                          );
+                        })
+                      ) : (
+                        rankingData.factors?.map(factor => {
+                          return (
+                            <TableCell align="center">
+                              {factor.factorName}
+                            </TableCell>
+                          );
+                        })
+                      )}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {displayRankingData &&
+                      Object.entries<{
+                        name: String;
+                        factors: DisplayFactor[];
+                      }>(displayRankingData).map(obj => {
+                        const [userId, user] = obj;
+                        return (
+                          <CustomTableRow>
+                            <TableCell>{user.name}</TableCell>
+                            {selectedFactor ? (
+                              <TableCell align="center">
+                                {
+                                  user.factors.filter(
+                                    factor =>
+                                      factor.factorId ===
+                                      selectedFactor.factorId,
+                                  )[0]?.score
+                                }
+                              </TableCell>
+                            ) : (
+                              factorsList.map(factor => {
+                                var data: DisplayFactor = {
+                                  factorId: 1,
+                                  factorName: 'No Factor',
+                                  score: 0,
+                                };
+                                user.factors.forEach(f => {
+                                  if (factor.factorId == f.factorId) data = f;
+                                });
 
-                      )
-                  }) : <></>
-                } 
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rankingData ? (
-                  userData.ranking.map(row => (
-                    <CustomTableRow
-                      key={row.uid}
-                      sx={{
-                        '&:last-child td, &:last-child th': { border: 0 },
-                      }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.first_name}
-                      </TableCell>
-                      <TableCell>{row.email}</TableCell>
-                      <TableCell>{row.role}</TableCell>
-                      <TableCell>{row.project}</TableCell>
-                      <TableCell align="center">{row.committee}</TableCell>
-                      <TableCell align="center">
-                        <IconButton
-                          disabled={loading}
-                          aria-label="Edit"
-                          color="primary"
-                          onClick={() => {
-                            setDeleteUser(null);
-                            setUpdateUser(row.uid);
-                            setOpenPopup(true);
-                          }}
-                        >
-                          <MdEdit />
-                        </IconButton>
-                        <IconButton
-                          disabled={loading}
-                          aria-label="Delete"
-                          color="secondary"
-                          className="ms-2"
-                          onClick={() => {
-                            setDeleteUser(row.uid);
-                            setOpenPopup(true);
-                          }}
-                        >
-                          <MdDelete />
-                        </IconButton>
-                      </TableCell>
-                    </CustomTableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell>No User</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>*/}
-            </TableContainer>
+                                return (
+                                  <TableCell align="center">
+                                    {data.score}
+                                  </TableCell>
+                                );
+                              })
+                            )}
+                          </CustomTableRow>
+                        );
+                      })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            ) : (
+              <div style={{ width: '100%' }}>
+                <LinearProgress />
+              </div>
+            )}
 
             <Popup
               title={

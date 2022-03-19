@@ -16,6 +16,8 @@ const slice = createSlice({
     getFactors: () => {},
     getRanking: () => {},
 
+    deleteFactor: (state, action: PayloadAction<any>) => {},
+
     addFactor: (state, action: PayloadAction<any>) => {},
     addRanking: (state, action: PayloadAction<any>) => {},
 
@@ -25,30 +27,34 @@ const slice = createSlice({
     setFactors: (state, action: PayloadAction<any>) => {
       state.factors.splice(0, state.factors.length);
       state.factors.push(...action.payload);
-      console.log(state.factors.length);
     },
-    setRanking(state, action: PayloadAction<any>) {
+    setRanking: (state, action: PayloadAction<any>) => {
       state.ranking.splice(0, state.ranking.length);
       state.ranking.push(...action.payload);
     },
 
-    setUpdateFactor(state, action: PayloadAction<any>) {
+    addNewFactor: (state, action: PayloadAction<any>) => {
+      state.factors.push(action.payload);
+    },
+
+    setUpdateFactor: (state, action: PayloadAction<any>) => {
       const newArray = state.factors.findIndex(
         st => st.factorId === action.payload.factorId,
       );
       state.factors[newArray] = { ...action.payload };
     },
-    deleteFactor: (state, action: PayloadAction<any>) => {
+    setDeleteFactor: (state, action: PayloadAction<any>) => {
+      const deletedFactor = action.payload;
+      console.log('data :', deletedFactor);
       state.factors.forEach(
         st =>
-          st.factorId === action.payload &&
+          st.factorId === deletedFactor.factorId &&
           state.factors.splice(state.factors.indexOf(st), 1),
       );
-    },
-    deleteRanks: (state, action: PayloadAction<any>) => {
+
       state.ranking.forEach(
         rank =>
-          rank.factor.factorId === action.payload.factorId &&
+          rank.factors.factorId === deletedFactor.factorId &&
           state.ranking.splice(state.ranking.indexOf(rank), 1),
       );
     },

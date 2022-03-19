@@ -122,7 +122,7 @@ export default function Dashboard({ children }: { children: ReactNode }) {
             >
               Hello Subhiksha! Welcome to your profile!
             </Typography>
-            <IconButton color="inherit">
+            {/* <IconButton color="inherit">
               <Badge badgeContent={0} color="secondary">
                 <SettingsIcon />
               </Badge>
@@ -136,7 +136,7 @@ export default function Dashboard({ children }: { children: ReactNode }) {
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
 
             <Avatar alt="Remy Sharp" src={Img} />
           </Toolbar>
