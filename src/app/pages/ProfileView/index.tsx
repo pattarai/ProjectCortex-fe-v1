@@ -39,7 +39,6 @@ export function ProfileView(props: Props) {
     const res = await axiosGet('/users/profile');
     const users = res.data.users;
     setUserData(users);
-    // console.log(`${imgurl}/profile/${userData.userId}.jpg`);
   }
   useEffect(() => {
     getProfile();
@@ -156,7 +155,7 @@ export function ProfileView(props: Props) {
                       <Divider variant="middle" />
                       <div className="social-media my-5 mx-2 p-2">
                         <a
-                          href={userData.linkedin}
+                          href={userData.linkedInUrl}
                           target="_blank"
                           rel="noreferrer"
                         >
@@ -169,7 +168,7 @@ export function ProfileView(props: Props) {
                         </a>
                         &nbsp;&nbsp;
                         <a
-                          href={userData.email}
+                          href={`mailto:${userData.email}`}
                           target="_blank"
                           rel="noreferrer"
                         >
