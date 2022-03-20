@@ -226,7 +226,7 @@ export function Attendance(props: Props) {
           className="d-flex flex-column align-justify-center p-4 p-md-5"
           sx={{
             width: '100%',
-            height: '100%',
+            height: '20%',
           }}
         >
           <div className="d-md-flex w-md-100">
