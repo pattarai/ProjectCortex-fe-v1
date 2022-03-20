@@ -35,11 +35,66 @@ export function CompleteProfile() {
   const [loading, setLoading] = useState(true);
   const history = useHistory();
 
+  const [errors, setErrors] = useState({
+    dateOfBirthError: '',
+    collegeNameError: '',
+    departmentError: '',
+    yearError: '',
+    rollNumberError: '',
+    registerNumberError: '',
+    whatsappNumberError: '',
+    instagramUrlError: '',
+    githubUrlError: '',
+    linkedInUrlError: '',
+    descriptionError: '',
+    bitmojiPicError: '',
+    profilePicError: '',
+    isError: false,
+  });
+
   async function completeProfileGet() {
     const res = await axiosGet('/users/complete-profile');
     const user = res.data.user;
     setUserData(user);
     setLoading(false);
+  }
+
+  function checkError() {
+    let noofErrors = 0;
+    let err = { ...errors };
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (
+        value === null ||
+        (typeof value === 'string' && value.trim() === '')
+      ) {
+        err[`${key}Error`] = 'This field is required';
+        noofErrors++;
+      } else if (
+        key === 'email' &&
+        typeof value === 'string' &&
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+      ) {
+        err[`${key}Error`] = 'Invalid email address';
+        noofErrors++;
+      } else if (
+        (key === 'profilePic' || key === 'bitmojiPic') &&
+        value === null
+      ) {
+        err[`${key}Error`] = 'This field is required';
+        noofErrors++;
+      } else {
+        err[`${key}Error`] = '';
+      }
+    });
+
+    if (noofErrors === 0) {
+      return true;
+    } else {
+      err.isError = true;
+      setErrors(err);
+      return false;
+    }
   }
 
   async function completeProfilePatch() {
@@ -48,7 +103,6 @@ export function CompleteProfile() {
       let data = formdata;
       await axiosPatch('/users/complete-profile', data);
       setLoading(false);
-      history.push('/dashboard/profile');
     } catch {
       setLoading(false);
     }
@@ -78,10 +132,13 @@ export function CompleteProfile() {
   const handleSubmit = () => {
     formdata.append('profilePic', profilePic);
     formdata.append('bitmojiPic', bitmojiPic);
-    Object.entries(values).forEach(([key, value]) => {
-      formdata.append(key, value);
-    });
-    completeProfilePatch();
+    if (checkError()) {
+      Object.entries(values).forEach(([key, value]) => {
+        formdata.append(key, value);
+      });
+      completeProfilePatch();
+    }
+    history.push('/dashboard/profilecv');
   };
 
   const Input = styled('input')({
@@ -216,6 +273,16 @@ export function CompleteProfile() {
                                 collegeName: e.target.value,
                               })
                             }
+                            error={
+                              errors.isError &&
+                              (values.collegeName.trim() === '' ? true : false)
+                            }
+                            helperText={
+                              errors.isError &&
+                              (errors.collegeNameError !== ''
+                                ? errors.collegeNameError
+                                : '')
+                            }
                           />
                         </Box>
                       </div>
@@ -285,6 +352,16 @@ export function CompleteProfile() {
                                 rollNumber: e.target.value,
                               })
                             }
+                            error={
+                              errors.isError &&
+                              (values.rollNumber.trim() === '' ? true : false)
+                            }
+                            helperText={
+                              errors.isError &&
+                              (errors.rollNumberError !== ''
+                                ? errors.rollNumberError
+                                : '')
+                            }
                           />
                           <TextField
                             id="outlined-basic"
@@ -296,6 +373,18 @@ export function CompleteProfile() {
                                 ...values,
                                 registerNumber: e.target.value,
                               })
+                            }
+                            error={
+                              errors.isError &&
+                              (values.registerNumber.trim() === ''
+                                ? true
+                                : false)
+                            }
+                            helperText={
+                              errors.isError &&
+                              (errors.registerNumberError !== ''
+                                ? errors.registerNumberError
+                                : '')
                             }
                           />
                         </Box>
@@ -312,6 +401,16 @@ export function CompleteProfile() {
                                 instagramUrl: e.target.value,
                               })
                             }
+                            error={
+                              errors.isError &&
+                              (values.instagramUrl.trim() === '' ? true : false)
+                            }
+                            helperText={
+                              errors.isError &&
+                              (errors.instagramUrlError !== ''
+                                ? errors.instagramUrlError
+                                : '')
+                            }
                           />
                           <TextField
                             id="outlined-basic"
@@ -323,6 +422,16 @@ export function CompleteProfile() {
                                 linkedInUrl: e.target.value,
                               })
                             }
+                            error={
+                              errors.isError &&
+                              (values.linkedInUrl.trim() === '' ? true : false)
+                            }
+                            helperText={
+                              errors.isError &&
+                              (errors.linkedInUrlError !== ''
+                                ? errors.linkedInUrlError
+                                : '')
+                            }
                           />
                           <TextField
                             id="outlined-basic"
@@ -333,6 +442,16 @@ export function CompleteProfile() {
                                 ...values,
                                 githubUrl: e.target.value,
                               })
+                            }
+                            error={
+                              errors.isError &&
+                              (values.githubUrl.trim() === '' ? true : false)
+                            }
+                            helperText={
+                              errors.isError &&
+                              (errors.githubUrlError !== ''
+                                ? errors.githubUrlError
+                                : '')
                             }
                           />
                         </Box>
@@ -350,6 +469,16 @@ export function CompleteProfile() {
                                 description: e.target.value,
                               })
                             }
+                            error={
+                              errors.isError &&
+                              (values.description.trim() === '' ? true : false)
+                            }
+                            helperText={
+                              errors.isError &&
+                              (errors.descriptionError !== ''
+                                ? errors.descriptionError
+                                : '')
+                            }
                           />
                           <TextField
                             id="outlined-basic"
@@ -361,6 +490,18 @@ export function CompleteProfile() {
                                 ...values,
                                 whatsappNumber: e.target.value,
                               })
+                            }
+                            error={
+                              errors.isError &&
+                              (values.whatsappNumber.trim() === ''
+                                ? true
+                                : false)
+                            }
+                            helperText={
+                              errors.isError &&
+                              (errors.whatsappNumberError !== ''
+                                ? errors.whatsappNumberError
+                                : '')
                             }
                           />
                         </Box>
