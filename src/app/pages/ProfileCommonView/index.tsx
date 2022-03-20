@@ -81,8 +81,8 @@ export function ProfileCommonView(props: Props) {
                     <CardActionArea>
                       <CardContent>
                         <Avatar
-                          alt="Raksha"
-                          src={`${imgurl}/images/${data.userId}`}
+                          alt={data.firstName}
+                          src={`${imgurl}/images/${data.userId}.jpg`}
                           sx={{
                             width: 70,
                             height: 70,
@@ -95,9 +95,9 @@ export function ProfileCommonView(props: Props) {
                         <Typography component="h2" variant="h5">
                           {data.firstName} {data.lastName}
                         </Typography>
-                        <Typography variant="subtitle1" color="text.secondary">
+                        {/* <Typography variant="subtitle1" color="text.secondary">
                           {data.description}
-                        </Typography>
+                        </Typography> */}
                         <Typography variant="subtitle1" color="text.secondary">
                           {data.project}
                         </Typography>
