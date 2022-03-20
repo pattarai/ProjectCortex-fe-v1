@@ -164,8 +164,7 @@ export function RankingCrew() {
                 </div>
                 <div className="container align-items-center d-flex justify-content-center">
                   <div className="col m-2">
-                    {userSearchData &&
-                      userSearchData.length > 0 &&
+                    {userSearchData && userSearchData.length > 0 ? (
                       userSearchData.map((data, index) => {
                         let ranknum = 4;
                         return (
@@ -242,7 +241,10 @@ export function RankingCrew() {
                             </Card>
                           </div>
                         );
-                      })}
+                      })
+                    ) : (
+                      <p>No Data Found</p>
+                    )}
                   </div>
                 </div>
               </>
