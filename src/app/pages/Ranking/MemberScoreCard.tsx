@@ -153,6 +153,7 @@ export default function MemberScoreCard() {
             </div>
           </div>
         )}
+        :(<div>No Data</div>)
       </div>
     </>
   );

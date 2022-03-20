@@ -104,7 +104,7 @@ export function RankingCrew() {
               <>
                 <div className="my-4">
                   <div className="row">
-                    {top3 &&
+                    {top3 ? (
                       top3.map((list, index) => {
                         return (
                           <div
@@ -144,7 +144,10 @@ export function RankingCrew() {
                             </Card>
                           </div>
                         );
-                      })}
+                      })
+                    ) : (
+                      <p>No data Found</p>
+                    )}
                   </div>
                 </div>
                 <div className="container my-3">
