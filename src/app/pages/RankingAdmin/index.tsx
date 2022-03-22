@@ -17,12 +17,11 @@ import {
   FormControl,
   IconButton,
 } from '@mui/material';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import { styled } from '@mui/material/styles';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import Slide, { SlideProps } from '@mui/material/Slide';
-import { FaSearch, FaPlus } from 'react-icons/fa';
-import { RiAddFill } from 'react-icons/ri';
+import { SlideProps } from '@mui/material/Slide';
+import { FaPlus } from 'react-icons/fa';
 
 import Popup from '../../components/Popup';
 import DeleteForm from '../../components/DeleteForm';
@@ -31,7 +30,7 @@ import FactorForm from './FactorForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRankingAdminSlice } from './slice';
 import { selectRankingAdmin } from './slice/selectors';
-import { RankingAdminState, Factor, Ranking } from './slice/types';
+import { Factor } from './slice/types';
 import { AiOutlineClose } from 'react-icons/ai';
 
 type TransitionProps = Omit<SlideProps, 'direction'>;
@@ -64,7 +63,7 @@ export function RankingAdmin(props: Props) {
   const [loading, setLoading] = useState<boolean>(true);
   const [openPopup, setOpenPopup] = useState<boolean>(false);
   const [snackbarVisibility, setSnackbarVisibility] = useState<boolean>(false);
-  const [transition, setTransition] = useState<
+  const [transition] = useState<
     React.ComponentType<TransitionProps> | undefined
   >(undefined);
 
@@ -93,9 +92,9 @@ export function RankingAdmin(props: Props) {
 
     setFactorsList(
       rankingAdminData !== null
-        ? phase == 0
+        ? phase === 0
           ? rankingAdminData.factors
-          : rankingAdminData.factors.filter(factor => factor.phase == phase)
+          : rankingAdminData.factors.filter(factor => factor.phase === phase)
         : [],
     );
 
@@ -187,7 +186,7 @@ export function RankingAdmin(props: Props) {
   ) {
     var tempRankingData = {};
 
-    if (phase == 0) {
+    if (phase === 0) {
       rankingAdminData.ranking.forEach(rank => {
         if (!tempRankingData.hasOwnProperty(rank.userId)) {
           tempRankingData[rank.userId] = {
@@ -211,7 +210,7 @@ export function RankingAdmin(props: Props) {
     } else if (phase !== 0 && selectedFactor == null) {
       // get all ranks related to phase num
       rankingAdminData.ranking.forEach(rank => {
-        if (rank.factors.phase == phase) {
+        if (rank.factors.phase === phase) {
           if (!tempRankingData.hasOwnProperty(rank.userId)) {
             tempRankingData[rank.userId] = {
               name: rank.users.firstName + ' ' + rank.users.lastName,
@@ -236,7 +235,7 @@ export function RankingAdmin(props: Props) {
       // get all ranks related to selected factor
       rankingAdminData.ranking.forEach(rank => {
         var condition: boolean =
-          rank.factors.factorId == selectedFactor?.factorId;
+          rank.factors.factorId === selectedFactor?.factorId;
         if (!tempRankingData.hasOwnProperty(rank.userId)) {
           tempRankingData[rank.userId] = {
             name: rank.users.firstName + ' ' + rank.users.lastName,
@@ -289,9 +288,9 @@ export function RankingAdmin(props: Props) {
     setPhase(phaseNum);
     setFactorsList(
       rankingData != null
-        ? phaseNum == 0
+        ? phaseNum === 0
           ? rankingData.factors
-          : rankingData.factors.filter(factor => factor.phase == phaseNum)
+          : rankingData.factors.filter(factor => factor.phase === phaseNum)
         : [],
     );
 
@@ -354,7 +353,7 @@ export function RankingAdmin(props: Props) {
                   {phaseList.length > 0 ? (
                     phaseList.map(p => {
                       return (
-                        <MenuItem value={p}>{p == 0 ? 'All' : p}</MenuItem>
+                        <MenuItem value={p}>{p === 0 ? 'All' : p}</MenuItem>
                       );
                     })
                   ) : (
@@ -523,6 +522,7 @@ export function RankingAdmin(props: Props) {
                     open={snackbarVisibility}
                     onClose={() => setSnackbarVisibility(false)}
                     message="Changes Saved!"
+                    // eslint-disable-next-line
                     key={'bottom' + 'center'}
                     action={
                       <>
