@@ -205,13 +205,13 @@ export function LoginPage() {
                   setValues({ ...values, password: e.target.value })
                 }
               />
-              <Grid container>
+              {/* <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
-              </Grid>
+              </Grid> */}
               <CenterItem>
                 <Button
                   type="button"
