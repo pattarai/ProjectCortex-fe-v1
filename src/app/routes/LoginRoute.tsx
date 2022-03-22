@@ -5,7 +5,7 @@ import { Loader } from 'app/components/Loader';
 import Problem from 'app/components/Problem';
 import { CompleteProfile } from 'app/pages/CompleteProfile';
 
-export function UserRoute(props) {
+export function LoginRoute(props) {
   const Component = props.component;
   const [user, setUser] = useState(false);
   const [error, setError] = useState(false);
