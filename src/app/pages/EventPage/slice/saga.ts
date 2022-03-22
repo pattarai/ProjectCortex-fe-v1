@@ -1,4 +1,4 @@
-import { take, call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { eventsActions as actions } from '.';
 import {
   axiosGet,
@@ -11,7 +11,6 @@ function* handleGetEvents() {
   try {
     const res = yield call(() => axiosGet('/admin/events'));
     const data = res.data;
-    console.log(data);
     yield put(actions.setEvent(data));
   } catch (error) {
     yield put(actions.setError(true));
@@ -31,12 +30,10 @@ function* handleAddEvents(action: any) {
 
 function* handleGetEventByPhase(action: any) {
   try {
-    console.log(action.payload);
     const res = yield call(() =>
       axiosPost('/admin/event-by-phase', { phase: action.payload }),
     );
     const data = res.data.data;
-    console.log(data);
     yield put(actions.setEventByPhase(data));
   } catch (error) {
     yield put(actions.setError(true));

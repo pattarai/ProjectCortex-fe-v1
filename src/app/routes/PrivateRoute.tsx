@@ -2,7 +2,6 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { axiosGet } from '../requests';
 import { Loader } from '../components/Loader';
-import { Redirect } from 'react-router-dom';
 import { CompleteProfile } from 'app/pages/CompleteProfile';
 
 export function PrivateRoute(props) {

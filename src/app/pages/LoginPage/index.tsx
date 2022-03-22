@@ -16,12 +16,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import Logo from './images/Logo.svg';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
-import Slide, { SlideProps } from '@mui/material/Slide';
+import { SlideProps } from '@mui/material/Slide';
 import IconButton from '@mui/material/IconButton';
 import { AiOutlineClose } from 'react-icons/ai';
-
-import { useDispatch } from 'react-redux';
-import { useLoginSlice } from './slice';
 import { axiosPost } from '../../requests';
 import { useHistory } from 'react-router-dom';
 import { Loader } from '../../components/Loader';
@@ -38,8 +35,6 @@ const CenterItem = styled.div`
 `;
 
 export function LoginPage() {
-  const dispatch = useDispatch();
-  const { actions } = useLoginSlice();
   const history = useHistory();
   const [loading, setLoading] = React.useState(false);
 
@@ -54,18 +49,14 @@ export function LoginPage() {
     setOpen(false);
   };
   const [responseError, setResponseError] = React.useState('');
-  const [state, setState] = React.useState<SnackbarOrigin>({
+  const [state] = React.useState<SnackbarOrigin>({
     vertical: 'bottom',
     horizontal: 'center',
   });
   const { vertical, horizontal } = state;
-  const [transition, setTransition] = React.useState<
+  const [transition] = React.useState<
     React.ComponentType<TransitionProps> | undefined
   >(undefined);
-
-  function TransitionRight(props: TransitionProps) {
-    return <Slide {...props} direction="right" />;
-  }
 
   function checkError() {
     let noofErrors = 0;

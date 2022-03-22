@@ -4,7 +4,6 @@
  *
  */
 import * as React from 'react';
-import Img from '../DashboardLayout/images/subhiksha1.jpg';
 import { useState, useEffect } from 'react';
 import {
   Card,
@@ -105,7 +104,7 @@ export function ProfileView(props: Props) {
                             component="h2"
                             variant="h5"
                           >
-                            {userData.officeBearersId}
+                            {userData.roles}
                           </Typography>
                         </div>
                         <div className="d-flex my-3">
