@@ -4,7 +4,6 @@
  *
  */
 import * as React from 'react';
-import Img from '../DashboardLayout/images/subhiksha1.jpg';
 import { useState, useEffect } from 'react';
 import {
   Card,

@@ -1,14 +1,6 @@
-import { useState, useEffect } from 'react';
-import {
-  Button,
-  TextField,
-  IconButton,
-  LinearProgress,
-  Autocomplete,
-  InputLabel,
-  FormControl,
-} from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { Button, TextField, FormControl } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 type Props = {
   addFactor: boolean;

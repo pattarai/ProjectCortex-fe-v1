@@ -7,22 +7,18 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  InputAdornment,
   TableContainer,
   TextField,
-  IconButton,
   LinearProgress,
   Autocomplete,
   InputLabel,
   Select,
   MenuItem,
   FormControl,
-  ButtonBase,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import { FaSearch, FaPlus } from 'react-icons/fa';
-import { RiAddFill } from 'react-icons/ri';
+import { FaPlus } from 'react-icons/fa';
 
 import Popup from '../../components/Popup';
 import DeleteForm from '../../components/DeleteForm';
@@ -31,7 +27,7 @@ import FactorForm from './FactorForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRankingAdminSlice } from './slice';
 import { selectRankingAdmin } from './slice/selectors';
-import { RankingAdminState, Factor, Ranking } from './slice/types';
+import { Factor } from './slice/types';
 
 const CustomTableRow = styled(TableRow)(({ theme }) => ({
   '&:hover': {
@@ -86,9 +82,9 @@ export function RankingAdmin(props: Props) {
 
     setFactorsList(
       rankingAdminData !== null
-        ? phase == 0
+        ? phase === 0
           ? rankingAdminData.factors
-          : rankingAdminData.factors.filter(factor => factor.phase == phase)
+          : rankingAdminData.factors.filter(factor => factor.phase === phase)
         : [],
     );
 
@@ -110,7 +106,7 @@ export function RankingAdmin(props: Props) {
     var tempRankingData = {};
     rankingAdminData.ranking.forEach(rank => {
       if (
-        (phase == 0 || phase == rank.factors.phase) &&
+        (phase === 0 || phase === rank.factors.phase) &&
         (selectedFactor == null ||
           selectedFactor.factorId === rank.factors.factorId)
       ) {
@@ -156,9 +152,9 @@ export function RankingAdmin(props: Props) {
     setPhase(phaseNum);
     setFactorsList(
       rankingData != null
-        ? phaseNum == 0
+        ? phaseNum === 0
           ? rankingData.factors
-          : rankingData.factors.filter(factor => factor.phase == phaseNum)
+          : rankingData.factors.filter(factor => factor.phase === phaseNum)
         : [],
     );
 
@@ -220,7 +216,7 @@ export function RankingAdmin(props: Props) {
                   {phaseList.length > 0 ? (
                     phaseList.map(p => {
                       return (
-                        <MenuItem value={p}>{p == 0 ? 'All' : p}</MenuItem>
+                        <MenuItem value={p}>{p === 0 ? 'All' : p}</MenuItem>
                       );
                     })
                   ) : (
@@ -238,7 +234,7 @@ export function RankingAdmin(props: Props) {
                   getOptionLabel={factor => factor.factorName}
                   onInputChange={handleFactorChange}
                   noOptionsText={
-                    textFieldValue != '' ? (
+                    textFieldValue !== '' ? (
                       <div className="d-flex flex-column align-items-center my-2">
                         <span className="text-center mb-2">
                           No Factor named "{textFieldValue}"
@@ -368,7 +364,7 @@ export function RankingAdmin(props: Props) {
                                   score: 0,
                                 };
                                 user.factors.forEach(f => {
-                                  if (factor.factorId == f.factorId) data = f;
+                                  if (factor.factorId === f.factorId) data = f;
                                 });
 
                                 return (
