@@ -104,7 +104,7 @@ export function ProfileView(props: Props) {
                             component="h2"
                             variant="h5"
                           >
-                            {userData.officeBearersId}
+                            {userData.roles}
                           </Typography>
                         </div>
                         <div className="d-flex my-3">
