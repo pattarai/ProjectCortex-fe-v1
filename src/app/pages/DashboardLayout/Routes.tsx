@@ -9,11 +9,10 @@ import { EventPage } from '../EventPage';
 import { UserManagement } from '../UserManagement';
 import { ProfileView } from '../ProfileView';
 import { ProfileCommonView } from '../ProfileCommonView';
-import { CompleteProfile } from '../CompleteProfile';
 import { Attendance } from '../Attendance';
 import { AttendanceCrew } from '../AttendanceCrew';
 import { RankingAdmin } from '../RankingAdmin';
-import { Ranking } from '../Ranking';
+import { RankingCrew } from '../Ranking';
 
 interface Props {}
 
@@ -21,7 +20,7 @@ export function Routes(props: Props) {
   return (
     <Switch>
       <Route exact path="/dashboard/attendance" component={AttendanceCrew} />
-      <Route exact path="/dashboard/ranking" component={Ranking} />
+      <Route exact path="/dashboard/ranking" component={RankingCrew} />
 
       <Route exact path="/dashboard/admin/events" component={EventPage} />
       <Route
@@ -32,7 +31,6 @@ export function Routes(props: Props) {
       <Route exact path="/dashboard/admin/attendance" component={Attendance} />
       <Route path="/dashboard/profilecv" component={ProfileCommonView} />
       <Route path="/dashboard/profile" component={ProfileView} />
-      <Route path="/dashboard/complete-profile" component={CompleteProfile} />
       <Route path="/dashboard/admin/ranking" component={RankingAdmin} />
     </Switch>
   );

@@ -8,5 +8,5 @@ import { lazyLoad } from 'utils/loadable';
 
 export const Ranking = lazyLoad(
   () => import('./index'),
-  module => module.Ranking,
+  module => module.RankingCrew,
 );

@@ -7,17 +7,15 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  InputAdornment,
   TableContainer,
   TextField,
-  IconButton,
   LinearProgress,
   Autocomplete,
   InputLabel,
   Select,
   MenuItem,
   FormControl,
-  ButtonBase,
+  IconButton,
 } from '@mui/material';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import { styled } from '@mui/material/styles';
@@ -79,7 +77,6 @@ export function RankingAdmin(props: Props) {
   >(rankingAdminData);
   const [phase, setPhase] = useState<number>(0);
   const [selectedFactor, setSelectedFactor] = useState<Factor | null>(null);
-
   const [displayRankingData, setDisplayRankingData] = useState<any | null>(
     null,
   );
@@ -375,7 +372,7 @@ export function RankingAdmin(props: Props) {
                   getOptionLabel={factor => factor.factorName}
                   onInputChange={handleFactorChange}
                   noOptionsText={
-                    textFieldValue != '' ? (
+                    textFieldValue !== '' ? (
                       <div className="d-flex flex-column align-items-center my-2">
                         <span className="text-center mb-2">
                           No Factor named "{textFieldValue}"

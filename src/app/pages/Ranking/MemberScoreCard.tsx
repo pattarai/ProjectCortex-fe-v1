@@ -65,7 +65,7 @@ export default function MemberScoreCard() {
 
   return (
     <>
-      <div className="container my-4">
+      <div className="my-4">
         {loading ? (
           <>
             <Skeleton variant="text" animation="wave" sx={{ height: 100 }} />
@@ -153,6 +153,7 @@ export default function MemberScoreCard() {
             </div>
           </div>
         )}
+        :(<div>No Data</div>)
       </div>
     </>
   );

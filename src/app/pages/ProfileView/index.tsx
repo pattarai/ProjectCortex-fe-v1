@@ -4,7 +4,6 @@
  *
  */
 import * as React from 'react';
-import Img from '../DashboardLayout/images/subhiksha1.jpg';
 import { useState, useEffect } from 'react';
 import {
   Card,
@@ -39,7 +38,6 @@ export function ProfileView(props: Props) {
     const res = await axiosGet('/users/profile');
     const users = res.data.users;
     setUserData(users);
-    // console.log(`${imgurl}/profile/${userData.userId}.jpg`);
   }
   useEffect(() => {
     getProfile();
@@ -106,7 +104,7 @@ export function ProfileView(props: Props) {
                             component="h2"
                             variant="h5"
                           >
-                            {userData.officeBearersId}
+                            {userData.roles}
                           </Typography>
                         </div>
                         <div className="d-flex my-3">
@@ -154,9 +152,9 @@ export function ProfileView(props: Props) {
                         CONTACT INFORMATION
                       </Box>
                       <Divider variant="middle" />
-                      <div className="social-media my-5 mx-1">
+                      <div className="social-media my-5 mx-2 p-2">
                         <a
-                          href={userData.linkedin}
+                          href={userData.linkedInUrl}
                           target="_blank"
                           rel="noreferrer"
                         >
@@ -167,9 +165,9 @@ export function ProfileView(props: Props) {
                             alt="Linkedin"
                           />
                         </a>
-
+                        &nbsp;&nbsp;
                         <a
-                          href={userData.email}
+                          href={`mailto:${userData.email}`}
                           target="_blank"
                           rel="noreferrer"
                         >
@@ -180,7 +178,7 @@ export function ProfileView(props: Props) {
                             alt="Gmail"
                           />
                         </a>
-
+                        &nbsp;&nbsp;
                         <a
                           href={userData.githubUrl}
                           target="_blank"
@@ -193,7 +191,7 @@ export function ProfileView(props: Props) {
                             alt="GitHub"
                           />
                         </a>
-
+                        &nbsp;&nbsp;
                         <a
                           href={userData.instagramUrl}
                           target="_blank"

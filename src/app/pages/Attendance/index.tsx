@@ -226,7 +226,7 @@ export function Attendance(props: Props) {
           className="d-flex flex-column align-justify-center p-4 p-md-5"
           sx={{
             width: '100%',
-            height: '100%',
+            height: '20%',
           }}
         >
           <div className="d-md-flex w-md-100">
@@ -241,7 +241,7 @@ export function Attendance(props: Props) {
               // }
               id="outlined-basic"
               className="mb-3"
-              label="First Name"
+              label="Event Name"
               variant="outlined"
               inputProps={{ maxLength: 15 }}
               onChange={e => setValue({ ...value, eventName: e.target.value })}

@@ -1,6 +1,6 @@
 /**
  *
- * Ranking
+ * RankingCrew
  *
  */
 import * as React from 'react';
@@ -25,7 +25,6 @@ import { FaSearch } from 'react-icons/fa';
 import MemberScoreCard from './MemberScoreCard';
 import { axiosGet, imgurl } from '../../requests';
 import LinearProgress from '@mui/material/LinearProgress';
-import { Loader } from '../../components/Loader';
 
 type Users = {
   firstName: string;
@@ -39,7 +38,7 @@ interface MemberData {
   userId: number;
 }
 
-export function Ranking() {
+export function RankingCrew() {
   const [openDetails, setOpenDetails] = useState(false);
   const [userData, setUserData] = useState<MemberData[] | null>(null);
   const [userSearchData, setUserSearchData] = useState<MemberData[] | null>(
@@ -56,6 +55,7 @@ export function Ranking() {
       setTop3(top3List);
       setUserData(userList);
       setUserSearchData(userList);
+      console.log(user);
       setLoading(false);
     });
   }, []);
@@ -67,29 +67,26 @@ export function Ranking() {
       const filteredUser = userData?.filter(row =>
         row.users.firstName.toLowerCase().includes(searchedVal.toLowerCase()),
       );
+      console.log(filteredUser, searchedVal);
       filteredUser && setUserSearchData(filteredUser);
     }
   }
 
-  if (loading) return <Loader />;
-
   return (
     <>
       <section className="vh-100">
-        <div className="d-flex justify-content-end p-4">
+        <div className="d-flex justify-content-end">
           <Button
-            sx={{ color: 'grey.900' }}
             onClick={() => {
               setOpenDetails(false);
             }}
           >
             Crew
           </Button>
-          <Typography component="h2" variant="h5" sx={{ color: 'grey.900' }}>
+          <Typography component="h2" variant="h5">
             |
           </Typography>
           <Button
-            sx={{ color: 'grey.900' }}
             onClick={() => {
               setOpenDetails(true);
             }}
@@ -105,9 +102,9 @@ export function Ranking() {
               <LinearProgress className="container" />
             ) : (
               <>
-                <div className="container my-4">
+                <div className="my-4">
                   <div className="row">
-                    {top3 &&
+                    {top3 ? (
                       top3.map((list, index) => {
                         return (
                           <div
@@ -119,7 +116,11 @@ export function Ranking() {
                                 <CardContent>
                                   <Avatar
                                     alt={list.users.firstName}
-                                    src={`${imgurl}/bitmoji/${list.userId}.jpg`}
+                                    src={
+                                      list.userId
+                                        ? `${imgurl}/bitmoji/${list.userId}`
+                                        : AvatarIcon
+                                    }
                                     sx={{
                                       width: 70,
                                       height: 70,
@@ -143,19 +144,21 @@ export function Ranking() {
                             </Card>
                           </div>
                         );
-                      })}
+                      })
+                    ) : (
+                      <p>No data Found</p>
+                    )}
                   </div>
                 </div>
                 <div className="container my-3">
                   <TextField
-                    fullWidth
                     label="Search Members"
                     variant="outlined"
-                    className="mb-3 mb-md-0"
+                    className="mb-3 mb-md-0 w-md-50 w-100"
                     onChange={e => handleChange(e.target.value)}
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start" color="white">
+                        <InputAdornment position="start">
                           <FaSearch />
                         </InputAdornment>
                       ),
@@ -164,8 +167,7 @@ export function Ranking() {
                 </div>
                 <div className="container align-items-center d-flex justify-content-center">
                   <div className="col m-2">
-                    {userSearchData &&
-                      userSearchData.length > 0 &&
+                    {userSearchData && userSearchData.length > 0 ? (
                       userSearchData.map((data, index) => {
                         let ranknum = 4;
                         return (
@@ -184,7 +186,11 @@ export function Ranking() {
                                   </span>
                                   <Avatar
                                     alt={data.users.firstName}
-                                    src={`${imgurl}/bitmoji/${data.userId}.jpg`}
+                                    src={
+                                      data.userId
+                                        ? `${imgurl}/bitmoji/${data.userId}`
+                                        : AvatarIcon
+                                    }
                                     sx={{
                                       width: 40,
                                       height: 40,
@@ -196,7 +202,7 @@ export function Ranking() {
                                   <div style={{ width: '50%' }}>
                                     <span className="d-none d-md-block ms-2">
                                       <Typography component="h2" variant="h6">
-                                        {data.users.firstName}
+                                        {data.users.firstName}{' '}
                                         {data.users.lastName}
                                       </Typography>
                                     </span>
@@ -238,7 +244,10 @@ export function Ranking() {
                             </Card>
                           </div>
                         );
-                      })}
+                      })
+                    ) : (
+                      <p>No Data Found</p>
+                    )}
                   </div>
                 </div>
               </>

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { axiosGet, imgurl } from '../../requests';
+import { useState, useEffect } from 'react';
 import MuiDrawer from '@mui/material/Drawer';
 import {
   Box,
@@ -11,18 +13,11 @@ import {
   Divider,
   IconButton,
   Avatar,
-  Badge,
   Container,
 } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import {
-  MdBorderColor as BorderColorIcon,
-  MdSettings as SettingsIcon,
-  MdNotifications as NotificationsIcon,
-} from 'react-icons/md';
 import { GoChevronLeft as ChevronLeftIcon } from 'react-icons/go';
 import { mainListItems, secondaryListItems } from './ListItems';
-import Img from './images/subiksha.jpeg';
 import Svg from './images/Circle_logo_White.svg';
 
 const drawerWidth: number = 240;
@@ -79,9 +74,20 @@ const mdTheme = createTheme();
 
 export default function Dashboard({ children }: { children: ReactNode }) {
   const [open, setOpen] = React.useState(true);
+  const [userData, setUserData] = useState<any | null>(null);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  async function getProfile() {
+    const res = await axiosGet('/users/profile');
+    const users = res.data.users;
+    setUserData(users);
+  }
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -113,32 +119,24 @@ export default function Dashboard({ children }: { children: ReactNode }) {
                 <img src={Svg} width="15%" alt="" />
               </div>
             </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Hello Subhiksha! Welcome to your profile!
-            </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={0} color="secondary">
-                <SettingsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit">
-              <Badge badgeContent={0} color="secondary">
-                <BorderColorIcon />
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
 
-            <Avatar alt="Remy Sharp" src={Img} />
+            {userData && (
+              <>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  color="inherit"
+                  noWrap
+                  sx={{ flexGrow: 1 }}
+                >
+                  Hello {userData.firstName}! Welcome to your profile!
+                </Typography>
+                <Avatar
+                  alt={userData.firstName}
+                  src={`${imgurl}/images/${userData.userId}.jpg`}
+                />
+              </>
+            )}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
