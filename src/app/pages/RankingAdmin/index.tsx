@@ -19,8 +19,10 @@ import {
   FormControl,
   ButtonBase,
 } from '@mui/material';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import { styled } from '@mui/material/styles';
 import { MdDelete, MdEdit } from 'react-icons/md';
+import Slide, { SlideProps } from '@mui/material/Slide';
 import { FaSearch, FaPlus } from 'react-icons/fa';
 import { RiAddFill } from 'react-icons/ri';
 
@@ -32,6 +34,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRankingAdminSlice } from './slice';
 import { selectRankingAdmin } from './slice/selectors';
 import { RankingAdminState, Factor, Ranking } from './slice/types';
+import { AiOutlineClose } from 'react-icons/ai';
+
+type TransitionProps = Omit<SlideProps, 'direction'>;
 
 const CustomTableRow = styled(TableRow)(({ theme }) => ({
   '&:hover': {
@@ -60,6 +65,10 @@ export function RankingAdmin(props: Props) {
   const [factorAction, setFactorAction] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [openPopup, setOpenPopup] = useState<boolean>(false);
+  const [snackbarVisibility, setSnackbarVisibility] = useState<boolean>(false);
+  const [transition, setTransition] = useState<
+    React.ComponentType<TransitionProps> | undefined
+  >(undefined);
 
   // <--------- Flags ---------->
 
@@ -70,6 +79,7 @@ export function RankingAdmin(props: Props) {
   >(rankingAdminData);
   const [phase, setPhase] = useState<number>(0);
   const [selectedFactor, setSelectedFactor] = useState<Factor | null>(null);
+
   const [displayRankingData, setDisplayRankingData] = useState<any | null>(
     null,
   );
@@ -100,20 +110,88 @@ export function RankingAdmin(props: Props) {
     setPhaseList(tempList);
 
     // Arrange ranking data
-    handleDisplayRankingData();
+    handleDisplayRankingData(phase, selectedFactor);
 
     rankingData && setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rankingAdminData]);
 
-  function handleDisplayRankingData() {
+  const EditableTableCell = (userId, factor, userFactors) => {
+    for (var i = 0; i < userFactors.length; i++) {
+      if (userFactors[i].factorId === factor.factorId) {
+        return (
+          <TableCell align="center">
+            <TextField
+              className="w-auto"
+              variant="standard"
+              type="number"
+              InputProps={{
+                inputProps: { min: 0, max: factor.maxScore },
+              }}
+              value={userFactors[i].score}
+              onChange={e =>
+                changeScore(userId, factor.factorId, e.target.value)
+              }
+            />
+          </TableCell>
+        );
+      }
+    }
+  };
+
+  function saveChanges() {
+    setLoading(true);
+
+    type User = {
+      userId: number;
+      factorId: number;
+      score: number;
+    };
+
+    var crewScore: User[] = [];
+
+    if (rankingData !== null) {
+      rankingData.ranking.forEach(rank => {
+        const user = {
+          userId: rank.userId,
+          factorId: rank.factors.factorId,
+          score: rank.score,
+        };
+        crewScore.push(user);
+      });
+
+      dispatch(actions.updateRanking(crewScore));
+    }
+
+    setLoading(false);
+    setSnackbarVisibility(true);
+  }
+
+  function changeScore(userId, factorId, score) {
+    score = Number(score);
+    var temp = displayRankingData;
+    var index = temp[userId].factors.findIndex(
+      factor => factor.factorId === factorId,
+    );
+    temp[userId].factors[index].score = score;
+    setDisplayRankingData(temp);
+
+    var _temp = rankingAdminData;
+    var inx = _temp.ranking.findIndex(
+      rank => rank.userId === userId && rank.factors.factorId === factorId,
+    );
+    _temp.ranking[inx].score = score;
+    setRankingData(_temp);
+  }
+
+  function handleDisplayRankingData(
+    phase: number,
+    selectedFactor: Factor | null,
+  ) {
     var tempRankingData = {};
-    rankingAdminData.ranking.forEach(rank => {
-      if (
-        (phase == 0 || phase == rank.factors.phase) &&
-        (selectedFactor == null ||
-          selectedFactor.factorId === rank.factors.factorId)
-      ) {
+
+    if (phase == 0) {
+      rankingAdminData.ranking.forEach(rank => {
         if (!tempRankingData.hasOwnProperty(rank.userId)) {
           tempRankingData[rank.userId] = {
             name: rank.users.firstName + ' ' + rank.users.lastName,
@@ -132,24 +210,82 @@ export function RankingAdmin(props: Props) {
             score: rank.score,
           });
         }
-      }
-    });
+      });
+    } else if (phase !== 0 && selectedFactor == null) {
+      // get all ranks related to phase num
+      rankingAdminData.ranking.forEach(rank => {
+        if (rank.factors.phase == phase) {
+          if (!tempRankingData.hasOwnProperty(rank.userId)) {
+            tempRankingData[rank.userId] = {
+              name: rank.users.firstName + ' ' + rank.users.lastName,
+              factors: [
+                {
+                  factorId: rank.factors.factorId,
+                  factorName: rank.factors.factorName,
+                  score: rank.score,
+                },
+              ],
+            };
+          } else {
+            tempRankingData[rank.userId].factors.push({
+              factorId: rank.factors.factorId,
+              factorName: rank.factors.factorName,
+              score: rank.score,
+            });
+          }
+        }
+      });
+    } else {
+      // get all ranks related to selected factor
+      rankingAdminData.ranking.forEach(rank => {
+        var condition: boolean =
+          rank.factors.factorId == selectedFactor?.factorId;
+        if (!tempRankingData.hasOwnProperty(rank.userId)) {
+          tempRankingData[rank.userId] = {
+            name: rank.users.firstName + ' ' + rank.users.lastName,
+            factors: [
+              {
+                factorId: rank.factors.factorId,
+                factorName: rank.factors.factorName,
+                score: condition ? rank.score : 0,
+              },
+            ],
+          };
+        } else {
+          tempRankingData[rank.userId].factors.push({
+            factorId: rank.factors.factorId,
+            factorName: rank.factors.factorName,
+            score: condition ? rank.score : 0,
+          });
+        }
+      });
+    }
     setDisplayRankingData(rankingAdminData !== null ? tempRankingData : null);
   }
 
   function handleFactorChange(_, value: string) {
     setTextFieldValue(value);
+    var _phase;
+
     const val = (value: string): Factor | null => {
       var _fl: Factor[] = [];
       factorsList.forEach(f => {
-        if (f.factorName === value) _fl.push(f);
+        if (f.factorName === value) {
+          _fl.push(f);
+          setPhase(f.phase);
+          _phase = f.phase;
+        }
       });
       if (_fl.length > 0) return _fl[0];
       return null;
     };
-    setSelectedFactor(val(value));
-    // Arrange ranking data
-    handleDisplayRankingData();
+    var validFactor = val(value);
+
+    if (validFactor !== null) {
+      setSelectedFactor(validFactor);
+      // Arrange ranking data
+      handleDisplayRankingData(_phase, validFactor);
+    }
   }
   function handlePhaseChange(e) {
     const phaseNum: number = e.target.value;
@@ -163,7 +299,7 @@ export function RankingAdmin(props: Props) {
     );
 
     // Arrange ranking data
-    handleDisplayRankingData();
+    handleDisplayRankingData(phaseNum, null);
 
     // Reset the factor field
     setTextFieldValue('');
@@ -191,6 +327,7 @@ export function RankingAdmin(props: Props) {
       dispatch(actions.deleteFactor({ factorId: selectedFactor.factorId }));
       setTextFieldValue('');
       setSelectedFactor(null);
+      handlePhaseChange({ target: '0' });
     }
   };
 
@@ -290,6 +427,9 @@ export function RankingAdmin(props: Props) {
                 </div>
                 <div className="d-flex justify-content-around my-2">
                   <div className="mx-2 my-auto">
+                    Phase: {selectedFactor?.phase}
+                  </div>
+                  <div className="mx-2 my-auto">
                     Max Score: {selectedFactor?.maxScore}
                   </div>
                   <Button
@@ -312,78 +452,96 @@ export function RankingAdmin(props: Props) {
               </div>
             )}
             {rankingData ? (
-              <TableContainer>
-                <Table sx={{ minWidth: 650 }} aria-label="Ranking Table">
-                  <TableHead sx={{ bgcolor: '#dee2fc' }}>
-                    <TableRow>
-                      <TableCell>Name</TableCell>
-                      {selectedFactor ? (
-                        <TableCell align="center">
-                          {selectedFactor.factorName}
-                        </TableCell>
-                      ) : factorsList ? (
-                        factorsList?.map(factor => {
-                          return (
-                            <TableCell align="center">
-                              {factor.factorName}
-                            </TableCell>
-                          );
-                        })
-                      ) : (
-                        rankingData.factors?.map(factor => {
-                          return (
-                            <TableCell align="center">
-                              {factor.factorName}
-                            </TableCell>
-                          );
-                        })
-                      )}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {displayRankingData &&
-                      Object.entries<{
-                        name: String;
-                        factors: DisplayFactor[];
-                      }>(displayRankingData).map(obj => {
-                        const [userId, user] = obj;
-                        return (
-                          <CustomTableRow>
-                            <TableCell>{user.name}</TableCell>
-                            {selectedFactor ? (
+              <>
+                <TableContainer>
+                  <Table
+                    sx={{ minWidth: 650 }}
+                    aria-label="Ranking Table"
+                    stickyHeader
+                  >
+                    <TableHead sx={{ bgcolor: '#dee2fc' }}>
+                      <TableRow>
+                        <TableCell>Name</TableCell>
+                        {selectedFactor ? (
+                          <TableCell align="center">
+                            {selectedFactor.factorName}
+                          </TableCell>
+                        ) : factorsList ? (
+                          factorsList?.map(factor => {
+                            return (
                               <TableCell align="center">
-                                {
-                                  user.factors.filter(
-                                    factor =>
-                                      factor.factorId ===
-                                      selectedFactor.factorId,
-                                  )[0]?.score
-                                }
+                                {factor.factorName}
                               </TableCell>
-                            ) : (
-                              factorsList.map(factor => {
-                                var data: DisplayFactor = {
-                                  factorId: 1,
-                                  factorName: 'No Factor',
-                                  score: 0,
-                                };
-                                user.factors.forEach(f => {
-                                  if (factor.factorId == f.factorId) data = f;
-                                });
-
-                                return (
-                                  <TableCell align="center">
-                                    {data.score}
-                                  </TableCell>
-                                );
-                              })
-                            )}
-                          </CustomTableRow>
-                        );
-                      })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                            );
+                          })
+                        ) : (
+                          rankingData.factors?.map(factor => {
+                            return (
+                              <TableCell align="center">
+                                {factor.factorName}
+                              </TableCell>
+                            );
+                          })
+                        )}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {displayRankingData &&
+                        Object.entries<{
+                          name: String;
+                          factors: DisplayFactor[];
+                        }>(displayRankingData).map(obj => {
+                          const [userId, user] = obj;
+                          const { factors: userFactors } = user;
+                          return (
+                            <CustomTableRow>
+                              <TableCell>{user.name}</TableCell>
+                              {selectedFactor !== null
+                                ? EditableTableCell(
+                                    userId,
+                                    selectedFactor,
+                                    userFactors,
+                                  )
+                                : factorsList.map(factor =>
+                                    EditableTableCell(
+                                      userId,
+                                      factor,
+                                      userFactors,
+                                    ),
+                                  )}
+                            </CustomTableRow>
+                          );
+                        })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <div className="d-flex justify-content-end m-2 align-items-center">
+                  <Button variant="contained" onClick={() => saveChanges()}>
+                    SAVE
+                  </Button>
+                  <Snackbar
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                    TransitionComponent={transition}
+                    autoHideDuration={6000}
+                    open={snackbarVisibility}
+                    onClose={() => setSnackbarVisibility(false)}
+                    message="Changes Saved!"
+                    key={'bottom' + 'center'}
+                    action={
+                      <>
+                        <IconButton
+                          aria-label="close"
+                          color="inherit"
+                          sx={{ p: 0.5 }}
+                          onClick={() => setSnackbarVisibility(false)}
+                        >
+                          <AiOutlineClose />
+                        </IconButton>
+                      </>
+                    }
+                  />
+                </div>
+              </>
             ) : (
               <div style={{ width: '100%' }}>
                 <LinearProgress />
