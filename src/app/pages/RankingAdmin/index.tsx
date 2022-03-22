@@ -342,6 +342,7 @@ export function RankingAdmin(props: Props) {
                         name: String;
                         factors: DisplayFactor[];
                       }>(displayRankingData).map(obj => {
+                        // eslint-disable-next-line
                         const [userId, user] = obj;
                         return (
                           <CustomTableRow>
