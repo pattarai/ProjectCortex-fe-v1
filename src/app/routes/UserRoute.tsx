@@ -36,7 +36,7 @@ export function UserRoute(props) {
   } else if (error) {
     return <Problem isError={true} />;
   } else if (!user) {
-    <Redirect to={{ pathname: '/' }} />;
+    return <Redirect to={{ pathname: '/' }} />;
   } else {
     if (isCompleted) {
       return <Component />;
