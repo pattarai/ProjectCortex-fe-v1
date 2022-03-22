@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 // Importing pages
 import { DashboardLayout } from './pages/DashboardLayout';
 import { LoginPage } from './pages/LoginPage';
+import { LoginRoute } from './routes/LoginRoute';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -29,7 +30,7 @@ export function App() {
         <meta name="description" content="A ERP application" />
       </Helmet>
       <Switch>
-        <Route exact path="/" component={LoginPage} />
+        <LoginRoute exact path="/" component={LoginPage} />
         <Route path="/dashboard" component={DashboardLayout} />
       </Switch>
       <GlobalStyle />
