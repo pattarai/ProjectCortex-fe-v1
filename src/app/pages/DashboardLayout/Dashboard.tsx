@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import { axiosGet, imgurl } from '../../requests';
-import { useState, useEffect } from 'react';
 import MuiDrawer from '@mui/material/Drawer';
+import { axiosGet, imgurl } from '../../requests';
 import {
   Box,
   CssBaseline,
@@ -17,7 +16,7 @@ import {
 } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { GoChevronLeft as ChevronLeftIcon } from 'react-icons/go';
-import { mainListItems, secondaryListItems } from './ListItems';
+import { MainListItems, secondaryListItems } from './ListItems';
 import Svg from './images/Circle_logo_White.svg';
 
 const drawerWidth: number = 240;
@@ -153,7 +152,9 @@ export default function Dashboard({ children }: { children: ReactNode }) {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List>{mainListItems}</List>
+          <List>
+            <MainListItems />
+          </List>
           <Divider />
           <div className="d-flex align-items-end" style={{ height: '100%' }}>
             <List>{secondaryListItems}</List>
