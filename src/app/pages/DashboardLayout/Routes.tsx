@@ -21,17 +21,16 @@ export function Routes(props: Props) {
     <Switch>
       <Route exact path="/dashboard/attendance" component={AttendanceCrew} />
       <Route exact path="/dashboard/ranking" component={RankingCrew} />
-
-      <Route exact path="/dashboard/admin/events" component={EventPage} />
+      <Route path="/dashboard/profilecv" component={ProfileCommonView} />
+      <Route path="/dashboard/profile" component={ProfileView} />
       <Route
         exact
         path="/dashboard/admin/user-manage"
         component={UserManagement}
       />
-      <Route exact path="/dashboard/admin/attendance" component={Attendance} />
-      <Route path="/dashboard/profilecv" component={ProfileCommonView} />
-      <Route path="/dashboard/profile" component={ProfileView} />
+      <Route exact path="/dashboard/admin/events" component={EventPage} />
       <Route path="/dashboard/admin/ranking" component={RankingAdmin} />
+      <Route exact path="/dashboard/admin/attendance" component={Attendance} />
     </Switch>
   );
 }
