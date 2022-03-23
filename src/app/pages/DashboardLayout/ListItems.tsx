@@ -77,17 +77,6 @@ export const MainListItems = () => {
           <ListItemText primary="Ranking" />
         </ListItem>
       </Link>
-      <Link
-        to={{ pathname: '/dashboard/events' }}
-        style={{ textDecoration: 'none' }}
-      >
-        <ListItem button>
-          <ListItemIcon>
-            <EventAvailableIcon />
-          </ListItemIcon>
-          <ListItemText primary="Events" />
-        </ListItem>
-      </Link>
 
       {isAdmin && (
         <>
@@ -108,7 +97,7 @@ export const MainListItems = () => {
           >
             <ListItem button>
               <ListItemIcon>
-                <MdEventSeat />
+                <EventAvailableIcon />
               </ListItemIcon>
               <ListItemText primary="Manage Events" />
             </ListItem>

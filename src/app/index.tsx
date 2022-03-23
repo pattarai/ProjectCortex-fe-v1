@@ -19,6 +19,14 @@ import { LoginPage } from './pages/LoginPage';
 import { LoginRoute } from './routes/LoginRoute';
 
 export function App() {
+  document.addEventListener('visibilitychange', event => {
+    if (document.visibilityState === 'visible') {
+      document.title = 'Pattarai | Cortex';
+    } else {
+      document.title = 'Am Waiting Bruh :/';
+    }
+  });
+
   const { i18n } = useTranslation();
   return (
     <BrowserRouter>
