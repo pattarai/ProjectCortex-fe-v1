@@ -13,9 +13,7 @@ function* handleGetFactors() {
     const res = yield call(() => axiosGet('/admin/factors'));
     const data = res.data.getFactors;
     yield put(actions.setFactors(data));
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 function* handlePostFactor(action: any) {
@@ -32,9 +30,7 @@ function* handlePostFactor(action: any) {
     const postRanks = res.data.postRanks;
     yield put(actions.addNewFactor(postFactors));
     yield put(actions.setRanking(postRanks));
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 function* handleUpdateFactor(action: any) {
@@ -49,9 +45,7 @@ function* handleUpdateFactor(action: any) {
   try {
     yield call(() => axiosPatch('/admin/factors', action.payload));
     yield put(actions.setUpdateFactor(action.payload));
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 function* handleDeleteFactor(action: any) {
@@ -64,9 +58,7 @@ function* handleDeleteFactor(action: any) {
     const res = yield call(() => axiosDelete('/admin/factors', action.payload));
     const deletedFactors = res.data.deleteFactors;
     yield put(actions.setDeleteFactor(deletedFactors));
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 // Ranking Handler
@@ -75,9 +67,7 @@ function* handleGetRanking() {
     const res = yield call(() => axiosGet('/admin/ranks'));
     const data = res.data.ranks;
     yield put(actions.setRanking(data));
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 function* handlePatchRanking(action: any) {
@@ -92,9 +82,7 @@ function* handlePatchRanking(action: any) {
    */
   try {
     yield call(() => axiosPatch('/admin/ranks', action.payload));
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 export function* rankingAdminSaga() {

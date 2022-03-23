@@ -21,7 +21,6 @@ function* handleAddEvents(action: any) {
   try {
     const res = yield call(() => axiosPost('/admin/events', action.payload));
     const data = res.data.data;
-    console.log(data);
     yield put(actions.setAddEvent(data));
   } catch (error) {
     yield put(actions.setError(true));
@@ -44,7 +43,6 @@ function* handleUpdateEvents(action: any) {
   try {
     const res = yield call(() => axiosPatch('/admin/events', action.payload));
     const data = res.data.data;
-    console.log(data);
     yield put(actions.setUpdateEvent(data));
   } catch (error) {
     yield put(actions.setError(true));

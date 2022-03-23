@@ -9,7 +9,6 @@ function* handleGetAttendance(action: any) {
     );
     yield put(actions.setInitialData(data));
   } catch (error) {
-    console.log(error);
     yield put(actions.setError(true));
   }
 }
@@ -22,7 +21,6 @@ function* handleUpdateAttendance(action: any) {
       yield call(() => axiosPost('/admin/attendance', action.payload));
     }
   } catch (error) {
-    console.log(error);
     yield put(actions.setError(true));
   }
 }

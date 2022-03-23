@@ -24,9 +24,7 @@ export const MainListItems = () => {
       if (response.data.success) {
         response.data.isAdmin && setIsAdmin(true);
       }
-    } catch (err: any) {
-      console.log(err);
-    }
+    } catch (err: any) {}
   }
 
   useEffect(() => {
