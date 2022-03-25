@@ -47,8 +47,8 @@ export function CompleteProfile() {
     githubUrlError: '',
     linkedInUrlError: '',
     descriptionError: '',
-    bitmojiPicError: '',
-    profilePicError: '',
+    // bitmojiPicError: '',
+    // profilePicError: '',
     isError: false,
   });
 
@@ -126,12 +126,12 @@ export function CompleteProfile() {
     completeProfileGet();
   }, []);
 
-  const [profilePic, setProfilePic] = useState<any | null>(null);
-  const [bitmojiPic, setBitmojiPic] = useState<any | null>(null);
+  // const [profilePic, setProfilePic] = useState<any | null>(null);
+  // const [bitmojiPic, setBitmojiPic] = useState<any | null>(null);
 
   const handleSubmit = () => {
-    formdata.append('profilePic', profilePic);
-    formdata.append('bitmojiPic', bitmojiPic);
+    // formdata.append('profilePic', profilePic);
+    // formdata.append('bitmojiPic', bitmojiPic);
     if (checkError()) {
       Object.entries(values).forEach(([key, value]) => {
         formdata.append(key, value);
@@ -169,7 +169,7 @@ export function CompleteProfile() {
                         We'd like to know you better…
                       </Typography>
                     </div>
-                    <div className="d-flex align-items-center justify-content-center mt-2 p-2">
+                    {/* <div className="d-flex align-items-center justify-content-center mt-2 p-2">
                       <div className="justify-content-center p-2">
                         <Avatar
                           alt="uploaded"
@@ -197,7 +197,7 @@ export function CompleteProfile() {
                           </Button>
                         </label>
                       </div>
-                    </div>
+                    </div> */}
                     <div>
                       <div className="d-flex justify-content-center p-2">
                         <Box
@@ -551,7 +551,7 @@ export function CompleteProfile() {
                         </Box>
                       </div>
                     </div>
-                    <div className="d-flex align-items-center justify-content-center mt-2 p-2">
+                    {/* <div className="d-flex align-items-center justify-content-center mt-2 p-2">
                       <div className="d-flex justify-content-center p-2">
                         <Avatar
                           alt="uploaded"
@@ -578,7 +578,7 @@ export function CompleteProfile() {
                           </Button>
                         </label>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="text-start">
                       <Button
                         type="button"
