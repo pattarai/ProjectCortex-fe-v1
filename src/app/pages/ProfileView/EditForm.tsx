@@ -196,17 +196,17 @@ export default function EditForm({
             value={values.instagramUrl}
             id="outlined-basic"
             className="mb-3"
-            error={
-              errors.isError &&
-              (values.instagramUrl.trim() === '' ? true : false)
-            }
-            helperText={
-              errors.isError &&
-              (errors.instagramUrlError !== '' ? errors.instagramUrlError : '')
-            }
+            // error={
+            //   errors.isError &&
+            //   (values.instagramUrl.trim() === '' ? true : false)
+            // }
+            // helperText={
+            //   errors.isError &&
+            //   (errors.instagramUrlError !== '' ? errors.instagramUrlError : '')
+            // }
             label="Instagram URL"
             variant="outlined"
-            required={true}
+            // required={true}
             onChange={e =>
               setValues({ ...values, instagramUrl: e.target.value })
             }
