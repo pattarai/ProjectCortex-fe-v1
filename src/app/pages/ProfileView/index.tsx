@@ -9,8 +9,8 @@ import {
   Card,
   CardContent,
   CardActionArea,
-  CardMedia,
   Button,
+  Avatar,
 } from '@mui/material';
 import Popup from '../../components/Popup';
 import Box from '@mui/material/Box';
@@ -70,13 +70,18 @@ export function ProfileView(props: Props) {
               >
                 {userData && (
                   <div className="d-flex">
-                    <div className="px-4 mx-1  w-100 align-items-center justfiy-content-between">
-                      <CardMedia
-                        component="img"
-                        src={`${imgurl}/profile/${userData.userId}.jpg`}
-                        sx={{ m: 4, width: 200 }}
-                        alt="Your image"
-                        className="my-0"
+                    <div className="px-4 mx-1 w-100 align-items-center justfiy-content-between">
+                      <Avatar
+                        alt={userData.firstName}
+                        // src={`${imgurl}/images/${userData.userId}.jpg`}
+                        sx={{
+                          width: 150,
+                          height: 150,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          margin: 'auto',
+                          marginBottom: '5%',
+                        }}
                       />
                       <Box
                         component="h1"

@@ -106,7 +106,6 @@ export default function EventForm({ setOpenModal, updateUser, setLoading }) {
       return true;
     } else {
       err.isError = true;
-      console.log(err);
       setErrors(err);
       return false;
     }
