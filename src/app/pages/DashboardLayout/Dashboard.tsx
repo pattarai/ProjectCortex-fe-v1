@@ -132,7 +132,7 @@ export default function Dashboard({ children }: { children: ReactNode }) {
                 </Typography>
                 <Avatar
                   alt={userData.firstName}
-                  src={`${imgurl}/images/${userData.userId}.jpg`}
+                  src={`${imgurl}/images/29.jpg`}
                 />
               </>
             )}
