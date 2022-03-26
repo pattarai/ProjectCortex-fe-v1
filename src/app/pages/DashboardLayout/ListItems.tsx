@@ -8,7 +8,6 @@ import {
   MdEventAvailable as EventAvailableIcon,
   MdExitToApp as ExitToAppIcon,
   MdOutlineManageAccounts,
-  MdEventSeat,
 } from 'react-icons/md';
 import { BsJournalMedical } from 'react-icons/bs';
 import { GiRank3 } from 'react-icons/gi';

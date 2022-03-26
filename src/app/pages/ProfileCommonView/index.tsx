@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { BiSearch as SearchIcon } from 'react-icons/bi';
 import { Box } from '@mui/system';
-import { axiosGet, imgurl } from '../../requests';
+import { axiosGet } from '../../requests';
 import { Loader } from '../../components/Loader';
 
 interface Props {}

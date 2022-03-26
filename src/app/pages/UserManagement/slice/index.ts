@@ -23,10 +23,10 @@ const slice = createSlice({
 
     setInitialData(state, action: PayloadAction<any>) {
       const { users, committeeList, projectList, roleList } = action.payload;
-      state.users.push(...users);
-      state.committeeList.push(...committeeList);
-      state.projectList.push(...projectList);
-      state.roleList.push(...roleList);
+      state.users = [...users];
+      state.committeeList = [...committeeList];
+      state.projectList = [...projectList];
+      state.roleList = [...roleList];
     },
 
     setAddUser(state, action: PayloadAction<any>) {

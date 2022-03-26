@@ -5,13 +5,7 @@
  */
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Avatar,
-  CardActionArea,
-} from '@mui/material';
+import { Card, CardContent, Typography, CardActionArea } from '@mui/material';
 import Button from '@mui/material/Button';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -21,8 +15,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { styled } from '@mui/material/styles';
-import { BsCamera } from 'react-icons/bs';
 import { axiosGet, axiosPatch } from '../../requests';
 import { useState, useEffect } from 'react';
 import { dateFormat } from '../../components/dateFormat';
@@ -140,10 +132,6 @@ export function CompleteProfile() {
     }
     history.push('/dashboard/profilecv');
   };
-
-  const Input = styled('input')({
-    display: 'none',
-  });
 
   if (loading) return <Loader />;
 
