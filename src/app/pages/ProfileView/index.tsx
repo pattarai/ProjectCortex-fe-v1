@@ -23,7 +23,7 @@ import gmailIcon from '../../components/logos/gmail.png';
 import projectIcon from '../../components/logos/Project.png';
 import committeeIcon from '../../components/logos/committee.png';
 import teamIcon from '../../components/logos/team.png';
-import { axiosGet, imgurl } from '../../requests';
+import { axiosGet } from '../../requests';
 import EditForm from './EditForm';
 
 interface Props {}

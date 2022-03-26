@@ -339,7 +339,6 @@ export function RankingAdmin(props: Props) {
             className="d-flex flex-column align-justify-center p-3 p-md-5"
             style={{ width: '90%' }}
           >
-            <h1 className="mb-3">Ranking</h1>
             <div className="d-md-flex justify-content-between align-items-center mb-2 w-md-100">
               <FormControl className="col-12 col-md-6 mb-2 mx-2">
                 <InputLabel id="phase-label">Phase</InputLabel>
