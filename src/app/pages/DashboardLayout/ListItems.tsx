@@ -8,7 +8,6 @@ import {
   MdEventAvailable as EventAvailableIcon,
   MdExitToApp as ExitToAppIcon,
   MdOutlineManageAccounts,
-  MdEventSeat,
 } from 'react-icons/md';
 import { BsJournalMedical } from 'react-icons/bs';
 import { GiRank3 } from 'react-icons/gi';
@@ -24,9 +23,7 @@ export const MainListItems = () => {
       if (response.data.success) {
         response.data.isAdmin && setIsAdmin(true);
       }
-    } catch (err: any) {
-      console.log(err);
-    }
+    } catch (err: any) {}
   }
 
   useEffect(() => {
@@ -79,17 +76,6 @@ export const MainListItems = () => {
           <ListItemText primary="Ranking" />
         </ListItem>
       </Link>
-      <Link
-        to={{ pathname: '/dashboard/events' }}
-        style={{ textDecoration: 'none' }}
-      >
-        <ListItem button>
-          <ListItemIcon>
-            <EventAvailableIcon />
-          </ListItemIcon>
-          <ListItemText primary="Events" />
-        </ListItem>
-      </Link>
 
       {isAdmin && (
         <>
@@ -110,7 +96,7 @@ export const MainListItems = () => {
           >
             <ListItem button>
               <ListItemIcon>
-                <MdEventSeat />
+                <EventAvailableIcon />
               </ListItemIcon>
               <ListItemText primary="Manage Events" />
             </ListItem>

@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-export const endpoint = 'http://127.0.0.1:5000/api';
-export const imgurl = 'http://127.0.0.1:5000';
+export const endpoint = `${process.env.REACT_APP_ENDPOINT}/api`;
+export const imgurl = `${process.env.REACT_APP_ENDPOINT}`;
+
+console.log(endpoint, imgurl);
 
 export function axiosGet(url: string) {
   return axios.request({

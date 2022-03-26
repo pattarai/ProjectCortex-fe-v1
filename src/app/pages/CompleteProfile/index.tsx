@@ -5,13 +5,7 @@
  */
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Avatar,
-  CardActionArea,
-} from '@mui/material';
+import { Card, CardContent, Typography, CardActionArea } from '@mui/material';
 import Button from '@mui/material/Button';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -21,8 +15,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { styled } from '@mui/material/styles';
-import { BsCamera } from 'react-icons/bs';
 import { axiosGet, axiosPatch } from '../../requests';
 import { useState, useEffect } from 'react';
 import { dateFormat } from '../../components/dateFormat';
@@ -43,12 +35,12 @@ export function CompleteProfile() {
     rollNumberError: '',
     registerNumberError: '',
     whatsappNumberError: '',
-    instagramUrlError: '',
+    // instagramUrlError: '',
     githubUrlError: '',
     linkedInUrlError: '',
     descriptionError: '',
-    bitmojiPicError: '',
-    profilePicError: '',
+    // bitmojiPicError: '',
+    // profilePicError: '',
     isError: false,
   });
 
@@ -126,12 +118,12 @@ export function CompleteProfile() {
     completeProfileGet();
   }, []);
 
-  const [profilePic, setProfilePic] = useState<any | null>(null);
-  const [bitmojiPic, setBitmojiPic] = useState<any | null>(null);
+  // const [profilePic, setProfilePic] = useState<any | null>(null);
+  // const [bitmojiPic, setBitmojiPic] = useState<any | null>(null);
 
   const handleSubmit = () => {
-    formdata.append('profilePic', profilePic);
-    formdata.append('bitmojiPic', bitmojiPic);
+    // formdata.append('profilePic', profilePic);
+    // formdata.append('bitmojiPic', bitmojiPic);
     if (checkError()) {
       Object.entries(values).forEach(([key, value]) => {
         formdata.append(key, value);
@@ -140,10 +132,6 @@ export function CompleteProfile() {
     }
     history.push('/dashboard/profilecv');
   };
-
-  const Input = styled('input')({
-    display: 'none',
-  });
 
   if (loading) return <Loader />;
 
@@ -169,7 +157,7 @@ export function CompleteProfile() {
                         We'd like to know you better…
                       </Typography>
                     </div>
-                    <div className="d-flex align-items-center justify-content-center mt-2 p-2">
+                    {/* <div className="d-flex align-items-center justify-content-center mt-2 p-2">
                       <div className="justify-content-center p-2">
                         <Avatar
                           alt="uploaded"
@@ -197,7 +185,7 @@ export function CompleteProfile() {
                           </Button>
                         </label>
                       </div>
-                    </div>
+                    </div> */}
                     <div>
                       <div className="d-flex justify-content-center p-2">
                         <Box
@@ -212,6 +200,7 @@ export function CompleteProfile() {
                             id="outlined-disabled"
                             label="First Name"
                             variant="outlined"
+                            required={true}
                             sx={{ width: '34.5ch' }}
                             defaultValue={userData.firstName}
                           />
@@ -220,6 +209,7 @@ export function CompleteProfile() {
                             id="outlined-basic"
                             label="Last Name"
                             variant="outlined"
+                            required={true}
                             sx={{ width: '34.5ch' }}
                             defaultValue={userData.lastName}
                           />
@@ -232,6 +222,7 @@ export function CompleteProfile() {
                             id="outlined-disabled"
                             label="Email"
                             variant="outlined"
+                            required={true}
                             sx={{ width: '34.5ch' }}
                             defaultValue={userData.email}
                           />
@@ -240,6 +231,7 @@ export function CompleteProfile() {
                             id="outlined-disabled"
                             label="Role"
                             variant="outlined"
+                            required={true}
                             sx={{ width: '34.5ch' }}
                             defaultValue={userData.roleId}
                           />
@@ -264,8 +256,9 @@ export function CompleteProfile() {
                           </LocalizationProvider>
                           <TextField
                             id="outlined-basic"
-                            label="College Name*"
+                            label="College Name"
                             variant="outlined"
+                            required={true}
                             sx={{ width: '34ch' }}
                             onChange={e =>
                               setValues({
@@ -298,6 +291,7 @@ export function CompleteProfile() {
                               id="demo-simple-select"
                               value={values.department}
                               label="Dept"
+                              required={true}
                               sx={{ width: '28.7ch' }}
                               onChange={e =>
                                 setValues({
@@ -310,7 +304,7 @@ export function CompleteProfile() {
                               <MenuItem value="EEE">EEE</MenuItem>
                               <MenuItem value="MECH A">MECH A</MenuItem>
                               <MenuItem value="MECH B">MECH B</MenuItem>
-                              <MenuItem value="CSC">CSC</MenuItem>
+                              <MenuItem value="CSE">CSE</MenuItem>
                               <MenuItem value="IT">IT</MenuItem>
                             </Select>
                           </FormControl>
@@ -322,6 +316,7 @@ export function CompleteProfile() {
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
                               value={values.year}
+                              required={true}
                               label="Year"
                               sx={{ width: '28.7ch' }}
                               onChange={e =>
@@ -343,7 +338,8 @@ export function CompleteProfile() {
                         <Box sx={{ '& > :not(style)': { m: 1 } }}>
                           <TextField
                             id="outlined-basic"
-                            label="Roll Number*"
+                            label="Roll Number"
+                            required={true}
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
                             onChange={e =>
@@ -365,8 +361,9 @@ export function CompleteProfile() {
                           />
                           <TextField
                             id="outlined-basic"
-                            label="Register Number*"
+                            label="Register Number"
                             variant="outlined"
+                            required={true}
                             sx={{ width: '34.5ch' }}
                             onChange={e =>
                               setValues({
@@ -401,20 +398,21 @@ export function CompleteProfile() {
                                 instagramUrl: e.target.value,
                               })
                             }
-                            error={
-                              errors.isError &&
-                              (values.instagramUrl.trim() === '' ? true : false)
-                            }
-                            helperText={
-                              errors.isError &&
-                              (errors.instagramUrlError !== ''
-                                ? errors.instagramUrlError
-                                : '')
-                            }
+                            // error={
+                            //   errors.isError &&
+                            //   (values.instagramUrl.trim() === '' ? true : false)
+                            // }
+                            // helperText={
+                            //   errors.isError &&
+                            //   (errors.instagramUrlError !== ''
+                            //     ? errors.instagramUrlError
+                            //     : '')
+                            // }
                           />
                           <TextField
                             id="outlined-basic"
-                            label="Linkedin Link*"
+                            label="Linkedin Link"
+                            required={true}
                             variant="outlined"
                             onChange={e =>
                               setValues({
@@ -435,7 +433,8 @@ export function CompleteProfile() {
                           />
                           <TextField
                             id="outlined-basic"
-                            label="Github Link*"
+                            label="Github Link"
+                            required={true}
                             variant="outlined"
                             onChange={e =>
                               setValues({
@@ -460,7 +459,8 @@ export function CompleteProfile() {
                         <Box sx={{ '& > :not(style)': { m: 1 } }}>
                           <TextField
                             id="outlined-basic"
-                            label="Description*"
+                            label="Description"
+                            required={true}
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
                             onChange={e =>
@@ -482,7 +482,8 @@ export function CompleteProfile() {
                           />
                           <TextField
                             id="outlined-basic"
-                            label="WhatsApp Number*"
+                            label="WhatsApp Number"
+                            required={true}
                             variant="outlined"
                             sx={{ width: '34.5ch' }}
                             onChange={e =>
@@ -516,6 +517,7 @@ export function CompleteProfile() {
                               disabled
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
+                              required={true}
                               defaultValue={userData.project}
                               label="Project"
                               sx={{ width: '28.7ch' }}
@@ -534,6 +536,7 @@ export function CompleteProfile() {
                               disabled
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
+                              required={true}
                               defaultValue={userData.committee}
                               label="Committee"
                               sx={{ width: '28.7ch' }}
@@ -551,7 +554,7 @@ export function CompleteProfile() {
                         </Box>
                       </div>
                     </div>
-                    <div className="d-flex align-items-center justify-content-center mt-2 p-2">
+                    {/* <div className="d-flex align-items-center justify-content-center mt-2 p-2">
                       <div className="d-flex justify-content-center p-2">
                         <Avatar
                           alt="uploaded"
@@ -578,7 +581,7 @@ export function CompleteProfile() {
                           </Button>
                         </label>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="text-start">
                       <Button
                         type="button"

@@ -42,7 +42,6 @@ const slice = createSlice({
         st => st.eventId === action.payload.eventId,
       );
       state.events[newArray] = { ...action.payload };
-      console.log(action.payload);
     },
 
     setDeleteEvent(state, action: PayloadAction<any>) {

@@ -148,7 +148,6 @@ export function EventPage(props: Props) {
             size="large"
             sx={{ minHeight: '55px' }}
             onClick={() => {
-              console.log(phaseValue);
               dispatch(actions.getEventByPhase(phaseValue));
               setUpdateUser(null);
               setDeleteUser(null);

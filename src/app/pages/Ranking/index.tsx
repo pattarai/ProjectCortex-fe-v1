@@ -55,7 +55,6 @@ export function RankingCrew() {
       setTop3(top3List);
       setUserData(userList);
       setUserSearchData(userList);
-      console.log(user);
       setLoading(false);
     });
   }, []);
@@ -67,7 +66,6 @@ export function RankingCrew() {
       const filteredUser = userData?.filter(row =>
         row.users.firstName.toLowerCase().includes(searchedVal.toLowerCase()),
       );
-      console.log(filteredUser, searchedVal);
       filteredUser && setUserSearchData(filteredUser);
     }
   }

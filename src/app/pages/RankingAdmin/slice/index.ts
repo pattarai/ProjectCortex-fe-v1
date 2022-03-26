@@ -45,7 +45,6 @@ const slice = createSlice({
     },
     setDeleteFactor: (state, action: PayloadAction<any>) => {
       const deletedFactor = action.payload;
-      console.log('data :', deletedFactor);
       state.factors.forEach(
         st =>
           st.factorId === deletedFactor.factorId &&
