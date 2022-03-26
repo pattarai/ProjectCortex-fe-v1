@@ -82,7 +82,7 @@ export function ProfileCommonView(props: Props) {
                       <CardContent>
                         <Avatar
                           alt={data.firstName}
-                          src={`${imgurl}/images/${data.userId}.jpg`}
+                          // src={`${imgurl}/images/${data.userId}.jpg`}
                           sx={{
                             width: 70,
                             height: 70,
