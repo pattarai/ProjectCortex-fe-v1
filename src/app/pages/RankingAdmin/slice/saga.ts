@@ -10,9 +10,11 @@ import {
 // Factors Handler
 function* handleGetFactors() {
   try {
+    yield put(actions.setFactorsLoading(true));
     const res = yield call(() => axiosGet('/admin/factors'));
     const data = res.data.getFactors;
     yield put(actions.setFactors(data));
+    yield put(actions.setFactorsLoading(false));
   } catch (error) {}
 }
 
@@ -25,11 +27,12 @@ function* handlePostFactor(action: any) {
    * }
    */
   try {
+    yield put(actions.setFactorsLoading(true));
     const res = yield call(() => axiosPost('/admin/factors', action.payload));
     const postFactors = res.data.postFactors;
-    const postRanks = res.data.postRanks;
     yield put(actions.addNewFactor(postFactors));
-    yield put(actions.setRanking(postRanks));
+    yield put(actions.getRanking());
+    yield put(actions.setFactorsLoading(false));
   } catch (error) {}
 }
 
@@ -43,8 +46,10 @@ function* handleUpdateFactor(action: any) {
    * }
    */
   try {
+    yield put(actions.setFactorsLoading(true));
     yield call(() => axiosPatch('/admin/factors', action.payload));
     yield put(actions.setUpdateFactor(action.payload));
+    yield put(actions.setFactorsLoading(false));
   } catch (error) {}
 }
 
@@ -58,15 +63,18 @@ function* handleDeleteFactor(action: any) {
     const res = yield call(() => axiosDelete('/admin/factors', action.payload));
     const deletedFactors = res.data.deleteFactors;
     yield put(actions.setDeleteFactor(deletedFactors));
+    yield put(actions.setFactorsLoading(false));
   } catch (error) {}
 }
 
 // Ranking Handler
 function* handleGetRanking() {
   try {
+    yield put(actions.setRankingLoading(true));
     const res = yield call(() => axiosGet('/admin/ranks'));
     const data = res.data.ranks;
     yield put(actions.setRanking(data));
+    yield put(actions.setRankingLoading(false));
   } catch (error) {}
 }
 
@@ -81,7 +89,9 @@ function* handlePatchRanking(action: any) {
    * }
    */
   try {
+    yield put(actions.setRankingLoading(true));
     yield call(() => axiosPatch('/admin/ranks', action.payload));
+    yield put(actions.setRankingLoading(false));
   } catch (error) {}
 }
 
