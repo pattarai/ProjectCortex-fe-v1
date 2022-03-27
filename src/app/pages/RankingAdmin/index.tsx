@@ -388,28 +388,31 @@ export function RankingAdmin(props: Props) {
             className="d-flex flex-column align-justify-center p-3 p-md-5"
             style={{ width: '90%' }}
           >
-            <div className="d-md-flex justify-content-between align-items-center mb-2 w-md-100">
-              <FormControl className="col-12 col-md-6 mb-2 mx-2">
-                <InputLabel id="phase-label">Phase</InputLabel>
-                <Select
-                  id="phase"
-                  labelId="phase-label"
-                  value={phase}
-                  label="Phase"
-                  onChange={handlePhaseChange}
-                >
-                  {phaseList.length > 0 ? (
-                    phaseList.map(p => {
-                      return (
-                        <MenuItem value={p}>{p === 0 ? 'All' : p}</MenuItem>
-                      );
-                    })
-                  ) : (
-                    <MenuItem value={0}>All</MenuItem>
-                  )}
-                </Select>
-              </FormControl>
-              <div className="col-12 col-md-6 mb-2 d-flex justify-content-end">
+            <div className="d-flex justify-content-center align-items-center m-3 mt-4 w-md-100 flex-column flex-md-row">
+              <div className="col-5 mb-4 mx-2">
+                <FormControl className="col-12">
+                  <InputLabel id="phase-label">Phase</InputLabel>
+                  <Select
+                    id="phase"
+                    labelId="phase-label"
+                    value={phase}
+                    label="Phase"
+                    onChange={handlePhaseChange}
+                  >
+                    {phaseList.length > 0 ? (
+                      phaseList.map(p => {
+                        return (
+                          <MenuItem value={p}>{p === 0 ? 'All' : p}</MenuItem>
+                        );
+                      })
+                    ) : (
+                      <MenuItem value={0}>All</MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
+              </div>
+
+              <div className="col-8 col-md-6 mb-4 d-flex justify-content-end">
                 <Autocomplete
                   disablePortal
                   id="factors"
@@ -458,7 +461,7 @@ export function RankingAdmin(props: Props) {
             </div>
             {selectedFactor && (
               <div className="w-md-100 d-flex flex-column flex-md-row justify-content-around my-2 align-items-center">
-                <div className="d-flex flex-column align-items-center align-items-md-start my-2">
+                <div className="col-12 col-md-6 d-flex flex-column align-items-center align-items-md-start my-2">
                   <div
                     className="mb-0"
                     style={{ fontSize: '12px', fontWeight: 'bold' }}
@@ -469,29 +472,33 @@ export function RankingAdmin(props: Props) {
                     {selectedFactor?.factorName}
                   </h1>
                 </div>
-                <div className="d-flex justify-content-around my-2">
-                  <div className="mx-2 my-auto">
-                    Phase: {selectedFactor?.phase}
+                <div className="col-12 col-md-6 d-flex flex-column flex-lg-row">
+                  <div className="d-flex justify-content-center my-2">
+                    <div className="mx-2 my-auto">
+                      Phase: {selectedFactor?.phase}
+                    </div>
+                    <div className="mx-2 my-auto">
+                      Max Score: {selectedFactor?.maxScore}
+                    </div>
                   </div>
-                  <div className="mx-2 my-auto">
-                    Max Score: {selectedFactor?.maxScore}
+                  <div className="d-flex justify-content-center my-2">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className="mx-2"
+                      onClick={editFactor}
+                    >
+                      <MdEdit /> Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      className="mx-2"
+                      onClick={deleteFactor}
+                    >
+                      <MdDelete /> Delete
+                    </Button>
                   </div>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className="mx-2"
-                    onClick={editFactor}
-                  >
-                    <MdEdit /> Edit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    className="mx-2"
-                    onClick={deleteFactor}
-                  >
-                    <MdDelete /> Delete
-                  </Button>
                 </div>
               </div>
             )}
