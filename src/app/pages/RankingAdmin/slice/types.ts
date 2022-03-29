@@ -20,4 +20,8 @@ export interface Ranking {
 export interface RankingAdminState {
   factors: Array<Factor>;
   ranking: Array<Ranking>;
+  loadingState: {
+    factors: boolean;
+    ranking: boolean;
+  };
 }

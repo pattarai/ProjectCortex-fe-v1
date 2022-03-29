@@ -7,6 +7,10 @@ import { RankingAdminState, Factor, Ranking } from './types';
 export const initialState: RankingAdminState = {
   factors: new Array<Factor>(),
   ranking: new Array<Ranking>(),
+  loadingState: {
+    factors: true,
+    ranking: true,
+  },
 };
 
 const slice = createSlice({
@@ -15,6 +19,14 @@ const slice = createSlice({
   reducers: {
     getFactors: () => {},
     getRanking: () => {},
+
+    setFactorsLoading: (state, action: PayloadAction<any>) => {
+      state.loadingState.factors = action.payload;
+    },
+
+    setRankingLoading: (state, action: PayloadAction<any>) => {
+      state.loadingState.ranking = action.payload;
+    },
 
     deleteFactor: (state, action: PayloadAction<any>) => {},
 
