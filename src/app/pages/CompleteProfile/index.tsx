@@ -99,9 +99,8 @@ export function CompleteProfile() {
         formdata.append(key, value);
       });
       let res: any = null;
-      let data = formdata;
       try {
-        res = await axiosPatch('/users/complete-profile', data);
+        res = await axiosPatch('/users/complete-profile', formdata);
         history.push('/dashboard/profilecv');
       } catch (err) {
         console.log(err);
