@@ -7,6 +7,6 @@ This is our working ERP system with all the basic primary modules.
 - You are welcome to add your ideas to Cortex
 
 ```bash
-Check it out 👇
-<https://cortex.pattarai.in/>
+[Check it out 👇]
+(https://cortex.pattarai.in/)
 Login and surf now!
