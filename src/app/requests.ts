@@ -3,8 +3,6 @@ import axios from 'axios';
 export const endpoint = `${process.env.REACT_APP_ENDPOINT}/api`;
 export const imgurl = `${process.env.REACT_APP_ENDPOINT}`;
 
-console.log(endpoint, imgurl);
-
 export function axiosGet(url: string) {
   return axios.request({
     method: 'GET',
