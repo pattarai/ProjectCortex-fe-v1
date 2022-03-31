@@ -1,4 +1,4 @@
-###Project Cortex - Fresh and Functional ERP
+##Project Cortex - Fresh and Functional ERP
 This is our working ERP system with all the basic primary modules.
 
 ## Contribution
