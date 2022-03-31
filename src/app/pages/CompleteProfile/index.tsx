@@ -59,7 +59,9 @@ export function CompleteProfile() {
     Object.entries(values).forEach(([key, value]) => {
       if (
         value === null ||
-        (typeof value === 'string' && value.trim() === '')
+        (typeof value === 'string' &&
+          key !== 'instagramUrl' &&
+          value.trim() === '')
       ) {
         err[`${key}Error`] = 'This field is required';
         noofErrors++;
