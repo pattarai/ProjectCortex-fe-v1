@@ -52,13 +52,16 @@ export function CompleteProfile() {
   }
 
   function checkError() {
+    setLoading(true);
     let noofErrors = 0;
     let err = { ...errors };
 
     Object.entries(values).forEach(([key, value]) => {
       if (
         value === null ||
-        (typeof value === 'string' && value.trim() === '')
+        (typeof value === 'string' &&
+          key !== 'instagramUrl' &&
+          value.trim() === '')
       ) {
         err[`${key}Error`] = 'This field is required';
         noofErrors++;
@@ -84,19 +87,24 @@ export function CompleteProfile() {
       return true;
     } else {
       err.isError = true;
+      setLoading(false);
       setErrors(err);
       return false;
     }
   }
 
-  async function completeProfilePatch() {
-    setLoading(true);
-    try {
-      let data = formdata;
-      await axiosPatch('/users/complete-profile', data);
-      setLoading(false);
-    } catch {
-      setLoading(false);
+  async function handleSubmit() {
+    if (checkError()) {
+      Object.entries(values).forEach(([key, value]) => {
+        formdata.append(key, value);
+      });
+      let res: any = null;
+      try {
+        res = await axiosPatch('/users/complete-profile', formdata);
+        history.push('/dashboard/profilecv');
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 
@@ -120,18 +128,6 @@ export function CompleteProfile() {
 
   // const [profilePic, setProfilePic] = useState<any | null>(null);
   // const [bitmojiPic, setBitmojiPic] = useState<any | null>(null);
-
-  const handleSubmit = () => {
-    // formdata.append('profilePic', profilePic);
-    // formdata.append('bitmojiPic', bitmojiPic);
-    if (checkError()) {
-      Object.entries(values).forEach(([key, value]) => {
-        formdata.append(key, value);
-      });
-      completeProfilePatch();
-    }
-    history.push('/dashboard/profilecv');
-  };
 
   if (loading) return <Loader />;
 
