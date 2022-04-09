@@ -219,8 +219,7 @@ export function ProfileView(props: Props) {
                             variant="h5"
                             style={{ fontWeight: 'bold' }}
                           >
-                            {userData.firstName}
-                            {userData.lastName}
+                            {userData.firstName} {userData.lastName}
                           </Typography>
                           <div className="my-5">
                             <Typography
