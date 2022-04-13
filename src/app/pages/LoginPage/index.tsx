@@ -19,7 +19,7 @@ import { SlideProps } from '@mui/material/Slide';
 import IconButton from '@mui/material/IconButton';
 import { AiOutlineClose } from 'react-icons/ai';
 import { axiosPost } from '../../requests';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { Loader } from '../../components/Loader';
 
 type TransitionProps = Omit<SlideProps, 'direction'>;
@@ -204,13 +204,13 @@ export function LoginPage() {
                   setValues({ ...values, password: e.target.value })
                 }
               />
-              {/* <Grid container>
+              <Grid container sx={{ marginTop: '10px' }}>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
+                  <Link to="/forgot-password">
+                    <Typography variant="body2">Forgot Password?</Typography>
                   </Link>
                 </Grid>
-              </Grid> */}
+              </Grid>
               <CenterItem>
                 <Button
                   type="button"
