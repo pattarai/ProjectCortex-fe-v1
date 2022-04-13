@@ -103,7 +103,7 @@ export function CompleteProfile() {
         res = await axiosPatch('/users/complete-profile', formdata);
         history.push('/dashboard/profilecv');
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     }
   }
