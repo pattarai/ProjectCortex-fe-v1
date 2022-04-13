@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { DashboardLayout } from './pages/DashboardLayout';
 import { LoginPage } from './pages/LoginPage';
 import { LoginRoute } from './routes/LoginRoute';
+import { ForgotPassword } from './pages/ForgotPassword';
 
 export function App() {
   document.addEventListener('visibilitychange', event => {
@@ -39,6 +40,7 @@ export function App() {
       </Helmet>
       <Switch>
         <LoginRoute exact path="/" component={LoginPage} />
+        <Route exact path="/forgot-password" component={ForgotPassword} />
         <Route path="/dashboard" component={DashboardLayout} />
       </Switch>
       <GlobalStyle />
